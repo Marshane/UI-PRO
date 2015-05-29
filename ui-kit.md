@@ -1,5 +1,9 @@
 # ui kit
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 65c5155d401d110f93989454d1322719e711911f
 ## 基础框架与工具库
 
   1. [jquery-1.10.2.min.js](https://rawgit.com/Marshane/UI-PRO/master/lab/jquery-1.10.2.min.js)
@@ -11,7 +15,10 @@
   1. [raphael.js](https://rawgit.com/Marshane/UI-PRO/master/lab/raphael.js)
 
 ## 自定义工具
+<<<<<<< HEAD
 
+=======
+>>>>>>> 65c5155d401d110f93989454d1322719e711911f
   1. [ui.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.js)
   
 ## 公共模块
@@ -28,6 +35,7 @@
   1. [ui.tree.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tree.js)
   1. [ui.dateparser.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dateparser.js)
   1. [ui.datepicker.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.datepicker.js)
+<<<<<<< HEAD
   1. [ui.modal.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.modal.js)
   1. [ui.position.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.position.js)
   1. [ui.dialogs.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dialogs.jss)
@@ -38,6 +46,16 @@
   1. [ui.select.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.select.js)
   1. [ui.checkbox.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.checkbox.js)
 
+=======
+  1. [ui.dialogs.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dialogs.jss)
+  1. [ui.grid.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.grid.js)
+  1. [ui.modal.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.modal.js)
+  1. [ui.position.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.position.js)
+  1. [ui.select.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.select.js)
+  1. [ui.pager.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.pager.js)
+  1. [ui.scrollbar.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.scrollbar.js)
+  1. [ui.suggest.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.suggest.js)
+>>>>>>> 65c5155d401d110f93989454d1322719e711911f
   
 ## 业务级模块与指令
   1. [ui.gantt.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.gantt.js)
