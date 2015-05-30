@@ -1,5 +1,4 @@
 angular.module('ui.select',[])
-    .controller('uiSelectCtrl',['$scope','$timeout',function(scope,timeout){}])
     .directive('uiSelect', ['$filter','$timeout','$translate','$compile','$templateCache', function ($filter, $timeout,$translate,$compile,$templateCache) {
         return{
             restrict:'A',
