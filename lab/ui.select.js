@@ -14,7 +14,6 @@ angular.module('ui.select',[])
                 disabled: '=',
                 onChange: '&?',
                 onBeforeChange:'&?',
-                onOpen:'&?',
                 onClose: '&?'
             },
             compile:function(){
@@ -225,6 +224,9 @@ angular.module('ui.select',[])
                                     scope.onClose(scope._obj);
                                 }
                             }
+                            if(a){
+                                scope.onOpen();
+                            }
                         });
                         scope.onOpen=function(){
                             var os=element.offset();
@@ -249,14 +251,14 @@ angular.module('ui.select',[])
     }])
     .run(["$templateCache", function ($templateCache) {
         $templateCache.put("select-button.html",
-            "<div class=\"btn-group ui-select\" ng-class=\"{'dropup':position[0]}\" dropdown on-open=\"onOpen\" is-open=\"isopen\"  ng-style=\"{'display':width?'block':'','width':width}\">\
+            "<div class=\"btn-group ui-select\" ng-class=\"{'dropup':position[0]}\" dropdown is-open=\"isopen\"  ng-style=\"{'display':width?'block':'','width':width}\">\
                 <button type=\"button\" style=\"float:none;\" class=\"btn btn-primary dropdown-toggle\" dropdown-toggle ng-style=\"{'width':width}\" ng-disabled=\"disabled\">\
                    <span class=\"caret pull-right\" style=\"margin:8px 0 0 5px\"></span> \
                    <span class=\"ui-select-text\">{{(isDropdown?(title||''):(_ngModel[0][key]||ngModel[key]||options[0][key]))||(options.length&&default)||'NODATA'|translate}}</span>\
                 </button>\
             </div>");
         $templateCache.put("select-button-color.html",
-            "<div class=\"btn-group ui-select\" ng-class=\"{'dropup':position[0]}\" dropdown on-open=\"onOpen\" is-open=\"isopen\"  ng-style=\"{'display':width?'block':'','width':width}\">\
+            "<div class=\"btn-group ui-select\" ng-class=\"{'dropup':position[0]}\" dropdown is-open=\"isopen\"  ng-style=\"{'display':width?'block':'','width':width}\">\
                 <button type=\"button\" style=\"float:none;\" class=\"btn btn-primary dropdown-toggle\" ng-style=\"{'width':width,'background-color':_ngModel[0][key]||ngModel[key]||options[0][key]}\" ng-disabled=\"disabled\">\
                    <span class=\"caret pull-right\" style=\"margin:8px 0 0 5px\"></span> \
                    <span class=\"ui-select-text\">{{(isDropdown?(title||''):(_ngModel[0][key]||ngModel[key]||options[0][key]))||(options.length&&default)||'NODATA'|translate}}</span>\
