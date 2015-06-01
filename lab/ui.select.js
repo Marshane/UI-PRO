@@ -247,3 +247,32 @@ angular.module('ui.select',[])
             }
         }
     }])
+    .run(["$templateCache", function ($templateCache) {
+        $templateCache.put("select-button.html",
+            "<div class=\"btn-group ui-select\" ng-class=\"{'dropup':position[0]}\" dropdown on-open=\"onOpen\" is-open=\"isopen\"  ng-style=\"{'display':width?'block':'','width':width}\">\
+                <button type=\"button\" style=\"float:none;\" class=\"btn btn-primary dropdown-toggle\" ng-style=\"{'width':width}\" ng-disabled=\"disabled\">\
+                   <span class=\"caret pull-right\" style=\"margin:8px 0 0 5px\"></span> \
+                   <span class=\"ui-select-text\">{{(isDropdown?(title||''):(_ngModel[0][key]||ngModel[key]||options[0][key]))||(options.length&&default)||'NODATA'|translate}}</span>\
+                </button>\
+            </div>");
+        $templateCache.put("select-button-color.html",
+            "<div class=\"btn-group ui-select\" ng-class=\"{'dropup':position[0]}\" dropdown on-open=\"onOpen\" is-open=\"isopen\"  ng-style=\"{'display':width?'block':'','width':width}\">\
+                <button type=\"button\" style=\"float:none;\" class=\"btn btn-primary dropdown-toggle\" ng-style=\"{'width':width,'background-color':_ngModel[0][key]||ngModel[key]||options[0][key]}\" ng-disabled=\"disabled\">\
+                   <span class=\"caret pull-right\" style=\"margin:8px 0 0 5px\"></span> \
+                   <span class=\"ui-select-text\">{{(isDropdown?(title||''):(_ngModel[0][key]||ngModel[key]||options[0][key]))||(options.length&&default)||'NODATA'|translate}}</span>\
+                </button>\
+            </div>");
+        $templateCache.put("select-menu-color.html",
+            "<ul class=\"dropdown-menu ui-select-menu ui-select-menu-color\" role=\"menu\" ng-show=\"options.length\" ng-class=\"{'pull-right':position[1],'ui-select-menu-visible':isopen}\"  ng-style=\"menuStyle\">\
+                <li ng-class=\"{'active':!isDropdown && item[key]===(_ngModel[0][key]||ngModel[key])}\" ng-repeat=\"item in optionsFilter()\">\
+                  <a href=\"#\" ng-click=\"itemClick($event,item)\" ng-style=\"{'background-color':item[key]}\">{{item[key]}}</a></li>\
+            </ul>");
+        $templateCache.put("select-menu.html",
+            "<ul class=\"dropdown-menu ui-select-menu\" role=\"menu\" ng-show=\"options.length\" ng-class=\"{'pull-right':position[1],'ui-select-menu-visible':isopen}\"  ng-style=\"menuStyle\">\
+                <li ng-if=\"filter\" ng-click=\"$event.stopPropagation()\"><input class=\"form-control ui-select-filter\" type=\"text\" ng-model=\"$parent._filterText_\"/><span class=\"glyphicon glyphicon-search\"></span></li>\
+                <li ng-class=\"{'active':!isDropdown && item[key]===(_ngModel[0][key]||ngModel[key])}\" ng-repeat=\"item in optionsFilter()\">\
+                  <a href=\"#\" ng-click=\"itemClick($event,item)\">\
+                  <input ng-if=\"multi\"  type=\"checkbox\" ng-checked=\"isChecked(item)\"/> \
+                  {{item[key]}}</a></li>\
+            </ul>");
+    }]);
