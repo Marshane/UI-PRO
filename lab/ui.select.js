@@ -250,7 +250,7 @@ angular.module('ui.select',[])
     .run(["$templateCache", function ($templateCache) {
         $templateCache.put("select-button.html",
             "<div class=\"btn-group ui-select\" ng-class=\"{'dropup':position[0]}\" dropdown on-open=\"onOpen\" is-open=\"isopen\"  ng-style=\"{'display':width?'block':'','width':width}\">\
-                <button type=\"button\" style=\"float:none;\" class=\"btn btn-primary dropdown-toggle\" ng-style=\"{'width':width}\" ng-disabled=\"disabled\">\
+                <button type=\"button\" style=\"float:none;\" class=\"btn btn-primary dropdown-toggle\" dropdown-toggle ng-style=\"{'width':width}\" ng-disabled=\"disabled\">\
                    <span class=\"caret pull-right\" style=\"margin:8px 0 0 5px\"></span> \
                    <span class=\"ui-select-text\">{{(isDropdown?(title||''):(_ngModel[0][key]||ngModel[key]||options[0][key]))||(options.length&&default)||'NODATA'|translate}}</span>\
                 </button>\
