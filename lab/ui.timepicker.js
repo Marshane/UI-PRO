@@ -297,7 +297,7 @@ angular.module('ui.timepicker', [])
             controller: 'TimepickerController',
             replace: true,
             scope: {},
-            templateUrl: 'templates/timepicker/timepicker.html',
+            templateUrl: 'template/timepicker/timepicker.html',
             link: function (scope, element, attrs, ctrls) {
                 var timepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
 
@@ -312,4 +312,24 @@ angular.module('ui.timepicker', [])
                 }
             }
         };
-    });
+    })
+    .run(["$templateCache", function ($templateCache) {
+        $templateCache.put("template/timepicker/timepicker.html",
+                "<table>\n" +
+                " <tbody>\n" +
+                "   <tr>\n" +
+                "     <td ng-hide=\"inDatepicker&&!HH\" style=\"width:65px;\" class=\"form-group\" ng-class=\"{'has-error': invalidHours}\">\n" +
+                "       <input type=\"text\" ng-model=\"hours\" ng-change=\"updateHours()\" class=\"x-form-text x-form-field form-control text-center\" ng-mousewheel=\"incrementHours()\" ng-readonly=\"readonlyInput\" maxlength=\"2\" max=\"23\" min=\"00\">\n" +
+                "     </td>\n" +
+                "     <td ng-hide=\"inDatepicker&&!mm\">:</td>\n" +
+                "     <td ng-hide=\"inDatepicker&&!mm\" style=\"width:65px;\" class=\"form-group\" ng-class=\"{'has-error': invalidMinutes}\">\n" +
+                "       <input type=\"text\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"x-form-text x-form-field form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" max=\"59\" min=\"00\">\n" +
+                "     </td>\n" +
+                "     <td ng-hide=\"inDatepicker&&!ss\">:</td>\n" +
+                "     <td ng-hide=\"inDatepicker&&!ss\" style=\"width:65px;\" class=\"form-group\" ng-class=\"{'has-error': invalidSeconds}\">\n" +
+                "       <input type=\"text\" ng-model=\"seconds\" ng-change=\"updateSeconds()\" class=\"x-form-text x-form-field form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" max=\"59\" min=\"00\">\n" +
+                "     </td>\n" +"   </tr>\n" +
+                " </tbody>\n" +
+                "</table>\n" +
+                "");
+    }]);
