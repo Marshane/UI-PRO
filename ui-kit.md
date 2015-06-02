@@ -30,7 +30,7 @@
   1. [ui.datepicker.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.datepicker.js)
   1. [ui.modal.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.modal.js)
   1. [ui.position.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.position.js)
-  1. [ui.dialogs.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dialogs.jss)
+  1. [ui.dialogs.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dialogs.js)
   1. [ui.grid.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.grid.js)
   1. [ui.pager.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.pager.js)
   1. [ui.scrollbar.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.scrollbar.js)
