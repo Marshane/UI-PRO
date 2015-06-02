@@ -207,7 +207,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
         return {
             restrict: 'EAC',
             replace: true,
-            templateUrl: 'templates/datepicker/datepicker.html',
+            templateUrl: 'template/datepicker/datepicker.html',
             scope: {
                 datepickerMode: '=?',
                 minMode:'=?',
@@ -235,7 +235,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'templates/datepicker/day.html',
+            templateUrl: 'template/datepicker/day.html',
             require: '^datepicker',
             link: function (scope, element, attrs, ctrl) {
                 scope.showWeeks = ctrl.showWeeks;
@@ -346,7 +346,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'templates/datepicker/month.html',
+            templateUrl: 'template/datepicker/month.html',
             require: '^datepicker',
             link: function (scope, element, attrs, ctrl) {
                 ctrl.step = { years: 1 };
@@ -400,7 +400,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'templates/datepicker/year.html',
+            templateUrl: 'template/datepicker/year.html',
             require: '^datepicker',
             link: function (scope, element, attrs, ctrl) {
                 var range = ctrl.yearRange;
@@ -666,7 +666,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
             restrict: 'EA',
             replace: true,
             transclude: true,
-            templateUrl: 'templates/datepicker/popup.html',
+            templateUrl: 'template/datepicker/popup.html',
             link: function (scope, element, attrs) {
                 element.bind('click', function (event) {
                     event.preventDefault();
@@ -723,4 +723,83 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 // });
             }
         };
+    }])
+    .run(["$templateCache", function ($templateCache) {
+        $templateCache.put("template/datepicker/datepicker.html",
+                "<div ng-switch=\"datepickerMode\" role=\"application\" ng-keydown=\"keydown($event)\">\n" +
+                "  <daypicker ng-switch-when=\"day\" tabindex=\"0\"></daypicker>\n" +
+                "  <monthpicker ng-switch-when=\"month\" tabindex=\"0\"></monthpicker>\n" +
+                "  <yearpicker ng-switch-when=\"year\" tabindex=\"0\"></yearpicker>\n" +
+                "</div>");
+        $templateCache.put("template/datepicker/day.html",
+                "<table role=\"grid\" aria-labelledby=\"{{uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
+                "  <thead>\n" +
+                "    <tr>\n" +
+                "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left\" ng-click=\"move(-1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
+                "      <th colspan=\"{{5 + showWeeks}}\"><button id=\"{{uniqueId}}-title\" role=\"heading\" aria-live=\"assertive\" aria-atomic=\"true\" type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"toggleMode()\" tabindex=\"-1\" style=\"width:100%;\"><strong>{{title}}</strong></button></th>\n" +
+                "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right\" ng-click=\"move(1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
+                "    </tr>\n" +
+                "    <tr class=\"weeks\">\n" +
+                "      <th ng-show=\"showWeeks\" class=\"text-center\"></th>\n" +
+                "      <th ng-repeat=\"label in labels track by $index\" class=\"text-center\"><small aria-label=\"{{label.full}}\">{{label.abbr}}</small></th>\n" +
+                "    </tr>\n" +
+                "  </thead>\n" +
+                "  <tbody>\n" +
+                "    <tr ng-repeat=\"row in rows track by $index\">\n" +
+                "      <td ng-show=\"showWeeks\" class=\"text-center h6\"><em>{{ weekNumbers[$index] }}</em></td>\n" +
+                "      <td ng-repeat=\"dt in row track by dt.date\"  class=\"text-center\" role=\"gridcell\" id=\"{{dt.uid}}\" aria-disabled=\"{{!!dt.disabled}}\">\n" +
+                "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default btn-sm\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" " +
+                "ng-click=\"select(dt.date,0,$event,!dt.remind,dt.remind)\" ng-disabled=\"dt.disabled\" ng-style=\"{'cursor':(dt.isRemind&&!dt.remind)?'not-allowed':''}\" tabindex=\"-1\">" +
+                "<span ng-class=\"{'text-muted': dt.secondary, 'text-info': dt.current}\">{{dt.label}}</span>" +
+                "<span ng-if=\"dt.remind.completed\" class=\"remind\"><em class=\"state-clr-e\">●</em>{{dt.remind.completed}}</span>" +
+                "<span ng-if=\"dt.remind.error\" class=\"remind\"><em class=\"state-clr-b\">●</em>{{dt.remind.error}}</span>" +
+                "<span ng-if=\"dt.remind.running\" class=\"remind\"><em class=\"state-clr-a\">●</em>{{dt.remind.running}}</span>" +
+                "</button>\n" +
+                "      </td>\n" +
+                "    </tr>\n" +
+                "  </tbody><tfoot></tfoot>\n" +
+                "</table>\n" +
+                "");
+        $templateCache.put("template/datepicker/month.html",
+                "<table class=\"month\" role=\"grid\" aria-labelledby=\"{{uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
+                "  <thead>\n" +
+                "    <tr>\n" +
+                "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left\" ng-click=\"move(-1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
+                "      <th><button id=\"{{uniqueId}}-title\" role=\"heading\" aria-live=\"assertive\" aria-atomic=\"true\" type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"toggleMode()\" tabindex=\"-1\" style=\"width:100%;\"><strong>{{title}}</strong></button></th>\n" +
+                "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right\" ng-click=\"move(1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
+                "    </tr>\n" +
+                "  </thead>\n" +
+                "  <tbody>\n" +
+                "    <tr ng-repeat=\"row in rows track by $index\">\n" +
+                "      <td ng-repeat=\"dt in row track by dt.date\" class=\"text-center\" role=\"gridcell\" id=\"{{dt.uid}}\" aria-disabled=\"{{!!dt.disabled}}\">\n" +
+                "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" ng-click=\"select(dt.date,1)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-info': dt.current}\">{{dt.label}}</span></button>\n" +
+                "      </td>\n" +
+                "    </tr>\n" +
+                "  </tbody>\n" +
+                "</table>\n" +
+                "");
+        $templateCache.put("template/datepicker/popup.html",
+                "<ul class=\"dropdown-menu\" ng-style=\"{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}\" ng-keydown=\"keydown($event)\">\n" +
+                " <li ng-transclude></li>\n" +
+                "<li class=\"timepicker-wrap\" ng-show=\"HH||mm||ss\"><div timepicker  in-datepicker=\"1\" class=\"pull-left\" style=\"width:auto\" ng-model=\"miniTime\" ng-change=\"miniTimeChange()\" hour-step=\"1\" minute-step=\"1\" second-step=\"1\" show-meridian=\"ismeridian\"></div></li>" +
+                "</ul>\n" +
+                "");
+        $templateCache.put("template/datepicker/year.html",
+                "<table class=\"year\" role=\"grid\" aria-labelledby=\"{{uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
+                "  <thead>\n" +
+                "    <tr>\n" +
+                "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left\" ng-click=\"move(-1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
+                "      <th colspan=\"3\"><button id=\"{{uniqueId}}-title\" role=\"heading\" aria-live=\"assertive\" aria-atomic=\"true\" type=\"button\" class=\"btn btn-default btn-sm\" ng-click=\"toggleMode()\" tabindex=\"-1\" style=\"width:100%;\"><strong>{{title}}</strong></button></th>\n" +
+                "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right\" ng-click=\"move(1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
+                "    </tr>\n" +
+                "  </thead>\n" +
+                "  <tbody>\n" +
+                "    <tr ng-repeat=\"row in rows track by $index\">\n" +
+                "      <td ng-repeat=\"dt in row track by dt.date\" class=\"text-center\" role=\"gridcell\" id=\"{{dt.uid}}\" aria-disabled=\"{{!!dt.disabled}}\">\n" +
+                "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" ng-click=\"select(dt.date)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-info': dt.current}\">{{dt.label}}</span></button>\n" +
+                "      </td>\n" +
+                "    </tr>\n" +
+                "  </tbody>\n" +
+                "</table>\n" +
+                "");
     }]);

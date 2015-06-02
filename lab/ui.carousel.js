@@ -176,7 +176,7 @@ angular.module('ui.carousel', ['ui.transition'])
             replace: true,
             controller: 'CarouselController',
             require: 'carousel',
-            templateUrl: 'templates/carousel/carousel.html',
+            templateUrl: 'template/carousel/carousel.html',
             scope: {
                 interval: '=',
                 noTransition: '=',
@@ -190,7 +190,7 @@ angular.module('ui.carousel', ['ui.transition'])
             restrict: 'EA',
             transclude: true,
             replace: true,
-            templateUrl: 'templates/carousel/slide.html',
+            templateUrl: 'template/carousel/slide.html',
             scope: {
                 active: '=?'
             },
@@ -208,4 +208,25 @@ angular.module('ui.carousel', ['ui.transition'])
                 });
             }
         };
-    });
+    })
+    .run(["$templateCache", function ($templateCache) {
+        $templateCache.put("template/carousel/carousel.html",
+                "<div ng-mouseenter=\"pause()\" ng-mouseleave=\"play()\" class=\"carousel\" ng-swipe-right=\"prev()\" ng-swipe-left=\"next()\">\n" +
+                "    <ol class=\"carousel-indicators\" ng-show=\"slides.length > 1\">\n" +
+                "        <li ng-repeat=\"slide in slides track by $index\" ng-class=\"{active: isActive(slide)}\" ng-click=\"select(slide)\"></li>\n" +
+                "    </ol>\n" +
+                "    <div class=\"carousel-inner\" ng-transclude></div>\n" +
+                "    <a class=\"left carousel-control\" ng-click=\"prev()\" ng-show=\"slides.length > 1\"><span class=\"glyphicon glyphicon-chevron-left\"></span></a>\n" +
+                "    <a class=\"right carousel-control\" ng-click=\"next()\" ng-show=\"slides.length > 1\"><span class=\"glyphicon glyphicon-chevron-right\"></span></a>\n" +
+                "</div>\n" +
+                "");
+        $templateCache.put("template/carousel/slide.html",
+                "<div ng-class=\"{\n" +
+                "    'active': leaving || (active && !entering),\n" +
+                "    'prev': (next || active) && direction=='prev',\n" +
+                "    'next': (next || active) && direction=='next',\n" +
+                "    'right': direction=='prev',\n" +
+                "    'left': direction=='next'\n" +
+                "  }\" class=\"item\" ng-transclude></div>\n" +
+                "");
+    }]);
