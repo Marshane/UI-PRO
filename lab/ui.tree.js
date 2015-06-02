@@ -2,7 +2,7 @@ angular.module('ui.tree', [])
     .directive('uiDateTree',['$timeout',function($timeout){
         return {
             restrict:'A',
-            templateUrl: "templates/tree/date-tree.html",
+            templateUrl: "template/tree/date-tree.html",
             replace:true,
             scope:{
                 data:'=',
@@ -227,7 +227,7 @@ angular.module('ui.tree', [])
     .directive('uiTree', ['$timeout', 'uiTreeService', function ($timeout, uiTreeService) {
         return {
             restrict: 'EA',
-            templateUrl: "templates/tree/tree.html",
+            templateUrl: "template/tree/tree.html",
             replace: true,
             scope: {
                 treeData: '=',
@@ -818,4 +818,25 @@ angular.module('ui.tree', [])
                 }
             }
         };
-    }]);
+    }])
+    .run(["$templateCache", function ($templateCache) {
+        $templateCache.put("template/tree/tree.html",
+            "<ul class=\"nav nav-list ui-tree\">\
+             <li ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\"  \
+                ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"ui-tree-row\">\
+                <a>\
+                    <i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"> </i>\
+                    <label class=\"indented\" ng-click=\"user_clicks_branch(row.branch,$event)\" >\
+                    <span class=\" tree-label\" ng-show=\"!row.branch.isLeaf\" >{{ row.label }}</span>\
+                    <span class=\" tree-label leaf\" ng-show=\"row.branch.isLeaf\"  ng-dblclick=\'user_edit_branch(row)\' >{{ row.branch.nodeLabel }}\
+                    <em class=\"value\" ng-show=\"!row.branch.editing\">[{{row.branch.nodeValue}}]</em>\
+                    </span>\
+                    </label>\
+                    <label class=\"indented\">\
+                        <input  class=\"form-control\" ng-class=\"{editing:row.branch.editing}\" type=\"text\" ng-model=\"row.branch.nodeValue\" ng-show=\"row.branch.editing\"  />\
+                        <span ng-show=\"row.branch.checked\" class=\"glyphicon glyphicon-ok-sign\"></span>\
+                    </label>\
+                </a>\
+             </li>\
+             </ul>");
+    }]);;

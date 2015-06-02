@@ -58,7 +58,7 @@ angular.module('ui.modal', ['ui.transition'])
         return {
             restrict: 'EA',
             replace: true,
-            templateUrl: 'templates/modal/backdrop.html',
+            templateUrl: 'template/modal/backdrop.html',
             link: function (scope) {
                 scope.animate = false;
                 //trigger CSS transitions
@@ -77,7 +77,7 @@ angular.module('ui.modal', ['ui.transition'])
             },
             replace: true,
             transclude: true,
-            templateUrl: 'templates/modal/window.html',
+            templateUrl: 'template/modal/window.html',
             compile: function () {
                 return{
                     post: function (scope, element, attrs) {
@@ -339,4 +339,14 @@ angular.module('ui.modal', ['ui.transition'])
                 }]
         };
         return $modalProvider;
-    });
+    })
+    .run(["$templateCache", function ($templateCache) {
+        $templateCache.put("template/modal/backdrop.html",
+            "<div class=\"modal-backdrop fade\" ng-class=\"{in: animate}\" ng-style=\"{'z-index': 1040 + index*10}\"></div>");
+        $templateCache.put("template/modal/window.html",
+                "<div tabindex=\"-1\" class=\"modal fade {{ windowClass }}\" ng-class=\"{in: animate}\" ng-style=\"{'z-index': 1050 + index*10, display: 'block'}\" ng-click=\"close($event)\">\n" +
+                "<div class=\"modal-dialog\" ng-style=\"{'width':width+'px'}\">" +
+                "<div class=\"modal-content\" ng-transclude>" +
+                "</div></div>\n" +
+                "</div>");
+    }]);

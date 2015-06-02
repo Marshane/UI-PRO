@@ -89,7 +89,7 @@ ctrlrs.controller('errorDialogCtrl',['$scope','$modalInstance','$translate','dat
 
 	// $scope.header = (angular.isDefined(data.header)) ? data.header : $translate.instant('DIALOGS_ERROR');
 	// $scope.msg = (angular.isDefined(data.msg)) ? data.msg : $translate.instant('DIALOGS_ERROR_MSG');
-$scope.header = (angular.isDefined(data.header)) ? data.header :'提示';
+    $scope.header = (angular.isDefined(data.header)) ? data.header :'提示';
 	$scope.msg = (angular.isDefined(data.msg)) ? data.msg :'出错了~';
 	//-- Methods -----//
 	
