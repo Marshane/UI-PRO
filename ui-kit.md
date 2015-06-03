@@ -20,18 +20,14 @@
 
   1. [ui.buttons.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.buttons.js)
   1. [ui.dropdown.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dropdown.js)
-  1. [ui.bindHtml.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.bindHtml.js)
   1. [ui.collapse.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.collapse.js)
   1. [ui.carousel.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.carousel.js)
   1. [ui.tabs.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tabs.js)
   1. [ui.timepicker.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.timepicker.js)
   1. [ui.tooltip.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tooltip.js)
-  1. [ui.transition.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.transition.js)
   1. [ui.tree.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tree.js)
-  1. [ui.dateparser.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dateparser.js)
   1. [ui.datepicker.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.datepicker.js)
   1. [ui.modal.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.modal.js)
-  1. [ui.position.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.position.js)
   1. [ui.dialogs.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dialogs.js)
   1. [ui.grid.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.grid.js)
   1. [ui.pager.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.pager.js)
@@ -51,10 +47,15 @@
 ## 工具模块
 
   1. [ui.utils.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.utils.js)
+  1. [ui.dateparser.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dateparser.js)
+  1. [ui.position.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.position.js)
+  1. [ui.bindHtml.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.bindHtml.js)
+  1. [ui.transition.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.transition.js)
   1. [ui.cut.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.cut.js)
   1. [ui.dateFormat.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.dateFormat.js)
   1. [ui.loading.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.loading.js)
   1. [ui.uploader.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.uploader.js)
+  1. [ui.sniffer.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.sniffer.js)
 
   
 ## 业务级模块
