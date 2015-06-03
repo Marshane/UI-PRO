@@ -10,9 +10,11 @@
   1. [angular-sanitize.js](https://rawgit.com/Marshane/UI-PRO/master/lab/angular-sanitize.js)
   1. [raphael.js](https://rawgit.com/Marshane/UI-PRO/master/lab/raphael.js)
 
-## 自定义工具
+
+## 基础工具
 
   1. [ui.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.js)
+
 
 ## 公共模块
 
@@ -38,6 +40,25 @@
   1. [ui.select.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.select.js)
   1. [ui.checkbox.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.checkbox.js)
 
+
+## 图表模块
+
+  1. [mix.charts.js](https://rawgit.com/Marshane/UI-PRO/master/lab/mix.charts.js)
+  1. [ui.chart.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.chart.js)
+  1. [ui.charts.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.charts.js)
+
+
+## 工具模块
+
+  1. [ui.utils.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.utils.js)
+  1. [ui.cut.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.cut.js)
+  1. [ui.dateFormat.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.dateFormat.js)
+  1. [ui.loading.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.loading.js)
+  1. [ui.uploader.js](https://rawgit.com/Marshane/UI-PRO/master/ui-utils/ui.uploader.js)
+
   
-## 业务级模块与指令
+## 业务级模块
+
   1. [ui.gantt.js](https://rawgit.com/Marshane/UI-PRO/master/lab/ui.gantt.js)
+
+
