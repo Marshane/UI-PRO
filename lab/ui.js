@@ -134,6 +134,13 @@ ui= _.extend(ui,{
         return b
     }(),
     /**
+     * 有些习惯这样调用
+     * @param str
+     */
+    format:function(str){
+        return String(str).format(String,Array.prototype.slice.call(arguments,1));
+    },
+    /**
      * 输入框选中字符
      * @param a
      * @param f
