@@ -8,15 +8,13 @@
     1. [结构、表现、行为三者分离，避免内联](#0-2)
     1. [保持良好的简洁的树形结构](#0-3)
     1. [另外，请做到以下几点](#0-4)
-
   1. [代码格式](#1)
     1. [说明文案的注释方法](#1-0)
     1. [代码本身的注释方法](#1-1)
     1. [严格的嵌套](#1-2)
     1. [严格的属性](#1-3)
     1. [常用的标签](#1-4)
-
-  1. [内容语义](#2)
+  1. [内容语义](#2-0)
 
 <a name="0"></a>
 ## 整体结构
@@ -206,3 +204,55 @@
         <tr><td><sub>&lt;ul&gt;&lt;/ul&gt;</sub></td><td><sub>无序列表</sub></td><td><sub>只能嵌套li</sub></td><td><sub>&nbsp;</sub></td></tr> 
     </tbody> 
 </table>
+
+
+<a name="2-0"></a>
+## 内容语义
+
+
+#### 内容类型决定使用的语义标签
+  - 在网页中某种类型的内容必定需要某种特定的HTML标签来承载，也就是我们常常提到的根据你的内容语义化HTML结构。
+
+#### 加强“资源型”内容的可访问性和可用性
+  - 在资源型的内容上加入描述文案，比如给img添加alt属性，在audio内加入文案和链接等等。
+
+#### 加强“不可见”内容的可访问性
+  - 背景图上的文字应该同时写在html中，并使用css使其不可见，有利于搜索引擎抓取你的内容，也可以在css失效的情况下看到内容。
+
+#### 适当使用实体
+  - 以实体代替与HTML语法相同的字符，避免浏览解析错误。
+
+  <table>
+      <caption>常用HTML字符实体（建议使用实体）：</caption>
+      <thead>
+          <tr><th><sub>字符</sub></th><th><sub>名称</sub></th><th><sub>实体名</sub></th><th><sub>实体数</sub></th></tr>
+      </thead>
+      <tbody>
+          <tr><td><sub>"</sub></td><td><sub>双引号</sub></td><td><sub>&amp;quot;</sub></td><td><sub>&amp;#34;</sub></td></tr>
+          <tr><td><sub>&amp;</sub></td><td><sub>&amp;符</sub></td><td><sub>&amp;amp;</sub></td><td><sub>&amp;#38;</sub></td></tr>
+          <tr><td><sub>&lt;</sub></td><td><sub>左尖括号（小于号）</sub></td><td><sub>&amp;lt;</sub></td><td><sub>&amp;#60;</sub></td></tr>
+          <tr><td><sub>&gt;</sub></td><td><sub>右尖括号（大于号）</sub></td><td><sub>&amp;gt;</sub></td><td><sub>&amp;#62;</sub></td></tr>
+          <tr><td><sub>&nbsp;</sub></td><td><sub>空格</sub></td><td><sub>&amp;nbsp;</sub></td><td><sub>&amp;#160;</sub></td></tr>
+          <tr><td><sub>　</sub></td><td><sub>中文全角空格</sub></td><td><sub>&nbsp;</sub></td><td><sub>&amp;#12288;</sub></td></tr>
+      </tbody>
+  </table>
+  <table>
+      <caption>常用特殊字符实体（不建议使用实体）：</caption>
+      <thead>
+          <tr><th><sub>字符</sub></th><th><sub>名称</sub></th><th><sub>实体名</sub></th><th><sub>实体数</sub></th></tr>
+      </thead>
+      <tbody>
+          <tr><td><sub>¥</td><td><sub>元</td><td><sub>&amp;yen;</td><td><sub>&amp;#165;</td></tr>
+          <tr><td><sub>¦</td><td><sub>断竖线</td><td><sub>&amp;brvbar;</td><td><sub>&amp;#166;</td></tr>
+          <tr><td><sub>©</td><td><sub>版权</td><td><sub>&amp;copy;</td><td><sub>&amp;#169;</td></tr>
+          <tr><td><sub>®</td><td><sub>注册商标R</td><td><sub>&amp;reg;</td><td><sub>&amp;#174;</td></tr>
+          <tr><td><sub>™</td><td><sub>商标TM</td><td><sub>&amp;trade;</td><td><sub>&amp;#8482;</td></tr>
+          <tr><td><sub>·</td><td><sub>间隔符</td><td><sub>&amp;middot;</td><td><sub>&amp;#183;</td></tr>
+          <tr><td><sub>«</td><td><sub>左双尖括号</td><td><sub>&amp;laquo;</td><td><sub>&amp;#171;</td></tr>
+          <tr><td><sub>»</td><td><sub>右双尖括号</td><td><sub>&amp;raquo;</td><td><sub>&amp;#187;</td></tr>
+          <tr><td><sub>°</td><td><sub>度</td><td><sub>&amp;deg;</td><td><sub>&amp;#176;</td></tr>
+          <tr><td><sub>×</td><td><sub>乘</td><td><sub>&amp;times;</td><td><sub>&amp;#215;</td></tr>
+          <tr><td><sub>÷</td><td><sub>除</td><td><sub>&amp;divide;</td><td><sub>&amp;#247;</td></tr>
+          <tr><td><sub>‰</td><td><sub>千分比</td><td><sub>&amp;permil;</td><td><sub>&amp;#8240;</td></tr>
+      </tbody>
+  </table>
