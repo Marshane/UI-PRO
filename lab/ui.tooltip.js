@@ -283,7 +283,7 @@ angular.module('ui.tooltip', [ 'ui.position', 'ui.bindHtml' ])
             restrict: 'EA',
             replace: true,
             scope: { content: '@', placement: '@', animation: '&', isOpen: '&' },
-            templateUrl: 'templates/tooltip/tooltip-popup.html'
+            templateUrl: 'template/tooltip/tooltip-popup.html'
         };
     })
     .directive('tooltip', [ '$tooltip', function ($tooltip) {
@@ -294,9 +294,23 @@ angular.module('ui.tooltip', [ 'ui.position', 'ui.bindHtml' ])
             restrict: 'EA',
             replace: true,
             scope: { content: '@', placement: '@', animation: '&', isOpen: '&' },
-            templateUrl: 'templates/tooltip/tooltip-html-unsafe-popup.html'
+            templateUrl: 'template/tooltip/tooltip-html-unsafe-popup.html'
         };
     })
     .directive('tooltipHtmlUnsafe', [ '$tooltip', function ($tooltip) {
         return $tooltip('tooltipHtmlUnsafe', 'tooltip', 'mouseenter');
+    }])
+    .run(["$templateCache", function ($templateCache) {
+        $templateCache.put("template/tooltip/tooltip-html-unsafe-popup.html",
+                "<div class=\"tooltip {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
+                "  <div class=\"tooltip-arrow\"></div>\n" +
+                "  <div class=\"tooltip-inner\" bind-html-unsafe=\"content\"></div>\n" +
+                "</div>\n" +
+                "");
+        $templateCache.put("template/tooltip/tooltip-popup.html",
+                "<div class=\"tooltip {{placement}}\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
+                "  <div class=\"tooltip-arrow\"></div>\n" +
+                "  <div class=\"tooltip-inner\" ng-bind=\"content\"></div>\n" +
+                "</div>\n" +
+                "");
     }]);
