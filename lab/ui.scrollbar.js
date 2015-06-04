@@ -330,3 +330,45 @@
         });
     };
 })(jQuery));
+angular.module('ui.scrollbar',[])
+    .directive('uiScrollbar', ['$parse', '$timeout', function ($parse, $timeout) {
+        var _options = [
+            'wheelSpeed', 'wheelPropagation', 'minScrollbarLength', 'useBothWheelAxes',
+            'useKeyboard', 'suppressScrollX', 'suppressScrollY', 'scrollXMarginOffset',
+            'scrollYMarginOffset', 'includePadding'
+        ];
+        return {
+            restrict: 'EA',
+            transclude: true,
+            template: '<div><div class="ui-scrollbar-inner" ng-transclude></div></div>',
+            replace: true,
+            link: function (scope, elem, attr) {
+                var options = {};
+                for (var i = 0, l = _options.length; i < l; i++) {
+                    var opt = _options[i];
+                    if (attr[opt]) {
+                        options[opt] = $parse(attr[opt])();
+                    }
+                }
+                $timeout(function () {
+                    if (scope.onScroll) {
+                        options.onScroll = scope.onScroll;
+                    }
+                    if (scope.onScrollBottom) {
+                        options.onScrollBottom = scope.onScrollBottom;
+                    }
+                    elem.uiScrollbar(options);
+                });
+                if (attr.refreshOnChange) {
+                    scope.$watchCollection(attr.refreshOnChange, function () {
+                        scope.$evalAsync(function () {
+                            elem.uiScrollbar('update');
+                        });
+                    });
+                }
+                elem.bind('$destroy', function () {
+                    elem.uiScrollbar('destroy');
+                });
+            }
+        };
+    }]);
