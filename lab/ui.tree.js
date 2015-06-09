@@ -1,842 +1,333 @@
 angular.module('ui.tree', [])
-    .directive('uiDateTree',['$timeout',function($timeout){
-        return {
-            restrict:'A',
-            templateUrl: "template/tree/date-tree.html",
-            replace:true,
-            scope:{
-                data:'=',
-                onSelect:'&'
-            },
-            link:function(scope,elem,attrs){
-                var expand_level=+attrs.expandLevel;
-                var for_each_branch = function(f) {
-                        var do_f, root_branch, _i, _len, _ref, _results;
-                        do_f = function(branch, level,index) {
-                            var child, _i, _len, _ref, _results;
-                            f(branch, level,index);
-                            if (branch.children != null) {
-                                _ref = branch.children;
-                                _results = [];
-                                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                                    child = _ref[_i];
-                                    _results.push(do_f(child, level + 1,_i));
-                                }
-                                return _results;
-                            }
-                        };
-                        _ref = scope.data;
-                        _results = [];
-                        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                            root_branch = _ref[_i];
-                            _results.push(do_f(root_branch, 1,_i));
-                        }
-                        return _results;
-                    },
-                    selected_branch = null,
-                    select_branch = function(branch,fir) {
-                        if (!branch) {
-                            if (selected_branch != null) {
-                                selected_branch.selected = false;
-                            }
-                            selected_branch = null;
-                            return;
-                        }
-                        if (branch !== selected_branch) {
-                            if (selected_branch != null) {
-                                selected_branch.selected = false;
-                            }
-                            branch.selected = true;
-                            selected_branch = branch;
-                            if (branch.onSelect != null) {
-                                return $timeout(function() {
-                                    return branch.onSelect(branch);
-                                });
-                            } else {
-                                if (scope.onSelect != null) {
-                                    if(fir)return function(){};
-                                    return $timeout(function() {
-                                        return scope.onSelect({
-                                            branch: branch
-                                        });
-                                    });
-                                }
-                            }
-                        }
-                        for_each_branch(function(b, level,index) {
-                            b.level = level;
-                            if(level<3){//默认展开 第一级包括子集
-                                return b.expanded = b.level < expand_level;
-                            }
-                        });
-                    };
-                scope.user_clicks_branch = function(branch,row) {
-                    $timeout(function(){
-                        angular.forEach(scope.tree_rows,function(item){
-                            if(row.level===item.level){
-                                if(item.label===row.label){
-                                    row.branch.expanded=!row.branch.expanded;
-                                }else{
-                                    item.branch.expanded=0;
-                                }
-                            }
-                        });
-                    });
-                    if (branch !== selected_branch) {
-                        return select_branch(branch);
-                    }
-
-                };
-                scope.tree_rows = [];
-                var on_treeData_change = function() {
-                    var add_branch_to_list, root_branch, _i, _len, _ref, _results;
-                    scope.tree_rows = [];
-                    for_each_branch(function(branch) {
-                        var child, f;
-                        if (branch.children) {
-                            if (branch.children.length > 0) {
-                                f = function(e) {
-                                    if (typeof e === 'string') {
-                                        return {
-                                            label: e,
-                                            children: []
-                                        };
-                                    } else {
-                                        return e;
-                                    }
-                                };
-                                return branch.children = (function() {
-                                    var _i, _len, _ref, _results;
-                                    _ref = branch.children;
-                                    _results = [];
-                                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                                        child = _ref[_i];
-                                        _results.push(f(child));
-                                    }
-                                    return _results;
-                                })();
-                            }
-                        } else {
-                            return branch.children = [];
-                        }
-                    });
-                    var level1='',level2='',level3='';
-                    var add_branch_to_list = function(level, branch, visible) {
-                        var child, child_visible,
-                            _i, _len, _ref, _results,obj;
-                        if (branch.expanded == null) {
-                            branch.expanded = false;
-                        }
-
-                        obj={
-                            level: level,
-                            branch: branch,
-                            label: branch.label,
-                            visible: visible
-                        };
-                        if(level==1){
-                            level1=branch.label;
-                            obj.date=branch.label;
-                        }
-                        if(level==2){
-                            level2=branch.label;
-                            obj.date=[level1,level2].join('-');
-                        }
-                        if(level==3){
-                            level3=branch.label;
-                            obj.date=[level1,level2,level3].join('-');
-                        }
-                        obj.branch.date=obj.date;
-
-                        scope.tree_rows.push(obj);
-                        if (branch.children != null) {
-                            _ref = branch.children;
-                            _results = [];
-                            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                                child = _ref[_i];
-                                child_visible = visible && branch.expanded;
-                                _results.push(add_branch_to_list(level + 1, child, child_visible));
-                            }
-                            return _results;
-                        }
-                    };
-                    var _ref = scope.data;
-                    var _results = [];
-                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                        root_branch = _ref[_i];
-                        _results.push(add_branch_to_list(1, root_branch, true));
-                    }
-                    return _results;
-                };
-                var init=function(){
-                    if(attrs.initialSelection != null) {
-                        $timeout(function() {
-                            for_each_branch(function(b) {
-                                if (b.date === attrs.initialSelection) {
-
-                                    return $timeout(function() {
-                                        return select_branch(b,1);
-                                    });
-                                }
-                            });
-                        },100);
-                    }
-                    for_each_branch(function(b, level,index) {
-                        b.level = level;
-                        if(!index){//默认展开 第一级包括子集
-                            return b.expanded = b.level < expand_level;
-                        }
-                        return b.expanded =0
-                    });
-                };
-                var first=0;
-                scope.$watch('data',function(a){
-                    if(a){
-                        if(!first){
-                            init();
-                            first++;
-                        }
-                        on_treeData_change();
-                    }
-                },true);
-
+    .directive( 'uiTree', ['$compile', function( $compile ) {
+        /**
+         * @param cssClass - the css class
+         * @param addClassProperty - should we wrap the class name with class=""
+         */
+        function classIfDefined(cssClass, addClassProperty) {
+            if (cssClass) {
+                if (addClassProperty)
+                    return 'class="' + cssClass + '"';
+                else
+                    return cssClass;
             }
+            else
+                return "";
         }
-    }])
-    .service('uiTreeService', ['$document', function ($document) {
-        var _scope = null, _row, nodeValue,asLabel ;
-        var onCloseEditHandler = function (evt) {
-            if (evt.target.tagName === 'INPUT') {
-                return;
-            }
-            _scope.$apply(function () {
-                _row.branch.editing = false;
-                _row.branch[asLabel] = _row.branch.nodeLabel + "[" + _row.branch.nodeValue + "]";
-                _row.label = _row.branch[asLabel];
-                _scope._onChange(_row);
-            });
-        };
-        this.onEdit = function (scope, row,label) {
-            asLabel  = label ;
-            $document.unbind('click').bind('click', onCloseEditHandler);
-            _scope = scope;
-            _row = row;
-            _row.branch.editing = true;
-        };
-    }])
-    .directive('uiTree', ['$timeout', 'uiTreeService', function ($timeout, uiTreeService) {
+
+        function ensureDefault(obj, prop, value) {
+            if (!obj.hasOwnProperty(prop))
+                obj[prop] = value;
+        }
+
         return {
             restrict: 'EA',
-            templateUrl: "template/tree/tree.html",
-            replace: true,
+            require: "uiTree",
+            transclude: true,
             scope: {
-                treeData: '=',
-                onSelect: '&',
-                onChange: '&',
-                initialSelection: '@',
-                treeControl: '='
+                treeModel: "=",
+                selectedNode: "=?",
+                selectedNodes: "=?",
+                expandedNodes: "=?",
+                onSelection: "&",
+                onNodeToggle: "&",
+                options: "=?",
+                orderBy: "@",
+                reverseOrder: "@",
+                filterExpression: "=?",
+                filterComparator: "=?"
             },
-            link: function (scope, element, attrs) {
-                var error, expand_all_parents, expand_level, for_all_ancestors, for_each_branch, getNodeXpath,
-                    get_parent, n, on_treeData_change, select_branch,
-                    selected_branch, tree, focus_newBranch, checked_branch, bindCheckEvent;
-                error = function (s) {
-                    return void 0;
-                };
-                var asLabel = attrs.asLabel || "label",
-                    asId = attrs.asId || "id";
-                if (attrs.iconExpand == null) {
-                    attrs.iconExpand = 'icon-plus  glyphicon glyphicon-plus  fa fa-plus';
+            controller: ['$scope', function( $scope ) {
+
+                function defaultIsLeaf(node) {
+                    return !node[$scope.options.nodeChildren] || node[$scope.options.nodeChildren].length === 0;
                 }
-                if (attrs.iconCollapse == null) {
-                    attrs.iconCollapse = 'icon-minus glyphicon glyphicon-minus fa fa-minus';
-                }
-                if (attrs.iconLeaf == null) {
-                    attrs.iconLeaf = 'icon-file  glyphicon glyphicon-file  fa fa-file';
-                }
-                if (attrs.expandLevel == null) {
-                    attrs.expandLevel = '3';
-                }
-                scope.treeData = scope.treeData || [];
-                expand_level = parseInt(attrs.expandLevel, 10);
-                if (scope.treeData.length == null) {
-                    if (scope.treeData.label != null) {
-                        scope.treeData = [scope.treeData];
-                    } else {
-                        alert('treeData should be an array of root branches');
-                        return;
-                    }
-                }
-                for_each_branch = function (f) {
-                    var do_f, root_branch, _i, _len, _ref, _results;
-                    do_f = function (branch, level) {
-                        var child, _i, _len, _ref, _results;
-                        f(branch, level);
-                        if (branch.children != null) {
-                            _ref = branch.children;
-                            _results = [];
-                            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                                child = _ref[_i];
-                                _results.push(do_f(child, level + 1));
-                            }
-                            return _results;
+
+                function shallowCopy(src, dst) {
+                    if (angular.isArray(src)) {
+                        dst = dst || [];
+
+                        for ( var i = 0; i < src.length; i++) {
+                            dst[i] = src[i];
                         }
-                    };
-                    _ref = scope.treeData;
-                    _results = [];
-                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                        root_branch = _ref[_i];
-                        _results.push(do_f(root_branch, 1));
-                    }
-                    return _results;
-                };
-                selected_branch = null;
-                select_branch = function (branch) {
-                    if (!branch) {
-                        if (selected_branch != null) {
-                            selected_branch.selected = false;
-                        }
-                        selected_branch = null;
-                        return;
-                    }
-                    if (branch !== selected_branch) {
-                        if (selected_branch != null) {
-                            selected_branch.selected = false;
-                        }
-                        branch.selected = true;
-                        selected_branch = branch;
-                        expand_all_parents(branch);
-                        if (branch.onSelect != null) {
-                            return $timeout(function () {
-                                return branch.onSelect(branch);
-                            });
-                        } else {
-                            if (scope.onSelect != null) {
-                                return $timeout(function () {
-                                    return scope.onSelect({
-                                        branch: branch
-                                    });
-                                });
+                    } else if (angular.isObject(src)) {
+                        dst = dst || {};
+
+                        for (var key in src) {
+                            if (hasOwnProperty.call(src, key) && !(key.charAt(0) === '$' && key.charAt(1) === '$')) {
+                                dst[key] = src[key];
                             }
                         }
                     }
-                };
-                focus_newBranch = function () {
-                    element.find("input.editing")[0] && element.find("input.editing")[0].focus();
-                };
-                checked_branch = function (branch) {
-                    if (!branch) {
-                        return;
+
+                    return dst || src;
+                }
+                function defaultEquality(a, b) {
+                    if (a === undefined || b === undefined)
+                        return false;
+                    a = shallowCopy(a);
+                    a[$scope.options.nodeChildren] = [];
+                    b = shallowCopy(b);
+                    b[$scope.options.nodeChildren] = [];
+                    return angular.equals(a, b);
+                }
+
+                $scope.options = $scope.options || {};
+                ensureDefault($scope.options, "multiSelection", false);
+                ensureDefault($scope.options, "nodeChildren", "children");
+                ensureDefault($scope.options, "dirSelectable", "true");
+                ensureDefault($scope.options, "injectClasses", {});
+                ensureDefault($scope.options.injectClasses, "ul", "");
+                ensureDefault($scope.options.injectClasses, "li", "");
+                ensureDefault($scope.options.injectClasses, "liSelected", "");
+                ensureDefault($scope.options.injectClasses, "iExpanded", "");
+                ensureDefault($scope.options.injectClasses, "iCollapsed", "");
+                ensureDefault($scope.options.injectClasses, "iLeaf", "");
+                ensureDefault($scope.options.injectClasses, "label", "");
+                ensureDefault($scope.options.injectClasses, "labelSelected", "");
+                ensureDefault($scope.options, "equality", defaultEquality);
+                ensureDefault($scope.options, "isLeaf", defaultIsLeaf);
+
+                $scope.selectedNodes = $scope.selectedNodes || [];
+                $scope.expandedNodes = $scope.expandedNodes || [];
+                $scope.expandedNodesMap = {};
+                for (var i=0; i < $scope.expandedNodes.length; i++) {
+                    $scope.expandedNodesMap[""+i] = $scope.expandedNodes[i];
+                }
+                $scope.parentScopeOfTree = $scope.$parent;
+
+
+                function isSelectedNode(node) {
+                    if (!$scope.options.multiSelection && ($scope.options.equality(node, $scope.selectedNode)))
+                        return true;
+                    else if ($scope.options.multiSelection && $scope.selectedNodes) {
+                        for (var i = 0; (i < $scope.selectedNodes.length); i++) {
+                            if ($scope.options.equality(node, $scope.selectedNodes[i])) {
+                                return true;
+                            }
+                        }
+                        return false;
                     }
-                    branch.checked = !branch.checked;
+                }
+
+                $scope.headClass = function(node) {
+                    var liSelectionClass = classIfDefined($scope.options.injectClasses.liSelected, false);
+                    var injectSelectionClass = "";
+                    if (liSelectionClass && isSelectedNode(node))
+                        injectSelectionClass = " " + liSelectionClass;
+                    if ($scope.options.isLeaf(node))
+                        return "tree-leaf" + injectSelectionClass;
+                    if ($scope.expandedNodesMap[this.$id])
+                        return "tree-expanded" + injectSelectionClass;
+                    else
+                        return "tree-collapsed" + injectSelectionClass;
                 };
 
-                var timer = null;
-                scope.user_clicks_branch = function (branch) {
-                    $timeout.cancel(timer);
-                    timer = $timeout(function () {
-                        if (branch !== selected_branch) {
-                            scope.treeControl.addBranchDisable = branch.isLeaf;
-                            select_branch(branch);
-                        }
-                        if (attrs.checkable == "true" && branch.isLeaf) {
-                            checked_branch(branch);
-                        }
-                    }, 300);
+                $scope.iBranchClass = function() {
+                    if ($scope.expandedNodesMap[this.$id])
+                        return classIfDefined($scope.options.injectClasses.iExpanded);
+                    else
+                        return classIfDefined($scope.options.injectClasses.iCollapsed);
                 };
-                scope.user_edit_branch = function (row) {
-                    $timeout.cancel(timer);
-                    if (attrs.leafEditable == "false" || attrs.leafEditable == undefined) {
-                        return;
+
+                $scope.nodeExpanded = function() {
+                    return !!$scope.expandedNodesMap[this.$id];
+                };
+
+                $scope.selectNodeHead = function() {
+                    var expanding = $scope.expandedNodesMap[this.$id] === undefined;
+                    $scope.expandedNodesMap[this.$id] = (expanding ? this.node : undefined);
+                    if (expanding) {
+                        $scope.expandedNodes.push(this.node);
                     }
-                    uiTreeService.onEdit(scope, row,asLabel);
-                };
-                scope._onChange = function (row) {
-                    if (row.label !== row.branch[asLabel] && scope.onChange) {
-                        scope.onChange({row: row});
-                    }
-                };
-                get_parent = function (child) {
-                    var parent;
-                    parent = void 0;
-                    if (child.parent_uid) {
-                        for_each_branch(function (b) {
-                            if (b.uid === child.parent_uid) {
-                                return parent = b;
+                    else {
+                        var index;
+                        for (var i=0; (i < $scope.expandedNodes.length) && !index; i++) {
+                            if ($scope.options.equality($scope.expandedNodes[i], this.node)) {
+                                index = i;
                             }
+                        }
+                        if (index != undefined)
+                            $scope.expandedNodes.splice(index, 1);
+                    }
+                    if ($scope.onNodeToggle)
+                        $scope.onNodeToggle({node: this.node, expanded: expanding});
+                };
+
+                $scope.selectNodeLabel = function( selectedNode ){
+                    if(!$scope.options.isLeaf(selectedNode) && !$scope.options.dirSelectable) {
+                        this.selectNodeHead();
+                    }
+                    else {
+                        var selected = false;
+                        if ($scope.options.multiSelection) {
+                            var pos = -1;
+                            for (var i=0; i < $scope.selectedNodes.length; i++) {
+                                if($scope.options.equality(selectedNode, $scope.selectedNodes[i])) {
+                                    pos = i;
+                                    break;
+                                }
+                            }
+                            if (pos === -1) {
+                                $scope.selectedNodes.push(selectedNode);
+                                selected = true;
+                            } else {
+                                $scope.selectedNodes.splice(pos, 1);
+                            }
+                        } else {
+                            if (!$scope.options.equality(selectedNode, $scope.selectedNode)) {
+                                $scope.selectedNode = selectedNode;
+                                selected = true;
+                            }
+                            else {
+                                $scope.selectedNode = undefined;
+                            }
+                        }
+                        if ($scope.onSelection)
+                            $scope.onSelection({node: selectedNode, selected: selected});
+                    }
+                };
+
+                $scope.selectedClass = function() {
+                    var isThisNodeSelected = isSelectedNode(this.node);
+                    var labelSelectionClass = classIfDefined($scope.options.injectClasses.labelSelected, false);
+                    var injectSelectionClass = "";
+                    if (labelSelectionClass && isThisNodeSelected)
+                        injectSelectionClass = " " + labelSelectionClass;
+
+                    return isThisNodeSelected?"tree-selected" + injectSelectionClass:"";
+                };
+
+                //tree template
+                var orderBy = $scope.orderBy ? ' | orderBy:orderBy:reverseOrder' : '';
+                var template =
+                    '<ul '+classIfDefined($scope.options.injectClasses.ul, true)+'>' +
+                    '<li ng-repeat="node in node.' + $scope.options.nodeChildren + ' | filter:filterExpression:filterComparator ' + orderBy + '" ng-class="headClass(node)" '+classIfDefined($scope.options.injectClasses.li, true)+'>' +
+                    '<i class="tree-branch-head" ng-class="iBranchClass()" ng-click="selectNodeHead(node)"></i>' +
+                    '<i class="tree-leaf-head '+classIfDefined($scope.options.injectClasses.iLeaf, false)+'"></i>' +
+                    '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ng-click="selectNodeLabel(node)" tree-transclude></div>' +
+                    '<treeitem ng-if="nodeExpanded()"></treeitem>' +
+                    '</li>' +
+                    '</ul>';
+
+                this.template = $compile(template);
+            }],
+            compile: function(element, attrs, childTranscludeFn) {
+                return function ( scope, element, attrs, treemodelCntr ) {
+
+                    scope.$watch("treeModel", function updateNodeOnRootScope(newValue) {
+                        if (angular.isArray(newValue)) {
+                            if (angular.isDefined(scope.node) && angular.equals(scope.node[scope.options.nodeChildren], newValue))
+                                return;
+                            scope.node = {};
+                            scope.synteticRoot = scope.node;
+                            scope.node[scope.options.nodeChildren] = newValue;
+                        }
+                        else {
+                            if (angular.equals(scope.node, newValue))
+                                return;
+                            scope.node = newValue;
+                        }
+                    });
+
+                    scope.$watchCollection('expandedNodes', function(newValue) {
+                        var notFoundIds = 0;
+                        var newExpandedNodesMap = {};
+                        var $liElements = element.find('li');
+                        var existingScopes = [];
+                        // find all nodes visible on the tree and the scope $id of the scopes including them
+                        angular.forEach($liElements, function(liElement) {
+                            var $liElement = angular.element(liElement);
+                            var liScope = $liElement.scope();
+                            existingScopes.push(liScope);
                         });
-                    }
-                    return parent;
-                };
-                for_all_ancestors = function (child, fn) {
-                    var parent;
-                    parent = get_parent(child);
-                    if (parent != null) {
-                        fn(parent);
-                        return for_all_ancestors(parent, fn);
-                    }
-                };
-                expand_all_parents = function (child) {
-                    return for_all_ancestors(child, function (b) {
-                        return b.expanded = true;
-                    });
-                };
-                getNodeXpath = function (child, current_path) {
-                    var parent;
-                    parent = get_parent(child);
-                    if (parent != null) {
-                        current_path = parent.label + "/" + current_path;
-                        return getNodeXpath(parent, current_path);
-                    }
-                    return "/" + current_path;
-                };
-                var expandLevelHandler = function () {
-                    for_each_branch(function (b, level) {
-                        b.level = level;
-                        return b.expanded = b.level < expand_level;
-                    });
-                };
-                scope.tree_rows = [];
-                var add_branch_to_list = function (level, branch, visible) {
-                    var child, child_visible, tree_icon, _i, _len, _ref, _results, obj;
-                    if (branch.expanded == null) {
-                        branch.expanded = false;
-                    }
-
-                    if (!branch.children || branch.children.length === 0) {
-                        tree_icon = attrs.iconLeaf;
-                    } else {
-                        if (branch.expanded) {
-                            tree_icon = attrs.iconCollapse;
-                        } else {
-                            tree_icon = attrs.iconExpand;
-                        }
-                    }
-                    obj = {
-                        level: level,
-                        editing: false,
-                        branch: branch,
-                        label:  branch[asLabel],
-                        tree_icon: tree_icon,
-                        visible: visible
-                    };
-                    if (branch.isEditing) {
-                        obj.editing = true;
-                        obj.branch.editing = true;
-                        obj.branch.isEditing = false;
-                        $timeout(function () {
-                            uiTreeService.onEdit(scope, obj);
+                        // iterate over the newValue, the new expanded nodes, and for each find it in the existingNodesAndScopes
+                        // if found, add the mapping $id -> node into newExpandedNodesMap
+                        // if not found, add the mapping num -> node into newExpandedNodesMap
+                        angular.forEach(newValue, function(newExNode) {
+                            var found = false;
+                            for (var i=0; (i < existingScopes.length) && !found; i++) {
+                                var existingScope = existingScopes[i];
+                                if (scope.options.equality(newExNode, existingScope.node)) {
+                                    newExpandedNodesMap[existingScope.$id] = existingScope.node;
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                                newExpandedNodesMap[notFoundIds++] = newExNode;
                         });
-                    }
-                    scope.tree_rows.push(obj);
-                    if (branch.children != null) {
-                        _ref = branch.children;
-                        _results = [];
-                        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                            child = _ref[_i];
-                            child_visible = visible && branch.expanded;
-                            _results.push(add_branch_to_list(level + 1, child, child_visible));
-                        }
-                        return _results;
-                    }
-                };
-                on_treeData_change = function () {
-                    var root_branch, _i, _len, _ref, _results;
-                    for_each_branch(function (b, level) {
-                        if (!b.uid) {
-                            b.uid = "" + Math.random();
-                        }
-                        if (!b.editing) {
-                            b.editing = false;
-                        }
-                        if (!scope.first) {
-                            b.level = level;
-                            b.expanded = b.level < expand_level;
-                            scope.first = 1;
-                        }
-                    });
-                    for_each_branch(function (b) {
-                        var child, _i, _len, _ref, _results;
-                        if (angular.isArray(b.children)) {
-                            _ref = b.children;
-                            _results = [];
-                            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                                child = _ref[_i];
-                                _results.push(child.parent_uid = b.uid);
-                            }
-                            return _results;
-                        }
-                    });
-                    scope.tree_rows = [];
-                    for_each_branch(function (branch) {
-                        var child, f;
-                        if (branch.children) {
-                            if (branch.children.length > 0) {
-                                f = function (e) {
-                                    if (typeof e === 'string') {
-                                        return {
-                                            label: e,
-                                            children: []
-                                        };
-                                    } else {
-                                        return e;
-                                    }
-                                };
-
-                                branch.isLeaf = false;
-                                return branch.children = (function () {
-                                    var _i, _len, _ref, _results;
-                                    _ref = branch.children;
-                                    _results = [];
-                                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                                        child = _ref[_i];
-                                        _results.push(f(child));
-                                    }
-                                    return _results;
-                                })();
-                            }
-                        } else {
-                            branch.isLeaf = true;
-                            branch[asLabel] = branch[asLabel] || "";
-                            var reg = /([^\[]*)\[(.*)\]([^\]]*)/;
-                            branch.nodeLabel = branch[asLabel].replace(reg, '$1');
-                            branch.nodeValue = "";
-                            if (branch[asLabel].indexOf("[") > 0) {
-                                branch.nodeValue = branch[asLabel].replace(reg, '$2');
-                            }
-                            return branch.children = [];
-                        }
+                        scope.expandedNodesMap = newExpandedNodesMap;
                     });
 
-                    _ref = scope.treeData;
-                    _results = [];
-                    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                        root_branch = _ref[_i];
-                        _results.push(add_branch_to_list(1, root_branch, true));
-                    }
+//                        scope.$watch('expandedNodesMap', function(newValue) {
+//
+//                        });
 
-                    return _results;
-                };
-                scope.$watch('treeData', on_treeData_change, true);
-                if (attrs.initialSelection != null) {
-                    for_each_branch(function (b) {
-                        if (b[asLabel] === attrs.initialSelection) {
-                            return $timeout(function () {
-                                return select_branch(b);
-                            });
-                        }
+                    //Rendering template for a root node
+                    treemodelCntr.template( scope, function(clone) {
+                        element.html('').append( clone );
                     });
-                }
-                n = scope.treeData.length;
-                expandLevelHandler();
-
-                scope.treeControl = scope.treeControl || {};
-
-
-                if (scope.treeControl != null) {
-                    if (angular.isObject(scope.treeControl)) {
-                        tree = scope.treeControl;
-                        tree.expand_all = function () {
-                            return for_each_branch(function (b, level) {
-                                return b.expanded = true;
-                            });
-                        };
-                        tree.collapse_all = function () {
-                            return for_each_branch(function (b, level) {
-                                return b.expanded = false;
-                            });
-                        };
-                        tree.get_first_branch = function () {
-                            n = scope.treeData.length;
-                            if (n > 0) {
-                                return scope.treeData[0];
-                            }
-                        };
-                        tree.select_first_branch = function () {
-                            var b;
-                            b = tree.get_first_branch();
-                            return tree.select_branch(b);
-                        };
-                        tree.get_selected_branch = function () {
-                            return selected_branch;
-                        };
-                        tree.get_parent_branch = function (b) {
-                            return get_parent(b);
-                        };
-                        tree.select_branch = function (b) {
-                            select_branch(b);
-                            return b;
-                        };
-                        tree.get_children = function (b) {
-                            return b.children;
-                        };
-                        tree.select_parent_branch = function (b) {
-                            var p;
-                            if (b == null) {
-                                b = tree.get_selected_branch();
-                            }
-                            if (b != null) {
-                                p = tree.get_parent_branch(b);
-                                if (p != null) {
-                                    tree.select_branch(p);
-                                    return p;
-                                }
-                            }
-                        };
-                        tree.del_branch = function (branch, key) {
-                            if (!branch)return;
-                            function en(obj) {
-                                var pro;
-                                for (pro in obj) {
-                                    if (obj.hasOwnProperty(pro)) {
-                                        if (branch[key] == obj[pro][key]) {
-                                            selected_branch = null;
-                                            return obj.splice(pro, 1);
-                                        }
-                                        if (obj[pro].children && obj[pro].children.length) {
-                                            en(obj[pro].children);
-                                        }
-                                    }
-                                }
-                            }
-
-                            return en(scope.treeData);
-                        };
-                        tree.add_branch = function (parent, new_branch) {
-                            new_branch.isEditing = true;
-                            if (parent != null) {
-                                parent.children.push(new_branch);
-                                parent.expanded = true;
-                            } else {
-                                scope.treeData.push(new_branch);
-                            }
-                            var t = $timeout(function () {
-                                focus_newBranch();
-                                $timeout.cancel(t);
-                            }, 300);
-                            return new_branch;
-                        };
-                        tree.add_root_branch = function (new_branch) {
-                            tree.add_branch(null, new_branch);
-                            return new_branch;
-                        };
-                        tree.expand_branch = function (b) {
-                            if (b == null) {
-                                b = tree.get_selected_branch();
-                            }
-                            if (b != null) {
-                                b.expanded = true;
-                                return b;
-                            }
-                        };
-                        tree.collapse_branch = function (b) {
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                b.expanded = false;
-                                return b;
-                            }
-                        };
-                        tree.get_siblings = function (b) {
-                            var p, siblings;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                p = tree.get_parent_branch(b);
-                                if (p) {
-                                    siblings = p.children;
-                                } else {
-                                    siblings = scope.treeData;
-                                }
-                                return siblings;
-                            }
-                        };
-                        tree.get_next_sibling = function (b) {
-                            var i, siblings;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                siblings = tree.get_siblings(b);
-                                n = siblings.length;
-                                i = siblings.indexOf(b);
-                                if (i < n) {
-                                    return siblings[i + 1];
-                                }
-                            }
-                        };
-                        tree.get_prev_sibling = function (b) {
-                            var i, siblings;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            siblings = tree.get_siblings(b);
-                            n = siblings.length;
-                            i = siblings.indexOf(b);
-                            if (i > 0) {
-                                return siblings[i - 1];
-                            }
-                        };
-                        tree.select_next_sibling = function (b) {
-                            var next;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                next = tree.get_next_sibling(b);
-                                if (next != null) {
-                                    return tree.select_branch(next);
-                                }
-                            }
-                        };
-                        tree.select_prev_sibling = function (b) {
-                            var prev;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                prev = tree.get_prev_sibling(b);
-                                if (prev != null) {
-                                    return tree.select_branch(prev);
-                                }
-                            }
-                        };
-                        tree.get_first_child = function (b) {
-                            var _ref;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                if (((_ref = b.children) != null ? _ref.length : void 0) > 0) {
-                                    return b.children[0];
-                                }
-                            }
-                        };
-                        tree.get_closest_ancestor_next_sibling = function (b) {
-                            var next, parent;
-                            next = tree.get_next_sibling(b);
-                            if (next != null) {
-                                return next;
-                            } else {
-                                parent = tree.get_parent_branch(b);
-                                return tree.get_closest_ancestor_next_sibling(parent);
-                            }
-                        };
-                        tree.get_next_branch = function (b) {
-                            var next;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                next = tree.get_first_child(b);
-                                if (next != null) {
-                                    return next;
-                                } else {
-                                    next = tree.get_closest_ancestor_next_sibling(b);
-                                    return next;
-                                }
-                            }
-                        };
-                        tree.select_next_branch = function (b) {
-                            var next;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                next = tree.get_next_branch(b);
-                                if (next != null) {
-                                    tree.select_branch(next);
-                                    return next;
-                                }
-                            }
-                        };
-                        tree.last_descendant = function (b) {
-                            var last_child;
-                            if (b == null) {
-                            }
-                            n = b.children.length;
-                            if (n === 0) {
-                                return b;
-                            } else {
-                                last_child = b.children[n - 1];
-                                return tree.last_descendant(last_child);
-                            }
-                        };
-                        tree.get_prev_branch = function (b) {
-                            var parent, prev_sibling;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                prev_sibling = tree.get_prev_sibling(b);
-                                if (prev_sibling != null) {
-                                    return tree.last_descendant(prev_sibling);
-                                } else {
-                                    parent = tree.get_parent_branch(b);
-                                    return parent;
-                                }
-                            }
-                        };
-                        tree.get_checkbox_models = function () {
-                            var nodes = [];
-                            for_each_branch(function (branch) {
-                                if (branch.checked) {
-                                    nodes.push({
-                                        label: branch[asLabel],
-                                        node: branch.nodeLabel,
-                                        value: branch.nodeValue,
-                                        id: branch[asId],
-                                        xpath: getNodeXpath(branch, branch.nodeLabel)
-                                    });
-                                }
-                            });
-                            return nodes;
-                        };
-                        tree.set_checkbox_models = function (ids) {
-                            for_each_branch(function (branch) {
-                                if ($.inArray(branch[asId], ids) > -1) {
-                                    branch.checked = true;
-                                }
-                            });
-                        };
-                        return tree.select_prev_branch = function (b) {
-                            var prev;
-                            if (b == null) {
-                                b = selected_branch;
-                            }
-                            if (b != null) {
-                                prev = tree.get_prev_branch(b);
-                                if (prev != null) {
-                                    tree.select_branch(prev);
-                                    return prev;
-                                }
-                            }
-                        };
-                    }
+                    // save the transclude function from compile (which is not bound to a scope as apposed to the one from link)
+                    // we can fix this to work with the link transclude function with angular 1.2.6. as for angular 1.2.0 we need
+                    // to keep using the compile function
+                    scope.$treeTransclude = childTranscludeFn;
                 }
             }
         };
     }])
-    .run(["$templateCache", function ($templateCache) {
-        $templateCache.put("template/tree/tree.html",
-            "<ul class=\"nav nav-list ui-tree\">\
-             <li ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\"  \
-                ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"ui-tree-row\">\
-                <a>\
-                    <i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"> </i>\
-                    <label class=\"indented\" ng-click=\"user_clicks_branch(row.branch,$event)\" >\
-                    <span class=\" tree-label\" ng-show=\"!row.branch.isLeaf\" >{{ row.label }}</span>\
-                    <span class=\" tree-label leaf\" ng-show=\"row.branch.isLeaf\"  ng-dblclick=\'user_edit_branch(row)\' >{{ row.branch.nodeLabel }}\
-                    <em class=\"value\" ng-show=\"!row.branch.editing\">[{{row.branch.nodeValue}}]</em>\
-                    </span>\
-                    </label>\
-                    <label class=\"indented\">\
-                        <input  class=\"form-control\" ng-class=\"{editing:row.branch.editing}\" type=\"text\" ng-model=\"row.branch.nodeValue\" ng-show=\"row.branch.editing\"  />\
-                        <span ng-show=\"row.branch.checked\" class=\"glyphicon glyphicon-ok-sign\"></span>\
-                    </label>\
-                </a>\
-             </li>\
-             </ul>");
-    }]);;
+    .directive("treeitem", function() {
+        return {
+            restrict: 'E',
+            require: "^uiTree",
+            link: function( scope, element, attrs, treemodelCntr) {
+                // Rendering template for the current node
+                treemodelCntr.template(scope, function(clone) {
+                    element.html('').append(clone);
+                });
+            }
+        }
+    })
+    .directive("treeTransclude", function() {
+        return {
+            link: function(scope, element, attrs, controller) {
+                if (!scope.options.isLeaf(scope.node)) {
+                    angular.forEach(scope.expandedNodesMap, function (node, id) {
+                        if (scope.options.equality(node, scope.node)) {
+                            scope.expandedNodesMap[scope.$id] = scope.node;
+                            scope.expandedNodesMap[id] = undefined;
+                        }
+                    });
+                }
+                if (!scope.options.multiSelection && scope.options.equality(scope.node, scope.selectedNode)) {
+                    scope.selectedNode = scope.node;
+                } else if (scope.options.multiSelection) {
+                    var newSelectedNodes = [];
+                    for (var i = 0; (i < scope.selectedNodes.length); i++) {
+                        if (scope.options.equality(scope.node, scope.selectedNodes[i])) {
+                            newSelectedNodes.push(scope.node);
+                        }
+                    }
+                    scope.selectedNodes = newSelectedNodes;
+                }
+
+                // create a scope for the transclusion, whos parent is the parent of the tree control
+                scope.transcludeScope = scope.parentScopeOfTree.$new();
+                scope.transcludeScope.node = scope.node;
+                scope.transcludeScope.$parentNode = (scope.$parent.node === scope.synteticRoot)?null:scope.$parent.node;
+                scope.transcludeScope.$index = scope.$index;
+                scope.transcludeScope.$first = scope.$first;
+                scope.transcludeScope.$middle = scope.$middle;
+                scope.transcludeScope.$last = scope.$last;
+                scope.transcludeScope.$odd = scope.$odd;
+                scope.transcludeScope.$even = scope.$even;
+                scope.$on('$destroy', function() {
+                    scope.transcludeScope.$destroy();
+                });
+
+                scope.$treeTransclude(scope.transcludeScope, function(clone) {
+                    element.empty();
+                    element.append(clone);
+                });
+            }
+        }
+    });
