@@ -128,7 +128,7 @@ table {border-collapse: collapse; border-spacing: 0;}
   
 <a name="0-3"></a>
 ### 4. compontent
-> 基础，包含reset
+> 定义组件的相关样式 (.c- )
 
 
 <a name="0-4"></a>
