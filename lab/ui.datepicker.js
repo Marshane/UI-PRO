@@ -151,7 +151,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 if ($scope.asynRemind)
                     $scope.asynRemind({month: date.getMonth() + 1});
             } else {
-                if ($scope.onselect && !notAllowed)
+                if ($scope.onselect)
                     $scope.onselect({remind: dataAPI});
             }
 
