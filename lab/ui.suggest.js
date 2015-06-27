@@ -1,6 +1,5 @@
 (function(){
-    var U=AM.util;
-    AM.Suggest=AM.Class.create({
+    ui.Suggest=AM.Class.create({
         init:function(op){
             var op=this.op=$.extend({
                 id:null,
@@ -87,14 +86,12 @@
                 var cov=[];
                 for(var i=0;i<Math.min(c.max,a.length);i++){
                     cov.push(g(c.key,a[i]));
-                    b.push(U.format(c.tpl,cov[i]));
+                    b.push(ui.format(c.tpl,cov[i]));
                     if(d===cov[i]){
                         f=i;
                     }
                 }
                 this.cov=cov;
-            }else{
-                b.push(new U.template(c.tpl)(a));
             }
             this.ul[0].innerHTML=b.join('');
             this.list=this.ul.find('li');
@@ -116,7 +113,7 @@
                     if(a.objParam){
                         var _c={};
                         c=$.extend(c,a.params);
-                        _c[a.objParam]=U.json2str(c);
+                        _c[a.objParam]=ui.json2str(c);
                         c=_c;
                     }else{
                         c=$.extend(c,a.params);
@@ -159,7 +156,7 @@
                 }(i);
                 this.list[i].onclick=function(e){
                     self._insertAdd(self.op.data[self.index]);
-                    U.evt(e).stop();
+                    ui.evt(e).stop();
                 }
             }
             $(self.list[0]).addClass('cur');
@@ -167,21 +164,21 @@
         },
         _handleKeyAction:function(){
             var self=this,key,target;
-            this.id.bind('focus',U.bind(this._show,this))
+            this.id.bind('focus',ui.bind(this._show,this))
                    .bind('click',function(e){
-                        U.evt(e).stop();
+                        ui.evt(e).stop();
                     })
                    .bind('blur',function(){
                         setTimeout(function(){self._hide()},100);
                     })
                    .bind('keyup',function(e){
-                        key=U.evt(e).key;
+                        key=ui.evt(e).key;
                         if(key==32||key==8 || (key>47 && key<112)){
                             self._show();
                         }
                     })
                    .bind('keydown',function(e){
-                        e=U.evt(e);
+                        e=ui.evt(e);
                         if(self.listEL[0].style.display!='block')return;
                         if(e.key==38){
                             self.index==0?self.index=self.list.length-1:self.index--;
@@ -197,11 +194,56 @@
                             e.prevent();
                         }
                     });
-            $(document).bind('click',U.bind(this._hide,this));
+            $(document).bind('click',ui.bind(this._hide,this));
         },
         _destroy:function(){
             this.id.unbind('focus click blur keyup keydown');
             this.id=null;
         }
     });
+    angular.module('ui.suggest',[])
+        .directive('uiSuggest',['$timeout',function($timeout){
+            return {
+                restrict: 'A',
+                require:'?ngModel',
+                scope:{
+                    onSelect:'&',
+                    params:'='
+                },
+                link:function(scope, element, attrs,ngModel) {
+                    var U=AM.util,asValue=attrs.asValue;
+                    if(!scope.suggest){
+                        scope.suggest=new ui.Suggest({
+                            id:element,
+                            params:scope.params,
+                            url:attrs.url,
+                            objParam:attrs.objParam,
+                            realtime:+attrs.realtime,
+                            max:10,
+                            key:attrs.key,
+                            selected:function(item,self){
+                                if(scope.onSelect){
+                                    scope.$apply(function(){
+                                        if(asValue){
+                                            ngModel.$setViewValue(item[asValue]);
+                                        }else{
+                                            ngModel.$setViewValue(item);
+                                        }
+                                        scope.onSelect({self:self});
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    scope.$watch('ngModel',function(a){
+                        if(a===''){
+                            element.val('');
+                        }
+                        $timeout(function(){
+                            element.val(element.attr('isvalue'));
+                        },200);
+                    });
+                }
+            }
+        }])
 })();
