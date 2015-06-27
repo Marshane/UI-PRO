@@ -1,0 +1,5 @@
+/*carousel*/
+.carousel-control {width: 5%;}
+.carousel-inner > .item {width: 100%;}
+.carousel label{text-align:right;}
+.carousel-indicators{bottom:-5px;}

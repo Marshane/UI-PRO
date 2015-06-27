@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h4>配置主机集群信息</h4>
+</div>
+
+
+<div class="modal-body">
+    <!--<div class="nav nav-tabs up-1 ui-tab-group">-->
+        <!--<div class="btn-group pull-left">-->
+            <!--<label class="btn"  ng-model="ng.tab" btn-radio="{{$index}}">Tab1</label>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div>
+        <!--<p>面板1</p>-->
+        <div ui-checkbox data="checkboxData" key="text" as-value="value" multi="1" checked-data="checkedData" ng-model="checkedID" space="6"></div>
+    </div>
+</div>
+<div class="modal-footer no-am-bt ">
+    <button type="button" class="btn btn-default" ng-click="confirm()">确认</button>
+    <button type="button" class="btn btn-default" ng-click="no()">取消</button>
+</div>

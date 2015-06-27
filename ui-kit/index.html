@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>UI - Free Bootstrap Framework and Theme</title>
+    <meta name="description" content=""/>
+    <!-- Loading Bootstrap -->
+   
+   
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/modules.css" rel="stylesheet">
+    <link href="css/state.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/ui-button.css" rel="stylesheet">
+    <link href="css/ui-checkbox.css" rel="stylesheet">
+    <link href="css/ui-input.css" rel="stylesheet">
+    <link href="css/ui-dropdown.css" rel="stylesheet">
+    <link href="css/ui-select.css" rel="stylesheet">
+    <link href="css/ui-suggest.css" rel="stylesheet">
+    <link href="css/ui-datepicker.css" rel="stylesheet">
+    <link href="css/ui-carousel.css" rel="stylesheet">
+    <link href="css/ui-grid.css" rel="stylesheet">
+    <link href="css/ui-scrollbar.css" rel="stylesheet">
+    <link href="css/ui-tree.css" rel="stylesheet">
+    <link href="css/ui-tab.css" rel="stylesheet">
+    <link href="css/ui-dialogs.css" rel="stylesheet">
+  
+    <link href="css/button-theme-default.css" rel="stylesheet">
+    <link href="css/checkbox-theme-default.css" rel="stylesheet">
+    <link href="css/input-theme-default.css" rel="stylesheet">
+    <link href="css/dropdown-theme-default.css" rel="stylesheet">
+    <link href="css/select-theme-default.css" rel="stylesheet">
+    <link href="css/suggest-theme-default.css" rel="stylesheet">
+    <link href="css/datepicker-theme-default.css" rel="stylesheet">
+    <link href="css/carousel-theme-default.css" rel="stylesheet">
+    <link href="css/grid-theme-default.css" rel="stylesheet">
+    <link href="css/scrollbar-theme-default.css" rel="stylesheet">
+    <link href="css/tree-theme-default.css" rel="stylesheet">
+    <link href="css/tab-theme-default.css" rel="stylesheet">
+    <link href="css/dialogs-theme-default.css" rel="stylesheet">
+
+
+    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/lodash.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/angular.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/angular-sanitize.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/angular-translate.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.bindHtml.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dateparser.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.position.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.transition.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.modal.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.buttons.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.checkbox.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dropdown.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.select.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.datepicker.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.timepicker.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dialogs.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tabs.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.carousel.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tooltip.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.grid.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.scrollbar.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tree.js"></script>
+    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.collapse.js"></script>
+    <script>
+        (function(){
+    ui.Suggest=ui.Class.create({
+        init:function(op){
+            var op=this.op=$.extend({
+                id:null,
+                tpl:['<li>{0}</li>'].join(''),
+                data:null,
+                url:'',
+                params:{},
+                split:'',
+                max:10,
+                interval:300,
+                selected:null,
+                name:'ui-menu-list'
+            },op||{});
+            this.id=_.isElement(op.id)?op.id:$(op.id);
+            if(!this.id.length){
+                return;
+            }
+            this.index=0;
+            this._initElem();
+            this._handleKeyAction();
+        },
+        _initElem:function(){
+            var node=this._createHTML();
+            this.listEL=node[0];
+            this.ul=node[1];
+        },
+        _createHTML:function(){
+            var b=$('<div style="display:none;"></div>'),c=$('<div class="'+this.op.name+'"></div>'),d=$('<ul></ul>');
+            c.append(d);
+            b.append(c);
+            setTimeout(function(){document.getElementsByTagName('body')[0].appendChild(b[0])},0);//fix ie
+            return [b,d];
+        },
+        _hide:function(){
+            this.listEL[0]&&(this.listEL[0].style.display = 'none');
+        },
+        _filter:function(a){
+            var b=new RegExp('^'+a+''),c=this.op.data,d=[];
+            for(var i in c){
+                i=c[i];             
+                if(a==='' || !!b.exec(i))d.push(i)
+            }
+            if(d.length==1 && _.indexOf(d,a)) d=[];
+            return d;
+        },
+        _show:function(){
+            var a=this.op,b=this.id;
+            if(a.split){
+                if(b.val().indexOf(a.split)>-1){
+                    this._getData();
+                }else{
+                    this._hide();
+                }
+            }else{
+                if(b.val().trim()||(a.realtime&&b.val().trim()==='')){
+                    this._getData();
+                }else {
+                    this._hide();
+                }
+            }
+        },
+        _render:function(a){
+            var b=[],c=this.op,f,
+                g=function(k,d){
+                    if(!k)return d;
+                    var con=[];
+                    k=k.split('|');
+                    _.each(k,function(t){
+                        if(d.hasOwnProperty(t)){
+                            con.push(d[t])
+                        }else{
+                            con.push(t)
+                        }
+                    });
+                    return con.join('');
+                };
+            this.cov=[];
+            if(_.isArray(a)){
+                var d=this.id.val().trim();
+                if(!a || !a.length){
+                    this._hide();
+                    return;
+                }
+                var cov=[];
+                for(var i=0; i<Math.min(c.max,a.length); i++){
+                    cov.push(g(c.key,a[i]));
+                    b.push(ui.format(c.tpl,cov[i]));
+                    if(d===cov[i]){
+                        f=i;
+                    }
+                }
+                this.cov=cov;
+            }
+            this.ul[0].innerHTML=b.join('');
+            this.list=this.ul.find('li');
+            this._handleListAction();
+            this._offset();
+            this._setOn(f);
+        },
+        _getData:function(){
+            var a=this.op,b=this,c={},d=this.id,f=d.val().trim();
+            if(!a.url){
+                b._render(a.data);
+                return 
+            }
+            if(this.interval){
+                if(b.ajax)b.ajax.abort();
+                clearTimeout(this.interval)
+            };
+            this.interval=setTimeout(function(){
+                if(a.data&&d[0].val===f&&!a.realtime){//避免重复值出发请求
+                    b._render(a.data);
+                }else{
+                    c[b.id[0].name]=b.id[0].value;
+                    if(a.objParam){
+                        var _c={};
+                        c=$.extend(c,a.params);
+                        _c[a.objParam]=ui.json2str(c);
+                        c=_c;
+                    }else{
+                        c=$.extend(c,a.params);
+                    }
+                    b.ajax=$.get(a.url,c,function(q){
+                        if(q.success){
+                            d[0].val=f;
+                            a.data=q.data;
+                            b._render(a.data);
+                        }
+                    });
+                }
+            },a.interval);
+        },
+        _setOn:function(index){
+            this.list.removeClass('active');
+            this.list[index||this.index].className='active';
+        },
+        _insertAdd:function(item){
+            var val=this.cov[this.index];
+            this.id.val(val);
+            this._hide();
+            if(_.isFunction(this.op.selected))this.op.selected(item,this);
+            this.id.blur();
+        },
+        _offset:function(){
+            var a=this.id,b=a.offset(),c=['position:absolute','z-index:2000','display:block',
+                'width:'+(a.outerWidth()-1)+'px','left:'+(b.left)+'px','top:'+(b.top+a.outerHeight()-1)+'px'];
+            this.listEL[0].style.cssText=c.join(';');
+        },
+        _handleListAction:function(){
+            var self=this,len=this.list.length;
+            for(var i=0;i<len;i++){
+                this.list[i].onmouseover=function(i){
+                    return function(){
+                        self.list.removeClass('active');
+                        self.list[i].className='active';
+                        self.index=i;
+                    }
+                }(i);
+                this.list[i].onclick=function(e){
+                    self._insertAdd(self.op.data[self.index]);
+                    ui.evt(e).stop();
+                }
+            }
+            $(self.list[0]).addClass('active');
+            this.index=0;
+        },
+        _handleKeyAction:function(){
+            var self=this,key,target;
+            this.id.bind('focus',ui.bind(this._show,this))
+                   .bind('click',function(e){
+                        ui.evt(e).stop();
+                    })
+                   .bind('blur',function(){
+                        setTimeout(function(){self._hide()},100);
+                    })
+                   .bind('keyup',function(e){
+                        key=ui.evt(e).key;
+                        if(key==32||key==8 || (key>47 && key<112)){
+                            self._show();
+                        }
+                    })
+                   .bind('keydown',function(e){
+                        e=ui.evt(e);
+                        if(self.listEL[0].style.display!='block')return;
+                        if(e.key==38){
+                            self.index==0?self.index=self.list.length-1:self.index--;
+                            self._setOn();
+                            return !1;
+                        }else if(e.key==40){
+                            self.index==self.list.length-1 ? self.index=0:self.index++;
+                            self._setOn();
+                            return !1;
+                        }
+                        if(e.key==13){
+                            self._insertAdd(self.op.data[self.index]);
+                            e.prevent();
+                        }
+                    });
+            $(document).bind('click',ui.bind(this._hide,this));
+        },
+        _destroy:function(){
+            this.id.unbind('focus click blur keyup keydown');
+            this.id=null;
+        }
+    });
+    angular.module('ui.suggest',[])
+        .directive('uiSuggest',['$timeout',function($timeout){
+            return {
+                restrict: 'A',
+                require:'?ngModel',
+                scope:{
+                    onSelect:'&',
+                    data:'=?',
+                    params:'='
+                },
+                link:function(scope, element, attrs,ngModel) {
+                    var asValue=attrs.asValue;
+                    if(!scope.suggest){
+                        scope.suggest=new ui.Suggest({
+                            id:element,
+                            params:scope.params,
+                            url:attrs.url,
+                            objParam:attrs.objParam,
+                            realtime:+attrs.realtime,
+                            max:10,
+                            data:scope.data,
+                            key:attrs.key,
+                            selected:function(item,self){
+                                if(scope.onSelect){
+                                    scope.$apply(function(){
+                                        if(asValue){
+                                            ngModel.$setViewValue(item[asValue]);
+                                        }else{
+                                            ngModel.$setViewValue(item);
+                                        }
+                                        scope.onSelect({self:self});
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    // scope.$watchCollection('data',function(a){
+                    //     if(a.length)
+                    //         scope.suggest._render(a);
+                    // });
+                    scope.$watch('ngModel',function(a){
+                        if(a===''){
+                            element.val('');
+                        }
+                        $timeout(function(){
+                            element.val(element.attr('isvalue'));
+                        },200);
+                    });
+                }
+            }
+        }])
+})();
+    </script>
+
+    <script src="scripts/dropdown-example.js"></script>
+    <!--<script src="scripts/tree-test-controll.js"></script>-->
+</head>
+<body>
+    <div class="container">
+    <!-- /demo-headline -->
+        <div class="demo-headline">
+            <h1 class="demo-logo">
+                <div class="logo"></div>
+                UED UI
+                <xsall>Free User Interface Kit</xsall>
+            </h1>
+        </div>
+        <h1 class="demo-section-title">Basic elements</h1>
+        <!--this is button demo-->
+        <h3 class="demo-panel-title">Buttons</h3>
+        <div class="row demo-row">
+            <div class="col-xs-3">
+                <a href="#" class="btn  ui-btn ui-btn-primary">Primary Button</a>
+            </div>
+            <div class="col-xs-3">
+                <a href="#" class="btn  ui-btn ui-btn-warning">Warning Button</a>
+            </div>
+            <div class="col-xs-3">
+                <a href="#" class="btn  ui-btn ui-btn-default">Default Button</a>
+            </div>
+            <div class="col-xs-3">
+                <a href="#" class="btn  ui-btn ui-btn-danger">Danger Button</a>
+            </div>
+        </div>
+        <div class="row demo-row">
+            <div class="col-xs-3">
+                <a href="#" class="btn  ui-btn ui-btn-success">Success Button</a>
+            </div>
+            <div class="col-xs-3">
+                <a href="#" class="btn  ui-btn ui-btn-inverse">Inverse Button</a>
+            </div>
+            <div class="col-xs-3">
+                 <a href="#" class="btn  ui-btn ui-btn-info">Info Button</a>
+            </div>
+            <div class="col-xs-3">
+                <a href="#" class="btn  ui-btn ui-btn-disabled">Disabled Button</a>
+            </div>
+        </div>
+
+        <!--
+        this is input demo
+        -->
+        <h3 class="demo-panel-title">Input</h3>
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <input type="text" value="" placeholder="Inactive" class="form-control ui-input">
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <input type="text" value="Disabled" disabled="disabled" class="form-control ui-input">
+                </div>
+            </div>
+        </div>
+
+        <!--
+        this is suggest demo
+        -->
+        <h3 class="demo-panel-title">Suggest</h3>
+        <div class="row" ng-controller="suggestCtrl">
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <input type="text" 
+                    ui-suggest 
+                    ng-model="suggestSelect"
+                    data="data"
+                    key="key"
+                    on-select="onSelect(self)"
+                    class="form-control ui-input">
+                </div>
+            </div>
+            {{suggestSelect}}
+        </div>
+
+        <!--
+        this is dropdown demo
+        -->
+        <h3 class="demo-panel-title">Dropdown</h3>
+        <div ng-controller="dropdownCtrl">
+        <!-- Simple dropdown -->
+            <span class="dropdown" dropdown on-toggle="toggled(open)">
+                <a class="dropdown-toggle" dropdown-toggle>
+                    Click me for a dropdown, yo!
+                </a>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="choice in items">
+                        <a href>{{choice}}</a>
+                    </li>
+                </ul>
+            </span>
+
+            <!-- Single button -->
+            <div class="btn-group ui-dropdown" dropdown is-open="status.isopen">
+                <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                    Button dropdown <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <!-- <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>-->
+                </ul>
+            </div>
+
+            <!-- Split button -->
+
+            <div class="btn-group ui-dropdown" dropdown>
+                <button type="button" class="btn btn-primary">Action</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                    <span class="caret"></span>
+                    <span class="sr-only">Split button!</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <!-- <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>-->
+                </ul>
+            </div>
+
+            <!-- Single button using append-to-body -->
+            <div class="btn-group ui-dropdown" dropdown dropdown-append-to-body>
+                <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                    Dropdown on Body <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <!-- <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>-->
+                </ul>
+            </div>
+            <hr/>
+            <p>
+                <button type="button" class="btn ui-btn" ng-click="toggleDropdown($event)">Toggle button dropdown</button>
+                <button type="button" class="btn btn-warning" ng-click="disabled = !disabled">Enable/Disable</button>
+            </p>
+        </div>
+
+        <!--
+        this is select demo
+        -->
+        <h3 class="demo-panel-title">Select</h3>
+        <div ng-controller="selectCtrl" style="width:200px">
+            <div
+            ui-select
+            default="choose"
+            ng-model="selectDataId"
+            options="selectData"
+            key="text"
+            as-value="value"
+            width="100%"
+            ></div>
+        </div>
+
+        <!--
+        this is checkbox demo
+        -->
+        <h3 class="demo-panel-title">Checkbox</h3>
+        <div ng-controller="checkboxCtrl">
+            <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="checkedID" space="6" ></div>
+        </div>
+
+        <!--
+        this is datepicker demo
+        -->
+        <h3 class="demo-panel-title">Datepicker</h3>
+        <form class="col-xs-12" ng-controller="datepickerCtrl" style="padding-left:0px;">
+            <div class="col-xs-12">
+                <lable class="pull-left" style="margin-top:5px; width: 100px;text-align:right;">年月日：</lable>
+                <p class=" input-group ui-datapicker pull-left" style="width:200px; margin-right:100px; margin-bottom:10px;">
+                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                    ng-model="dateSelection" is-open="opened0" ng-click="opened0=1" show-weeks="true"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened0=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            <div class="col-xs-12">
+                <lable class="pull-left" style="margin-top:5px;width: 100px;text-align:right;">年月日时分秒：</lable>
+                <p class="input-group ui-datapicker pull-left" style="width:200px; margin-bottom:10px">
+                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd hh:mm:ss" close-on-date-selection="false" datepicker-milliseconds
+                           ng-model="timeSelection" is-open="opened1" ng-click="opened1=1" show-weeks="true"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened1=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+            <div class="col-xs-12">
+                <lable class="pull-left" style="margin-top:5px;width: 100px;text-align:right;">区间：</lable>
+                <p class=" input-group ui-datapicker pull-left" style="width:200px;margin-right:10px;margin-bottom:10px;">
+                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                           ng-model="startDate" is-open="opened2" ng-click="opened2=1" show-weeks="true"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened2=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+                <label class="pull-left">--</label>
+                <p class="input-group ui-datapicker pull-left" style="width:200px;margin-left:10px;">
+                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                           ng-model="endDate" is-open="opened3" ng-click="opened3=1" show-weeks="true"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened3=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+        </form>
+        <!--
+        this is timepicker demo
+        -->
+        <h3 class="demo-panel-title">Timepicker</h3>
+        <div class="row" ng-controller="timepickerCtrl">
+            <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+            <pre class="alert alert-info">Time is: {{mytime | date:'shortTime' }}</pre>
+            <hr>
+            <button class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>
+            <button class="btn ui-btn" ng-click="update()">Set to 14:00</button>
+            <button class="btn btn-danger" ng-click="clear()">Clear</button>
+        </div>
+
+        <!--
+            this is dialogs demo
+        -->
+        <h3 class="demo-panel-title">Dialogs</h3>
+        <div class="row">
+            <div class="col-xs-12" ng-controller="dialogsCtrl">
+                <button class="btn ui-btn-danger ui-btn" ng-click="error()">Error Dialog</button>
+                <button class="btn ui-btn-default ui-btn" ng-click="notify()">Notify Dialog</button>
+                <button class="btn ui-btn-success ui-btn" ng-click="confirm()">Confirm Dialog</button>
+                <button class="btn ui-btn-warning ui-btn" ng-click="custom()">Custom Dialog</button>
+            </div>
+        </div>
+
+        <!--
+            this is tabs demo
+        -->
+        <h3 class="demo-panel-title">Tabs</h3>
+        <div class="col-xs-12 nav ui-tab-group" ng-controller="tabsCtrl">
+            <div class="col-xs-12 nav-tabs">
+                <div class="btn-group pull-left  " >
+                    <label class="btn" ng-model="ng.tab" btn-radio="{{$index}}" ng-repeat="item in tabsData track by $index">{{::item.title}}</label>
+                </div>
+            </div>
+            <div class="col-xs-12" ng-model="ng.tab" ng-repeat="item in tabsData track by $index">
+                <p ng-if="ng.tab===item.value">{{::item.content}}</p>
+            </div>
+        </div>
+        <!--
+        this is ui-gird demo
+        -->
+      <!--
+        this is carousel demo
+      -->
+        <h3 class="demo-panel-title">Carousel</h3>
+        <div class="row">
+          <div class="col-xs-12" ng-controller="carouselCtrl">
+              <carousel interval="myInterval">
+                  <slide ng-repeat="item in slides">
+                        <form class="form-horizontal">
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label">版本号:</label>
+                            <div class="col-xs-3">
+                              <p class="form-control-static">11111111111</p>
+                            </div>
+                            <label class="col-xs-2 control-label">发布人:</label>
+                            <div class="col-xs-3">
+                              <p class="form-control-static">111111111111</p>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label">版本特性:</label>
+                            <div class="col-xs-9">
+                              <p class="form-control-static">111111111111</p>
+                            </div>
+                            <label class="col-xs-3 control-label">影响:</label>
+                            <div class="col-xs-9">
+                              <p class="form-control-static">11111111111</p>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label">解决的问题:</label>
+                            <div class="col-xs-9">
+                              <p class="form-control-static">111111111111</p>
+                            </div>
+                          </div>
+                        </form>
+                  </slide>
+              </carousel>
+          </div>
+        </div>
+        <!--
+            this is tooltip
+        -->
+        <h3 class="demo-panel-title">Tooltip</h3>
+        <div class="col-xs-12" ng-controller="tooltipCtrl">
+            <!--<div class="form-group">-->
+                <!--<label>Dynamic Tooltip Text</label>-->
+                <!--<input type="text" ng-model="dynamicTooltipText" class="form-control">-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label>Dynamic Tooltip Popup Text</label>-->
+                <!--<input type="text" ng-model="dynamicTooltip" class="form-control">-->
+            <!--</div>-->
+            <p>
+                Pellentesque <a href="#" tooltip="{{dynamicTooltip}}"><!--{{dynamicTooltipText}}-->hover me</a>
+            </p>
+            <form role="form" class="tooltip-form">
+                <div class="form-group">
+                    <label>Or use custom triggers, like focus: </label>
+                    <input type="text" value="Click me!" tooltip="See? Now click away..."  tooltip-trigger="focus" tooltip-placement="right" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Disable tooltips conditionally:</label>
+                    <input type="text" ng-model="inputModel" class="form-control"
+                           placeholder="Hover over this for a tooltip until this is filled"
+                           tooltip="Enter something in this input field to disable this tooltip"
+                           tooltip-placement="top"
+                           tooltip-trigger="mouseenter"
+                           tooltip-enable="!inputModel" />
+                </div>
+            </form>
+        </div>
+        <!--
+            this is Scrollbar demo
+        -->
+        <h3 class="demo-panel-title">Scrollbar</h3>
+        <div id="demo" ng-controller="scrollbarCtrl" class="ui-scrollbar"
+             ui-scrollbar wheel-propagation="true" wheel-speed="300"  style="height:200px;width:800px;">
+            <div>
+                <p>
+                    The MIT License (MIT) Copyright (c) 2013, 2014 Drew Miller and other contributors.
+                </p>
+                <p>
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+                    of the Software, and to permit persons to whom the Software is furnished to do so,
+                    subject to the following conditions:
+                </p>
+                <p>
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+                    of the Software, and to permit persons to whom the Software is furnished to do so,
+                    subject to the following conditions:
+                </p>
+                <p>
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+                    of the Software, and to permit persons to whom the Software is furnished to do so,
+                    subject to the following conditions:
+                </p>
+                <p>
+                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                    of this software and associated documentation files (the "Software"), to deal
+                    in the Software without restriction, including without limitation the rights
+                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+                    of the Software, and to permit persons to whom the Software is furnished to do so,
+                    subject to the following conditions:
+                </p>
+            </div>
+        </div>
+        <!--
+            this is ui-gird demo
+        -->
+        <h3 class="demo-panel-title">Grid</h3>
+        <div class="row">
+            <div class="col-xs-12" ng-controller="gridCtrl">
+                 <table class="ui-grid" 
+                      ui-grid
+                      items="gridData"
+                      selected-items="ngGridModel"
+                      total-items="total"
+                      page-items="pagingOptions.pageSize"
+                      dragable="true"
+                      current-page="pagingOptions.currentPage"
+                      on-data-required="onGridPager(currentPage,pageItems)"
+                      selection-mode="None">
+                  <thead>
+                    <tr>
+                        <th field-name="functionName" dragable="1" display-name="Funtion name"></th>
+                        <th field-name="algo" display-name="Algo" dragable="1"></th>
+                        <th field-name="dealNum" display-name="Deal Num" dragable="1"></th>
+                        <th field-name="errorNum" display-name="Error Num" dragable="1"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+      
+                  </tbody>
+                </table>
+            </div>
+        </div>
+
+         <!--
+            this is ui-tree demo
+        -->
+        <h3 class="demo-panel-title">Tree</h3>
+        <div class="row tree" ng-controller="treeCtrl">
+            <h4>Custom Equality <small>(options.equality)</small></h4>
+            <div  ui-tree class="ui-tree tree-classic" tree-model="treedata1" options="opts" >
+                label: {{node.name}} ({{node.age}})
+            </div>
+
+            <h4>Light Style <small>(Basic style, default configuration, add node)</small></h4>
+            <div>
+            <div  ui-tree class="ui-tree tree-classic" tree-model="treedata" options="opts"
+                  on-selection="showSelected(node)">
+                <button ng-click="buttonClick($event, node)">Click Me!</button>lable:{{node.label}}
+            </div>
+            <p>Selected node: <code>{{selectedNode?selectedNode.label:"N/A"}}</code></p>
+            <p>Last clicked: <code>{{lastClicked ? lastClicked.label : "N/A"}}</code></p>
+            <ul>
+                <li><a ng-click="addRoot()">Add a new root</a></li>
+                <li><a ng-click="addChildToSecondRoot()">Add a child to the 2nd node</a></li>
+            </ul>
+            </div>
+            <h4>Selected Node Binding <small>(selected-node)</small></h4>
+            <div  ui-tree class="ui-tree tree-classic" tree-model="treedata" options="opts"
+                  selected-node="selected">
+                  lable:{{node.label}}
+            </div>
+            <p><a ng-click="selectNode(0)">select node 1</a><br>
+                <a ng-click="selectNode(1)">select node 2</a><br>
+                <a ng-click="selectNode(2)">select node 3</a><br>
+                <a ng-click="selectNode(3)">select node 4</a><br>
+                <a ng-click="clearSelected()">clear Selected</a></p>
+            <p>Selected node: <code>{{selected.label}}</code></p>
+            <h4>Expanded Nodes Binding <small>(expanded-nodes)</small></h4>
+            <div  ui-tree class="ui-tree tree-classic" tree-model="treedata" options="opts"
+                  expanded-nodes="expandedNodes">
+                lable:{{node.label}}
+            </div>
+            <p><a ng-click="setExpanded()">Expand 2, 3 and 3.3 (only)</a></p>
+            <p>The currently expanded nodes:</p>
+            <ul>
+                <li ng-repeat="node in expandedNodes">{{node.label}}</li>
+            </ul>
+        </div>
+
+        <!--
+            this is ui-collapse demo
+        -->
+        <h3 class="demo-panel-title">Collapse</h3>
+        <div class="row">
+            <div class="col-xs-12" ng-controller="collapseCtrl">
+                <button class="btn btn-default" ng-click="isCollapsed=!isCollapsed">Toggle collapse</button>
+                <hr>
+                <div collapse="isCollapsed">
+                    <div class="well well-lg">Some content</div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

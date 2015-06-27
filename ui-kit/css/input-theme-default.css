@@ -1,0 +1,4 @@
+/*ui-input*/
+.ui-input {color:#ffffff;background-color: #0e5580;background-image: none;border: 1px solid #0e5580;}
+.ui-input:hover{border-color: #00d1ff;}
+.ui-input[disabled]{border-color: #7e7e7e;background-color: #7e7e7e;color: #393939;}

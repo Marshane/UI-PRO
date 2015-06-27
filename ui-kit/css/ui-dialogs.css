@@ -1,0 +1,7 @@
+.modal-content {border: 1px solid;border-radius: 0;}
+.modal-header {border-bottom: 1px solid;padding: 10px 15px;}
+.modal-body {position: relative;padding: 20px;}
+.modal-content .modal-close .close {font-size: 26px;}
+.modal-content .modal-close {position: absolute;right: 7px;top: 6px;display: inline-block;z-index: 1110;}
+.modal-footer {border-top: 1px solid;padding: 12.5px;}
+.modal-footer .btn{border-radius:0;}

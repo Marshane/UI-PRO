@@ -1,0 +1,21 @@
+/*按钮*/
+.ui-btn{background-color:#1864ab;color:#ffffff;}
+.ui-btn:hover,.ui-btn:focus{color:#ffffff;}
+.ui-btn-primary{background-color:#337ab7;}
+.ui-btn-primary:focus,.ui-btn-primary:hover{background-color:#337ab0 ;}
+.ui-btn-default{background-color:#bdc3c7;}
+.ui-btn-default:focus,.ui-btn-default:hover{background-color:#bdc3c7 ;}
+.ui-btn-warning{background-color:#f1c40f;}
+.ui-btn-warning:focus,.ui-btn-warning:hover{background-color:#f1c40f ;}
+.ui-btn-inverse {background-color: #34495e;}
+.ui-btn-inverse:focus,.ui-btn-inverse:hover{background-color:#34495e ;}
+.ui-btn-success{background-color:#2ecc71;}
+.ui-btn-success:focus,.ui-btn-success:hover{background-color:#2ecc71 ;}
+.ui-btn-danger{background-color:#e74c3c;}
+.ui-btn-danger:focus,.ui-btn-danger:hover{background-color: #e74c3c;}
+/*.ui-btn-inverse{background-color: #34495e;}*/
+/*.ui-btn-inverse:focus,.ui-btn-inverse:hover{background-color: ;color:#fff }*/
+.ui-btn-info{background-color:#3498db ;}
+.ui-btn-info:focus,.ui-btn-info:hover{background-color: #3498db;}
+.ui-btn-disabled{background-color:#d1d5d8;}
+.ui-btn-disabled:focus,.ui-btn-disabled:hover{background-color: #d1d5d8;}

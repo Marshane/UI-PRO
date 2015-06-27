@@ -1,0 +1,20 @@
+.text-muted {color: #777777;}
+.text-info {color: #31708f;}
+
+/*按钮*/
+.btn-warning {color: #ffffff;background-color: #f0ad4e;border-color: #eea236;}
+.btn-warning:hover,.btn-warning:focus,.btn-warning.focus,.btn-warning:active,.btn-warning.active{color: #ffffff;background-color: #ec971f;border-color: #d58512;}
+.btn-warning:active,.btn-warning.active{ background-image: none;}
+
+/*表格状态栏*/
+.am-state-grid-search{border-top:1px solid #104d6a;}
+.am-state-grid-search button{border-color:#104d6a; background-color: #13455f;}
+.am-state-modal button{border-bottom-color: #13455f}
+.am-state-grid-search.no-bb button{ border-bottom-color: #13455f;color:#fff;}
+.am-state-grid-search button:hover,
+.am-state-grid-search button:active,
+.am-state-grid-search button:focus{border-color: #00d1ff;background-color: #0a70ab;}
+.am-state-grid-search a {color: #fff;}
+
+/*状态栏*/
+.am-state{background-color: #143E56;border-bottom: 1px solid #104d6a;}

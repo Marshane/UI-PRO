@@ -1,0 +1,11 @@
+.ui-datapicker .btn{border-radius:0;padding:4px 12px;}
+.ui-datapicker .btn:hover,.ui-datapicker .btn:focus,.ui-datapicker .btn:active,.ui-datapicker .btn:visited{border-radius:0;}
+.ui-datapicker .dropdown-menu{border-radius:0;padding:0;border: 1px solid;margin:0;}
+.ui-datapicker table thead tr:first-child button {padding: 5px;width: 100%;}
+.ui-datapicker table tr:last-child th {padding: 5px;}
+.ui-datapicker table td button {border-radius: 0;border-bottom: none;border-left: none;}
+.ui-datapicker table.month tr:last-child th, .input-datapicker table.year tr:last-child th {padding: 0px;}
+.timepicker-wrap .form-control {height: 26px;border: 1px solid ;}
+.timepicker-wrap {padding: 5px;overflow: hidden;}
+.timepicker-wrap td.form-group {width: 44px !important;}
+

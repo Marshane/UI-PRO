@@ -1,0 +1,4 @@
+.ui-tab-group {background-color: #f7f9fa;}
+.ui-tab-group .btn.active,.ui-tab-group .btn:active{box-shadow:none;}
+.ui-tab-group .btn {border-left-color:#ddd!important;border-right-color:#ddd!important;}
+.ui-tab-group .active {background-color: #fff!important;}

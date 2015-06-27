@@ -1,0 +1,9 @@
+.ui-scrollbar{position:relative;overflow:hidden;}
+.ui-container .ui-scrollbar-x {position: absolute;bottom: 3px;height: 8px; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px;opacity: 0;filter: alpha(opacity = 0); -webkit-transition: opacity.2s linear;-moz-transition: opacity .2s linear; transition: opacity .2s linear;}
+.ui-container:hover .ui-scrollbar-x {opacity: 0.6;filter: alpha(opacity = 60);}
+.ui-container .ui-scrollbar-x:hover {opacity: 0.9;filter: alpha(opacity = 90);cursor:default;}
+.ui-container .ui-scrollbar-x.in-scrolling {opacity: 0.9;filter: alpha(opacity = 90);}
+.ui-container .ui-scrollbar-y {position: absolute;right: 3px;width: 8px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;opacity: 0;filter: alpha(opacity = 0);-webkit-transition: opacity.2s linear;-moz-transition: opacity .2s linear;transition: opacity .2s linear;}
+.ui-container:hover .ui-scrollbar-y {opacity: 0.6;filter: alpha(opacity = 60);}
+.ui-container .ui-scrollbar-y:hover {opacity: 0.9;filter: alpha(opacity =90);cursor: default;}
+.ui-container .ui-scrollbar-y.in-scrolling {opacity:0.9;filter: alpha(opacity = 90);}

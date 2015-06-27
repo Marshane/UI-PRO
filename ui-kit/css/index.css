@@ -1,0 +1,17 @@
+ul{ list-style: none;}
+.container {width: 970px !important;}
+.demo-panel-title {padding-top: 20px; margin: 2px 0 20px;font: bold 23px/40px "Helvetica Neue", Helvetica, Arial, sans-serif;}
+.demo-row {margin-bottom: 20px;}
+.col-xs-3{padding-right: 15px;padding-left: 15px;}
+.dropdown-menu{border-color: #1c9dde;margin-top: -1px;overflow: hidden;background: #0d5f91;border-top: 0;padding: 0;border-radius: 0;}
+.dropdown-menu li a{color:#ffffff;}
+.dropdown-menu li:hover a, .ui-select-menu li:hover a {background-color: #1488d1;border-color: #1488d1;color:#ffffff;}
+form {padding: 10px}
+.tooltip-form{padding:10px 0px !important;}
+.carousel{background-color:#163345;color:#ffffff;}
+.form-horizontal .control-label {padding-right: 10px;}
+p{margin: 0;padding: 0;}
+.form-horizontal .control-label {padding-right: 10px;}
+.ui-scrollbar p{ text-indent:35px}
+.btn-sm{border-radius:0;}
+.tree p{margin-left:20px;}

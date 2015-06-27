@@ -1,0 +1,3 @@
+.ui-dropdown .dropdown-menu{border-color: #1c9dde;background: #0d5f91;}
+.ui-dropdown .dropdown-menu li a{color:#ffffff;}
+.ui-dropdown .dropdown-menu li:hover a, .ui-select-menu li:hover a {background-color: #1488d1;border-color: #1488d1;color:#ffffff;}

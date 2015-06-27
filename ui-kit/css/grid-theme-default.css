@@ -1,0 +1,12 @@
+.ui-grid{border-color: #104d6a;color:#ffffff;}
+.table-hover > tbody > tr:hover > td {background-color: #183957;}
+table.ui-grid.table-bordered > thead > tr > th,.table-bordered > tbody > tr > td ,.table-bordered > tfoot > tr > td{border-color:#104d6a;}
+table.ui-grid tbody td {background-color: #182F44;}
+.ui-grid thead tr th{background-color: #144169;border-right-color:#104d6a;}
+/*分页*/
+table.ui-grid tfoot{background: #2d4358;}
+.ui-grid-pager-main li a:hover{color:#00baff;}
+.ui-grid-pager-main li a{color:#fff;}
+.ui-grid-pager-main .active{background-color: #0da2ff;}
+.ui-grid-pager-main .active a{color:#fff;}
+.ui-grid-pager-main .active a:hover {color:#fff !important;}

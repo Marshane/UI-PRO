@@ -1,0 +1,7 @@
+.modal-content {background-color: #18456e;border-color:#104d6a;}
+.modal-header {border-bottom-color:#104d6a;color: #fff;background-color: #194f7f;}
+.modal-body {color:#ffffff;}
+.modal-content .modal-close .close {color:#ffffff;text-shadow:none;opacity: 1;}
+.modal-footer {background-color: #163041;border-top-color:#104d6a;}
+.modal-footer .btn{color: #ffffff;background-color: #428bca;border-color: #357ebd;}
+.modal-title{color:#ffffff;}

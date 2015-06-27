@@ -1,0 +1,12 @@
+.ui-tree {color: #555;}
+.ui-tree.tree-classic li.tree-expanded i.tree-branch-head {background: url("../imgs/tree/folder.png") no-repeat;}
+.ui-tree.tree-classic li.tree-collapsed i.tree-branch-head {background: url("../imgs/tree/folder-closed.png") no-repeat;}
+.ui-tree.tree-classic li.tree-leaf i.tree-leaf-head {background: url("../imgs/tree/file.png") no-repeat;}
+.ui-tree.tree-classic li .tree-selected {background-color: #aaddff;}
+.ui-tree.tree-light li.tree-expanded i.tree-branch-head {background: url("../imgs/tree/node-opened-2.png") no-repeat;}
+.ui-tree.tree-light li.tree-collapsed i.tree-branch-head {background: url("../imgs/tree/node-closed-2.png") no-repeat;}
+.ui-tree.tree-light li.tree-leaf i.tree-leaf-head {background: none no-repeat;}
+.ui-tree.tree-dark li.tree-expanded i.tree-branch-head {background: url("../imgs/tree/node-opened-light.png") no-repeat;}
+.ui-tree.tree-dark li.tree-collapsed i.tree-branch-head {background: url("../imgs/tree/node-closed-light.png") no-repeat;}
+.ui-tree.tree-dark li.tree-leaf i.tree-leaf-head {background: none no-repeat;}
+.ui-tree.tree-dark {color: #ddd;}
