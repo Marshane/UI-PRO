@@ -211,7 +211,7 @@
                     params:'='
                 },
                 link:function(scope, element, attrs,ngModel) {
-                    var U=AM.util,asValue=attrs.asValue;
+                    var asValue=attrs.asValue;
                     if(!scope.suggest){
                         scope.suggest=new ui.Suggest({
                             id:element,
