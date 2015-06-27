@@ -1,5 +1,5 @@
 (function(){
-    ui.Suggest=AM.Class.create({
+    ui.Suggest=ui.Class.create({
         init:function(op){
             var op=this.op=$.extend({
                 id:null,
