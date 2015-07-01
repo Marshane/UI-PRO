@@ -1,4 +1,4 @@
-angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox'
+angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect'
     ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','dialogs.main','ui.tabs','ui.suggest',
     ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
 angular.module('demo',['ui'])
@@ -213,7 +213,14 @@ angular.module('demo',['ui'])
                 }
     }])
      .controller('suggestCtrl',['$scope',function(scope){
-        scope.data=[{'key':1},{'key':2}]
+
+        scope.data=[{'key':1},{'key':2}];
+        scope.ngModelList=[{text:'aa',value:11},{text:'bb',value:22},{text:'csd',value:3432},{text:'asd',value:124634},
+            {text:'aatr',value:121},{text:'wrewe',value:212},{text:'hjjh',value:34322},{text:'werw',value:12434}];
+        scope.p={
+            functionType:[3432,124634,12434]
+        };
+        scope.key='text';
      }]);
 
 

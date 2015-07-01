@@ -1,0 +1,10 @@
+.ui-input-select{background-color:#0e5580; cursor:text; padding:4px 5px; min-height:30px; overflow: hidden;}
+.ui-input-select .ui-input-item{float:left; background-color:#163d5c; cursor: default; color:#fff; margin:0 5px 0 0; line-height:19px; padding:2px 9px 1px; border-radius:10px;}
+.ui-input-select .ui-input-item i{display:inline-block; cursor: pointer;}
+.ui-input-select .ui-input-close{margin-left:5px; float: right;}
+.ui-input-select .ui-input{color: #fff; float:left; width:60px; height:22px; padding:0 8px; background-color: transparent;}
+.ui-input-select .ui-input:focus,.ui-input-select .ui-input:hover{outline:0; border:none;}
+.ui-input-select-popup{ position: absolute; background-color:#163041; color: #fff; overflow: hidden; border:1px solid #104d6a; padding:5px; overflow-y:auto;}
+.ui-input-select-popup .btn:hover{ color: #fff;}
+.ui-input-select-popup .btn i{color:#333;}
+.ui-input-select-popup .ui-input-close{position: absolute; right:5px; top:3px; z-index:10; cursor: pointer; color: #fff}

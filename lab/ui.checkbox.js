@@ -7,7 +7,8 @@ angular.module('ui.checkbox', [])
                 checkedData:'=?',
                 onChecked:'&?',
                 onChange:'&?',
-                ngModel:'='
+                ngModel:'=',
+                filterText:'=?'
             },
             replace:true,
             templateUrl:function(elem,attrs){
@@ -125,10 +126,10 @@ angular.module('ui.checkbox', [])
     .run(["$templateCache", function ($templateCache) {
         $templateCache.put("ui-checkbox.html",
             '<div class="btn-group ui-checkbox">\
-                <label ng-repeat="it in data track by $index" class="btn col-sm-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="it.__checked" btn-checkbox><i ng-class="{checked:it.__checked}"></i>{{it[key]}}</label>\
+                <label ng-repeat="it in data | filter:filterText track by $index" class="btn col-sm-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="it.__checked" btn-checkbox><i ng-class="{checked:it.__checked}"></i>{{it[key]}}</label>\
             </div>');
         $templateCache.put("ui-checkbox-single.html",
             '<div class="btn-group ui-checkbox">\
-                <label ng-repeat="it in data track by $index" class="btn col-sm-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="_model.ngModel" btn-checkbox btn-checkbox-true="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class=""></i>{{it[key]}}</label>\
+                <label ng-repeat="it in data  | filter:filterText track by $index" class="btn col-sm-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="_model.ngModel" btn-checkbox btn-checkbox-true="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class=""></i>{{it[key]}}</label>\
             </div>');
     }]);
