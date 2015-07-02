@@ -1,11 +1,11 @@
 angular.module('ui.inputSelect', [])
-	.directive('uiInputSelect', ['$templateCache', '$compile','$parse', function ($templateCache, $compile,$parse) {
+	.directive('uiInputSelect', ['$templateCache', '$compile','$timeout', function ($templateCache, $compile,$timeout) {
         var popupCtrl=(function(){
             function popupCtrl(compile,templateCache,timeout){
                 this.templateCache=templateCache;
                 this.compile=compile;
                 this.timeout=timeout;
-            };
+            }
             popupCtrl.prototype={
                 setupScope:function(scope,elem){
                     this.scope=scope;
@@ -16,7 +16,6 @@ angular.module('ui.inputSelect', [])
                 getTpl:function(scope){
                     var self=this;
                     if (!scope.tpl){
-                        //self.newScope=scope.$new();
                         scope.tpl=self.compile(['<div class="ui-input-select-popup" ng-show="isOpen"><span class="ui-input-close" ng-click="onClose()">×</span>'
                             ,self.templateCache.get('templates/input-select-popup.html'),'</div>'].join(''))(self.scope);
                         if(scope.width){
@@ -140,6 +139,14 @@ angular.module('ui.inputSelect', [])
                                     return
                                 }
                             });
+                        };
+                        //利用更新数据的回调来重新调整弹出框位置
+                        scope.onChecked=function(){
+                            if(ctrl.visible){
+                                $timeout(function(){
+                                    ctrl.show();
+                                });
+                            }
                         }
                     }
                 }
@@ -148,14 +155,13 @@ angular.module('ui.inputSelect', [])
     }])
     .run(["$templateCache", function ($templateCache) {
         $templateCache.put("templates/input-select.html",
-            '\
-                <span class="ui-input-item" ng-repeat="item in checkedData">\
-                    <i class="ui-input-close" ng-click="onDel(item[asValue],$event)">&times;</i>{{item[key]}}\
-                </span>\
-                <input class="ui-input" type="text" ng-model="filterText" ng-keydown="onKeydown($event)" />\
-             ');
+            '<span class="ui-input-item" ng-repeat="item in checkedData">\
+                <i class="ui-input-close" ng-click="onDel(item[asValue],$event)">&times;</i>{{item[key]}}\
+            </span>\
+            <input class="ui-input" type="text" ng-model="filterText" ng-keydown="onKeydown($event)" />\
+            ');
         $templateCache.put("templates/input-select-popup.html",
-            '<div ui-checkbox data="data" key="{{key}}" filter-text="filterText" as-value="{{asValue}}" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="ngModel" space="{{space}}" ></div>');
+            '<div ui-checkbox data="data" key="{{key}}" filter-text="filterText" as-value="{{asValue}}" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="ngModel" space="{{space}}"></div>');
     }]);
 
 

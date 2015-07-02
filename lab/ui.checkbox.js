@@ -15,25 +15,32 @@ angular.module('ui.checkbox', [])
                 return attrs.multi==='0'?'ui-checkbox-single.html':'ui-checkbox.html'
             },
             link:function(scope,elem,attrs){
-                var attrArr=['key','asValue','multi','space'],type,model;
+                var attrArr=['key','asValue','multi','space','modelSplit'],type,model;
                 var tmp=[];
                 _.each(attrArr,function(it){
                     scope[it]=attrs[it];
                 });
+                scope.modelSplit=scope.modelSplit||',';
                 scope.multi=(scope.multi==='0'?0:1);
                 var watchAll,single,sec;
                 var onchange=function(a){
                     if(_.isUndefined(a))return;
                     var _ind;
+                    var _checked=[];
                     if(!scope.checkedData.length && !_.isUndefined(scope.ngModel) && !_.isNull(scope.ngModel)){
-                        var _tmpObj={};
-                        _tmpObj[scope.asValue]=scope.ngModel;
-                        scope.checkedData.push(_tmpObj);
+                        if(!_.isArray(scope.ngModel)){
+                            scope.ngModel=String(scope.ngModel).split(scope.modelSplit);
+                        }
+                        _.each(scope.ngModel,function(n){
+                            var _tmpObj={};
+                            _tmpObj[scope.asValue]=n;
+                            _checked.push(_tmpObj);
+                        });
                     }
                     _.each(scope.data,function(i,index){
                         _ind=null;
-                        _.each(scope.checkedData,function(j){
-                            if(i[scope.asValue]===j[scope.asValue]){
+                        _.each(_checked,function(j){
+                            if(i[scope.asValue]==j[scope.asValue]){
                                 scope.data[index].__checked=true;
                                 _ind=index;
                             }
@@ -45,7 +52,6 @@ angular.module('ui.checkbox', [])
                 };
                 var oncheck=function(a){
                     if(a.length&&_.isUndefined(a[0].__checked))onchange(a);
-                    // console.log(scope.data[0]);
                     if(scope.multi){
                         scope.ngModel=[];
                     }
@@ -87,7 +93,6 @@ angular.module('ui.checkbox', [])
                 scope.data=scope.data||[];
                 scope.checkedData=scope.checkedData||[];
                 scope.ngModel=scope.ngModel||[];
-
                 //处理单选情况
                 scope._model={};
                 if(!scope.multi){
@@ -111,11 +116,19 @@ angular.module('ui.checkbox', [])
                         __t=null;
                     });
                 }
-                watchAll=scope.$watch('data',oncheck,true);//处理异步数据
-                if(scope.data.length){//处理静态数据
-                    onchange(scope.data);
-                    oncheck(scope.data);
-                }
+//                watchAll=scope.$watch('data',oncheck,true);//处理异步数据
+//                if(scope.data.length){//处理静态数据
+//                    onchange(scope.data);
+//                    oncheck(scope.data);
+//                }
+                watchAll=scope.$watch('data',function(a){
+//                    onchange(a);
+                    oncheck(a);
+                },true);//处理异步数据
+//                if(scope.data.length){//处理静态数据
+//                    onchange(scope.data);
+//                    oncheck(scope.data);
+//                }
                 scope.$on('$destroy',function(){
                     watchAll();
                     single&&single();
@@ -126,10 +139,10 @@ angular.module('ui.checkbox', [])
     .run(["$templateCache", function ($templateCache) {
         $templateCache.put("ui-checkbox.html",
             '<div class="btn-group ui-checkbox">\
-                <label ng-repeat="it in data | filter:filterText track by $index" class="btn col-sm-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="it.__checked" btn-checkbox><i ng-class="{checked:it.__checked}"></i>{{it[key]}}</label>\
+                <label ng-repeat="it in data | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="it.__checked" btn-checkbox><i ng-class="{checked:it.__checked}"></i>{{it[key]}}</label>\
             </div>');
         $templateCache.put("ui-checkbox-single.html",
             '<div class="btn-group ui-checkbox">\
-                <label ng-repeat="it in data  | filter:filterText track by $index" class="btn col-sm-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="_model.ngModel" btn-checkbox btn-checkbox-true="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class=""></i>{{it[key]}}</label>\
+                <label ng-repeat="it in data  | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="_model.ngModel" btn-checkbox btn-checkbox-true="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class=""></i>{{it[key]}}</label>\
             </div>');
     }]);

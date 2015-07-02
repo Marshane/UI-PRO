@@ -34,6 +34,7 @@ angular.module('demo',['ui'])
 
         $scope.checkboxData=[{text:'a',value:1},{text:'b',value:2},
           {text:'b',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
+        $scope.checkedID='1,2'
 
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
@@ -212,14 +213,15 @@ angular.module('demo',['ui'])
                     $scope.isCollapsed = !$scope.isCollapsed;
                 }
     }])
-     .controller('suggestCtrl',['$scope',function(scope){
+     .controller('suggestCtrl',['$scope','$timeout',function(scope,$timeout){
 
         scope.data=[{'key':1},{'key':2}];
         scope.ngModelList=[{text:'aa',value:11},{text:'bb',value:22},{text:'csd',value:3432},{text:'asd',value:124634},
             {text:'aatr',value:121},{text:'wrewe',value:212},{text:'hjjh',value:34322},{text:'werw',value:12434}];
-        scope.p={
-            functionType:[3432,124634,12434]
-        };
+        scope.p={};
+//        $timeout(function(){
+            scope.functionType=[11,22,3432]
+//        });
         scope.key='text';
      }]);
 

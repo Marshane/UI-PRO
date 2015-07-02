@@ -1,5 +1,5 @@
-.ui-input-select{background-color:#0e5580; cursor:text; padding:4px 5px; min-height:30px; overflow: hidden;}
-.ui-input-select .ui-input-item{float:left; background-color:#163d5c; cursor: default; color:#fff; margin:0 5px 0 0; line-height:19px; padding:2px 9px 1px; border-radius:10px;}
+.ui-input-select{background-color:#0e5580; cursor:text; padding:4px 5px 1px; min-height:30px; overflow: hidden;}
+.ui-input-select .ui-input-item{float:left; background-color:#163d5c; cursor: default; color:#fff; margin:0 5px 3px 0; line-height:19px; padding:2px 9px 1px; border-radius:10px;}
 .ui-input-select .ui-input-item i{display:inline-block; cursor: pointer;}
 .ui-input-select .ui-input-close{margin-left:5px; float: right;}
 .ui-input-select .ui-input{color: #fff; float:left; width:60px; height:22px; padding:0 8px; background-color: transparent;}
