@@ -15,14 +15,14 @@ angular.module('ui.checkbox', [])
                 return attrs.multi==='0'?'ui-checkbox-single.html':'ui-checkbox.html'
             },
             link:function(scope,elem,attrs){
-                var attrArr=['key','asValue','multi','space','modelSplit'],type,model;
+                var attrArr=['key','asValue','multi','space','modelSplit'];
                 var tmp=[];
                 _.each(attrArr,function(it){
                     scope[it]=attrs[it];
                 });
                 scope.modelSplit=scope.modelSplit||',';
                 scope.multi=(scope.multi==='0'?0:1);
-                var watchAll,single,sec;
+                var watchAll,single;
                 var onchange=function(a){
                     if(_.isUndefined(a))return;
                     var _ind;
@@ -66,8 +66,8 @@ angular.module('ui.checkbox', [])
                             }
                         }
                     });
-                    //if(tmp){
-                    var obj={},def;
+
+                    var obj={};
                     if(_.isArray(tmp)){
                         dif=function(){
                             if(scope.ngModel.length>=tmp.length)
@@ -83,7 +83,7 @@ angular.module('ui.checkbox', [])
                     });
                     (scope.onChecked||angular.noop)(obj);
                     (scope.onChange||angular.noop)({data:a});
-                    //}
+
                     if(!scope.multi&&!scope.checkedData.length){
                         scope.ngModel='';
                     }
@@ -116,19 +116,9 @@ angular.module('ui.checkbox', [])
                         __t=null;
                     });
                 }
-//                watchAll=scope.$watch('data',oncheck,true);//处理异步数据
-//                if(scope.data.length){//处理静态数据
-//                    onchange(scope.data);
-//                    oncheck(scope.data);
-//                }
                 watchAll=scope.$watch('data',function(a){
-//                    onchange(a);
                     oncheck(a);
-                },true);//处理异步数据
-//                if(scope.data.length){//处理静态数据
-//                    onchange(scope.data);
-//                    oncheck(scope.data);
-//                }
+                },true);
                 scope.$on('$destroy',function(){
                     watchAll();
                     single&&single();

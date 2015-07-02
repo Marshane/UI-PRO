@@ -254,7 +254,14 @@
         -->
         <h3 class="demo-panel-title">Checkbox</h3>
         <div ng-controller="checkboxCtrl">
-            <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="checkedID" space="6" ></div>
+            多选：{{checkedID}}
+            <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)"
+                 multi="1" ng-model="checkedID" space="6" ></div>
+            <br/>
+            <br/>
+            单选：{{checkedID2}}
+            <div ui-checkbox data="checkboxData2" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)"
+                 multi="0" ng-model="checkedID2" space="6" ></div>
         </div>
 
         <!--

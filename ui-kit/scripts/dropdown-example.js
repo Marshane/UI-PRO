@@ -34,6 +34,8 @@ angular.module('demo',['ui'])
 
         $scope.checkboxData=[{text:'a',value:1},{text:'b',value:2},
           {text:'b',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
+        $scope.checkboxData2=[{text:'aa',value:1},{text:'b',value:2},
+            {text:'b',value:3},{text:'dd',value:4},{text:'e',value:5},{text:'f',value:6}];
         $scope.checkedID='1,2'
 
     }])
