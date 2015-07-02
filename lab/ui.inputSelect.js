@@ -1,146 +1,167 @@
 angular.module('ui.inputSelect', [])
-	.directive('inputSelect', ['$templateCache', '$compile', function ($templateCache, $compile) {
+    .directive('uiInputSelect', ['$templateCache', '$compile','$timeout', function ($templateCache, $compile,$timeout) {
+        var popupCtrl=(function(){
+            function popupCtrl(compile,templateCache,timeout){
+                this.templateCache=templateCache;
+                this.compile=compile;
+                this.timeout=timeout;
+            }
+            popupCtrl.prototype={
+                setupScope:function(scope,elem){
+                    this.scope=scope;
+                    this.elem=elem;
+                    this.getTpl(this.scope);
+                    this.addEvent(elem);
+                },
+                getTpl:function(scope){
+                    var self=this;
+                    if (!scope.tpl){
+                        scope.tpl=self.compile(['<div class="ui-input-select-popup" ng-show="isOpen"><span class="ui-input-close" ng-click="onClose()">×</span>'
+                            ,self.templateCache.get('templates/input-select-popup.html'),'</div>'].join(''))(self.scope);
+                        if(scope.width){
+                            scope.tpl.css({width:parseInt(scope.width,10)+'px'});
+                        }
+                        $('body').append(scope.tpl);
+                        if(!scope.visible){
+                            self.show();
+                        }else{
+                            self.hide();
+                        }
+                    }
+                },
+                addEvent:function(elem){
+                    elem.on(this.scope.triggerType||'click',_.bind(this.onTriggerEvt,this));
+                    $(document).on('click',_.bind(this.layerCtrl,this));
+                },
+                layerCtrl:function(c){
+                    var elem=this.elem[0];
+                    c = c || window.event;
+                    for (var d = c.target || c.srcElement; d && d.nodeType === 1;) {
+                        if ((d===elem)|| d.className.hasString('ui-input-select-popup')){
+                            ui.evt(c).stop();
+                            return
+                        }
+                        d = d.parentNode
+                    }
+                    this.hide();
+                },
+                onTriggerEvt:function(evt){
+                    this.toggle(!!this.visible);
+                },
+                offset:function(){
+                    var offset=this.elem.offset();
+                    var height=this.elem[0].offsetHeight;
+                    return {
+                        left:offset.left+'px',
+                        top:(offset.top+height)+'px'
+                    }
+                },
+                toggle:function(visible){
+                    visible?this.hide():this.show();
+                },
+                hide:function(){
+                    this.scope.tpl.css({'left':'-9999em','top':'-9999em'});
+                    this.visible=0;
+                },
+                show:function(){
+                    var a=this.offset();
+                    this.scope.tpl.css({'left':a.left,'top':a.top,'width':this.elem.outerWidth()});
+                    this.visible=1;
+                },
+                destroy:function(){
+                    $(document).off('click',_.bind(this.layerCtrl,this));
+                }
+            };
+            return popupCtrl;
+        })();
+        var _opts=['key','asValue','width','isOpen','space'];
         return{
-            restrict: 'EA',
-            require: '?^ngModel',
-            replace: true,
+            restrict: 'A',
             scope: {
-                popData: '=',
-                ngModel: '='
+                data:'=',
+                ngModel:'=',
+                onChecked:'&'
             },
+            controller:["$compile","$templateCache", "$timeout",popupCtrl],
             compile: function () {
                 return{
-                    pre: function (scope, elem) {
+                    pre: function (scope, elem,attr,ctrl) {
                         if (elem.children().length === 0) {
-                            elem.append($compile($templateCache.get('templates/dropdown/input-select.html'))(scope));
+                            elem.append($compile($templateCache.get('templates/input-select.html'))(scope));
                         }
+                        ctrl.setupScope(scope,elem);
                     },
-                    post: function (scope, elem, attr) {
-                        scope.key = attr.key;
-                        scope.isopen = +attr.isOpen;
-                        scope.value = attr.value;
-                        scope.popStyle = attr.popStyle;
-                        scope.width = attr.width;
-                        scope.ngModel=scope.ngModel||'';
-                        scope.gap = function () {
-                            if (attr.gap) return 'width:' + attr.gap
-                        }();
-                        var filter = function (data) {
-                            var arr = data.split(',');
-                            var obj = [], wh;
-                            angular.forEach(arr, function (item) {
-                                wh = _.filter(scope.popData, function (_item) {
-                                    return _item[scope.value] == item
-                                });
-                                if (wh.length > 0) {
-                                    obj = obj.concat(wh);
+                    post: function (scope, elem, attr,ctrl){
+                        for (var i = 0, l = _opts.length; i < l; i++) {
+                            var opt = _opts[i];
+                            if (attr[opt]) {
+                                scope[opt] =attr[opt];
+                            }
+                        }
+                        (function(){
+                            var input=elem.find('input');
+                            elem.on('click',function(){
+                                input.focus();
+                                ctrl.show();
+                                scope.isOpen=1;
+                                scope.$apply();
+                            });
+                        })();
+                        scope.onClose=function(){
+                            ctrl.hide();
+                        };
+                        scope.onDel=function(value,evt){
+                            _.each(scope.data,function(n){
+                                if(n[scope.asValue]===value){
+                                    n.__checked=false;
+                                    return
                                 }
                             });
-                            return obj;
+                            ui.evt(evt).stop();
                         };
-                        var onTextFilter = function () {
-                            var a = {}, b, c;
-                            a[scope.key] = scope.text;
-                            b = _.where(scope.popData, a);
-                            if (b.length > 0) {
-                                c = scope.ngModel.length ? scope.ngModel.split(',') : [];
-                                angular.forEach(b, function (item) {
-                                    if (_.indexOf(c, item[scope.value]) < 0) {
-                                        c.push(item[scope.value]);
-                                    }
-                                });
-                                scope.ngModel = c.join(',');
-                                scope.defaultChecked = scope.ngModel;
-                                scope.text = '';
-                            }
-                        },
-                        html,
-                        stopPro = function (evt) {
-                            evt.stopPropagation();
-                        };
-                        scope.text = '';
-                        if (scope.isopen) {
-                            html = $('html');
-                            html.bind('click', stopPro);
-                        }
-                        scope.ngModelList = function () {
-                            if (scope.ngModel) {
-                                return filter(scope.ngModel);
-                            }
-                            return [];
-                        }();
-                        scope.contain = function (a) {
-                            return _.where(scope.ngModelList, a).length > 0
-                        };
-
-                        scope.onTextKeyUp = function (evt) {
+                        scope.onKeydown=function(evt){
+                            //回车控制
                             if (evt.keyCode === 13) {
-                                onTextFilter();
+                                scope.onTextFilter();
+                            }
+                            //删除控制
+                            if (evt.keyCode === 8 && _.trim(scope.filterText)==='') {
+                                scope.onDel(scope.ngModel[scope.ngModel.length-1],window.event);
                             }
                         };
-                        scope.onDel = function (a) {
-                            scope.ngModelList = _.filter(scope.ngModelList, function (item) {
-                                return item[scope.value] != a;
+                        //以key来匹配 回车选中操作
+                        scope.onTextFilter=function(){
+                            var key=scope.filterText;
+                            _.each(scope.data,function(n){
+                                if(n[scope.key]===key){
+                                    n.__checked=true;
+                                    scope.filterText='';
+                                    return
+                                }
                             });
-                            scope.ngModel = _.filter(scope.ngModel.split(','), function (item) {
-                                return item != a
-                            }).join(',');
-                            scope.defaultChecked = scope.ngModel;
                         };
-                        scope.onSelectMenu = function (evt) {
-                            evt.stopPropagation();
-                        };
-                        scope.onInputSelected = function (evt) {
-                            evt.stopPropagation();
-                            scope.isopen = 1;
-                            elem.find('input').focus();
-                        };
-                        var modelList = function (a) {
-                            if (a) {
-                                scope.ngModelList = filter(a);
-                            } else if (a == '' && !a.length) {
-                                scope.ngModelList = [];
+                        //利用更新数据的回调来重新调整弹出框位置
+                        scope.onChecked=function(){
+                            if(ctrl.visible){
+                                $timeout(function(){
+                                    ctrl.show();
+                                });
                             }
-                        };
-                        var dW0=scope.$watch('ngModel', modelList);
-                        scope._ngModel = scope.ngModel;
-                        //解决搜索后点击情况做处理
-                        var dW1=scope.$watch('_ngModel', function (a) {
-                            console.log(a);
-                            if (scope.text) {
-                                scope.ngModel = scope.ngModel.split(',').concat(a.split(',')).join(',');
-                            } else {
-                                scope.ngModel = scope._ngModel;
-                            }
-                            modelList(scope.ngModel);
-                            scope.text = '';
-                        });
-                        scope.$on("$destroy",function() {
-                            dW0();
-                            dW1();
-                            if (html) {
-                                html.unbind('click');
-                            }
-                        });
+                        }
                     }
                 }
             }
         }
     }])
     .run(["$templateCache", function ($templateCache) {
-        $templateCache.put("templates/dropdown/input-select.html",
-            "<div class=\"am-input-select btn-group\" dropdown is-open=\"isopen\" ng-style=\"{'width':width}\" ng-class=\"{'open':isopen}\">\
-            <div class=\"am-input-selected\" ng-click=\"onInputSelected($event)\" ng-style=\"{'width':width}\">\
-              <div ng-repeat=\"item in ngModelList\"><span class=\"close\" ng-click=\"onDel(item[value])\">&times;</span>{{item[key]}}</div>\
-              <input class=\"am-input\" type=\"text\" ng-model=\"text\" ng-keyup=\"onTextKeyUp($event)\" />\
-            </div>\
-              <ul class=\"dropdown-menu am-select-menu\" ng-click=\"onSelectMenu($event)\" style=\"{{popStyle}}\"\
-               ng-click=\"inputClick2($event)\"  ng-icheck multi=\"1\" filter-name=\"_ngModel\" default-checked=\"defaultChecked\">\
-                  <li ng-repeat=\"item in popData | filter:text  track by $index\" style=\"{{gap}}\"><span class=\"rs-square rs-square-1\" \
-                  ng-class=\"{'glyphicon-ok':contain(item)}\" value=\"{{item[value]}}\"></span>\
-                  <span class=\"rs-text\">{{item[key]}}</span></li><span class=\"close close-input-select\" ng-click=\"isopen=!isopen\">×</span>\
-              </ul>\
-          </div>");
+        $templateCache.put("templates/input-select.html",
+            '<span class="ui-input-item" ng-repeat="item in checkedData">\
+                <i class="ui-input-close" ng-click="onDel(item[asValue],$event)">&times;</i>{{item[key]}}\
+            </span>\
+            <input class="ui-input" type="text" ng-model="filterText" ng-keydown="onKeydown($event)" />\
+            ');
+        $templateCache.put("templates/input-select-popup.html",
+            '<div ui-checkbox data="data" key="{{key}}" filter-text="filterText" as-value="{{asValue}}" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="ngModel" space="{{space}}"></div>');
     }]);
 
 
