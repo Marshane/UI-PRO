@@ -124,7 +124,7 @@ angular.module('demo',['ui'])
         $scope.dynamicTooltip = 'Hello,I am a example!';
 //        $scope.dynamicTooltipText = 'dynamic';
     }])
-     .controller('gridCtrl',['$scope','$log',function ($scope, $log) {
+    .controller('gridCtrl',['$scope','$log',function ($scope, $log) {
           $scope.gridData=[{functionName:22,algo:2,dealNum:3,errorNum:8},{functionName:22,algo:2,dealNum:3,errorNum:8}];    
           $scope.pagingOptions = {
                     pageSize: 1,
@@ -231,23 +231,24 @@ angular.module('demo',['ui'])
     .controller('collapseCtrl',['$scope','$log',function ($scope, $log) {
           $scope.isCollapsed = false;
     }])
-     .controller('testCtrl',['$scope','$log',function ($scope, $log) {
-           $scope.isCollapsed = false;
-           $scope.btnCollapsedHandler = function (){
-                    $scope.isCollapsed = !$scope.isCollapsed;
-                }
+    .controller('testCtrl',['$scope','$log',function ($scope, $log) {
+       $scope.isCollapsed = false;
+       $scope.btnCollapsedHandler = function (){
+                $scope.isCollapsed = !$scope.isCollapsed;
+            }
     }])
-     .controller('suggestCtrl',['$scope','$timeout',function(scope,$timeout){
-
+    .controller('suggestCtrl',['$scope','$timeout',function(scope,$timeout){
         scope.data=[{'key':1},{'key':2}];
+        scope.key='text';
+    }])
+    .controller('inputSelectCtrl',['$scope','$timeout',function(scope,$timeout){
         scope.ngModelList=[{text:'aa',value:11},{text:'bb',value:22},{text:'csd',value:3432},{text:'asd',value:124634},
             {text:'aatr',value:121},{text:'wrewe',value:212},{text:'hjjh',value:34322},{text:'werw',value:12434}];
-        scope.p={};
-//        $timeout(function(){
-            scope.functionType=[11,22,3432]
-//        });
-        scope.key='text';
-     }]);
+        scope.functionType=[11,22,3432];
+    }])
+    .controller('inputEditCtrl',['$scope','$timeout',function(scope,$timeout){
+
+    }])
 
 
 

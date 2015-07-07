@@ -46,37 +46,37 @@
 
 
 
-    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/lodash.min.js"></script>
-    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/angular.js"></script>
-    <script type="text/javascript" src="https://rawgit.com/Marshane/UI-PRO/master/lab/angular-sanitize.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/angular-translate.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.bindHtml.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dateparser.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.position.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.transition.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.modal.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.buttons.js"></script>
-    <script src="lab/ui.checkbox.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dropdown.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.select.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.datepicker.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.timepicker.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.dialogs.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tabs.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.carousel.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tooltip.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.grid.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.scrollbar.js"></script>
-    <script src="lab/ui.tree.js"></script>
-    <script src="lab/ui.inputEdit.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.collapse.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.suggest.js"></script>
+    <script type="text/javascript" src="lab/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="lab/lodash.min.js"></script>
+    <script type="text/javascript" src="lab/angular.js"></script>
+    <script type="text/javascript" src="lab/angular-sanitize.js"></script>
+    <script type="text/javascript" src="lab/angular-translate.js"></script>
+    <script type="text/javascript" src="lab/ui.bindHtml.js"></script>
+    <script type="text/javascript" src="lab/ui.js"></script>
+    <script type="text/javascript" src="lab/ui.dateparser.js"></script>
+    <script type="text/javascript" src="lab/ui.position.js"></script>
+    <script type="text/javascript" src="lab/ui.transition.js"></script>
+    <script type="text/javascript" src="lab/ui.modal.js"></script>
+    <script type="text/javascript" src="lab/ui.buttons.js"></script>
+    <script type="text/javascript" src="lab/ui.checkbox.js"></script>
+    <script type="text/javascript" src="lab/ui.dropdown.js"></script>
+    <script type="text/javascript" src="lab/ui.select.js"></script>
+    <script type="text/javascript" src="lab/ui.datepicker.js"></script>
+    <script type="text/javascript" src="lab/ui.timepicker.js"></script>
+    <script type="text/javascript" src="lab/ui.dialogs.js"></script>
+    <script type="text/javascript" src="lab/ui.tabs.js"></script>
+    <script type="text/javascript" src="lab/ui.carousel.js"></script>
+    <script type="text/javascript" src="lab/ui.tooltip.js"></script>
+    <script type="text/javascript" src="lab/ui.grid.js"></script>
+    <script type="text/javascript" src="lab/ui.scrollbar.js"></script>
+    <script type="text/javascript" src="lab/ui.tree.js"></script>
+    <script type="text/javascript" src="lab/ui.inputEdit.js"></script>
+    <script type="text/javascript" src="lab/ui.collapse.js"></script>
+    <script type="text/javascript" src="lab/ui.suggest.js"></script>
 
-    <script src="lab/ui.inputSelect.js"></script>
-    <script src="scripts/dropdown-example.js"></script>
-    <!--<script src="scripts/tree-test-controll.js"></script>-->
+    <script type="text/javascript" src="lab/ui.inputSelect.js"></script>
+    <script type="text/javascript" src="scripts/dropdown-example.js"></script>
+    <!--<script type="text/javascript" src="scripts/tree-test-controll.js"></script>-->
 </head>
 <body>
     <div class="container">
@@ -136,15 +136,30 @@
                 </div>
             </div>
         </div>
+        <!--
+                    this is inputSelect demo
+                    -->
+        <h3 class="demo-panel-title">ui-input-edit</h3>
+        <div class="row" ng-controller="inputEditCtrl">
+            <div class="col-xs-5">
+                <div class="ui-input-edit" ui-input-edit ng-model="functionType" data="ngModelList"  key="text" as-value="value" space="6"></div>
+            </div>
+        </div>
 
         <!--
-        this is suggest demo
-        -->
-        <h3 class="demo-panel-title">Suggest</h3>
-        <div class="row" ng-controller="suggestCtrl">
+            this is inputSelect demo
+            -->
+        <h3 class="demo-panel-title">ui-input-select</h3>
+        <div class="row" ng-controller="inputSelectCtrl">
             <div class="col-xs-5">{{functionType}}
                 <div class="ui-input-select" ui-input-select ng-model="functionType" data="ngModelList"  key="text" as-value="value" space="6"></div>
             </div>
+        </div>
+        <!--
+        this is suggest demo
+        -->
+        <h3 class="demo-panel-title">ui.suggest</h3>
+        <div class="row" ng-controller="suggestCtrl">
             <div class="col-xs-3">
                 <div class="form-group">
                     <input type="text" 
@@ -154,17 +169,6 @@
                     key="key"
                     on-select="onSelect(self)"
                     class="form-control ui-input">
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="form-group">
-                    <input type="text"
-                           ui-suggest
-                           ng-model="suggestSelect"
-                           data="data"
-                           key="key"
-                           on-select="onSelect(self)"
-                           class="form-control ui-input">
                 </div>
             </div>
         </div>
