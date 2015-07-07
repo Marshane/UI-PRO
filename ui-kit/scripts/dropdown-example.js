@@ -1,4 +1,4 @@
-angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect'
+angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','ui.inputEdit'
     ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','dialogs.main','ui.tabs','ui.suggest',
     ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
 angular.module('demo',['ui'])
@@ -135,12 +135,34 @@ angular.module('demo',['ui'])
 
     }])
     .controller('treeCtrl',['$scope','$log',function ($scope, $log) {
-        //equlity
+
+        $scope.openAll=function(){
+            var ar=[];
+            var op=function(d){
+                for(var i= 0,l=d.length;i<l;i++){
+                    if(d[i].children&&d[i].children.length){
+                        ar.push(d[i]);
+                        arguments.callee(d[i].children);
+                    }
+                }
+            };
+            op($scope.treedata1);
+            $scope.expandedData=ar;
+        };
+        $scope.closeAll=function(){
+            $scope.expandedData.length=0;
+        };
+        $scope.add=function(){
+
+        };
+        $scope.del=function(){
+
+        };
 
         $scope.treedata1=[
             { "name" : "Joe", "age" : "21", "children" : [
                 { "name" : "Smith", "age" : "42", "children" : [] },
-                { "name" : "Joe", "age" : "21", "children" : [
+                { "name" : "Je1", "age" : "33", "children" : [
                     { "name" : "Jenifer", "age" : "23", "children" : [
                         { "name" : "Dani", "age" : "32", "children" : [] },
                         { "name" : "Max", "age" : "34", "children" : [] }

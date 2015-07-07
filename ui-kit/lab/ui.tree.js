@@ -136,11 +136,11 @@ angular.module('ui.tree', [])
 
                 $scope.selectNodeHead = function() {
                     var expanding = $scope.expandedNodesMap[this.$id] === undefined;
+
                     $scope.expandedNodesMap[this.$id] = (expanding ? this.node : undefined);
                     if (expanding) {
                         $scope.expandedNodes.push(this.node);
-                    }
-                    else {
+                    }else {
                         var index;
                         for (var i=0; (i < $scope.expandedNodes.length) && !index; i++) {
                             if ($scope.options.equality($scope.expandedNodes[i], this.node)) {
@@ -152,6 +152,9 @@ angular.module('ui.tree', [])
                     }
                     if ($scope.onNodeToggle)
                         $scope.onNodeToggle({node: this.node, expanded: expanding});
+                    console.log(this);
+                    console.log($scope.expandedNodes);
+                    console.log($scope.expandedNodesMap);
                 };
 
                 $scope.selectNodeLabel = function( selectedNode ){
@@ -258,10 +261,6 @@ angular.module('ui.tree', [])
                         });
                         scope.expandedNodesMap = newExpandedNodesMap;
                     });
-
-//                        scope.$watch('expandedNodesMap', function(newValue) {
-//
-//                        });
 
                     //Rendering template for a root node
                     treemodelCntr.template( scope, function(clone) {

@@ -69,7 +69,8 @@
     <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tooltip.js"></script>
     <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.grid.js"></script>
     <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.scrollbar.js"></script>
-    <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.tree.js"></script>
+    <script src="lab/ui.tree.js"></script>
+    <script src="lab/ui.inputEdit.js"></script>
     <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.collapse.js"></script>
     <script src="https://rawgit.com/Marshane/UI-PRO/master/lab/ui.suggest.js"></script>
 
@@ -141,15 +142,8 @@
         -->
         <h3 class="demo-panel-title">Suggest</h3>
         <div class="row" ng-controller="suggestCtrl">
-            <div class="col-xs-6">{{functionType}}
+            <div class="col-xs-5">{{functionType}}
                 <div class="ui-input-select" ui-input-select ng-model="functionType" data="ngModelList"  key="text" as-value="value" space="6"></div>
-
-                <!--<div class="ui-input-select">-->
-                    <!--<span class="ui-input-item" ng-repeat="item in ngModelList">-->
-                        <!--<i class="ui-input-close" ng-click="onDel(item[value])">&times;</i>{{item[key]}}-->
-                    <!--</span>-->
-                    <!--<input class="ui-input" type="text" ng-model="text" ng-keyup="onTextKeyUp($event)" />-->
-                <!--</div>-->
             </div>
             <div class="col-xs-3">
                 <div class="form-group">
@@ -162,7 +156,17 @@
                     class="form-control ui-input">
                 </div>
             </div>
-            {{suggestSelect}}
+            <div class="col-xs-4">
+                <div class="form-group">
+                    <input type="text"
+                           ui-suggest
+                           ng-model="suggestSelect"
+                           data="data"
+                           key="key"
+                           on-select="onSelect(self)"
+                           class="form-control ui-input">
+                </div>
+            </div>
         </div>
 
         <!--
@@ -503,8 +507,13 @@
         -->
         <h3 class="demo-panel-title">Tree</h3>
         <div class="row tree" ng-controller="treeCtrl">
+            <button ng-click="openAll()">展开</button>
+            <button ng-click="closeAll()">折叠</button>
+            <button ng-click="add()">新增</button>
+            <button ng-click="del()">新增</button>
             <h4>Custom Equality <small>(options.equality)</small></h4>
-            <div  ui-tree class="ui-tree tree-classic" tree-model="treedata1" options="opts" >
+            {{selectedNode}}
+            <div  ui-tree class="ui-tree tree-classic" tree-model="treedata1" options="opts" selected-node="selectedNode" expanded-nodes="expandedData" >
                 label: {{node.name}} ({{node.age}})
             </div>
 

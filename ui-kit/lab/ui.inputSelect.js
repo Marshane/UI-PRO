@@ -1,5 +1,5 @@
 angular.module('ui.inputSelect', [])
-	.directive('uiInputSelect', ['$templateCache', '$compile','$timeout', function ($templateCache, $compile,$timeout) {
+    .directive('uiInputSelect', ['$templateCache', '$compile','$timeout', function ($templateCache, $compile,$timeout) {
         var popupCtrl=(function(){
             function popupCtrl(compile,templateCache,timeout){
                 this.templateCache=templateCache;
@@ -123,6 +123,8 @@ angular.module('ui.inputSelect', [])
                             //回车控制
                             if (evt.keyCode === 13) {
                                 scope.onTextFilter();
+                                //防止回车触发document click事件 导致浮动框关闭
+                                ui.evt(evt).prevent();
                             }
                             //删除控制
                             if (evt.keyCode === 8 && _.trim(scope.filterText)==='') {
@@ -136,7 +138,6 @@ angular.module('ui.inputSelect', [])
                                 if(n[scope.key]===key){
                                     n.__checked=true;
                                     scope.filterText='';
-                                    return
                                 }
                             });
                         };
