@@ -141,8 +141,16 @@
                     -->
         <h3 class="demo-panel-title">ui-input-edit</h3>
         <div class="row" ng-controller="inputEditCtrl">
+            {{inputEditModel}}
             <div class="col-xs-5">
-                <div class="ui-input-edit" ui-input-edit ng-model="functionType" data="ngModelList"  key="text" as-value="value" space="6"></div>
+                <div class="ui-input-edit"
+                     ui-input-edit
+                     text="xx"
+                     type="input"
+                     ng-model="inputEditModel"
+                     data="inputEditData"
+                     key="text"
+                     as-value="value"></div>
             </div>
         </div>
 
