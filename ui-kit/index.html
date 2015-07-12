@@ -29,6 +29,7 @@
     <link href="css/ui-dialogs.css" rel="stylesheet">
 
     <link href="css/ui-input-select.css" rel="stylesheet">
+    <link href="css/ui-editable.css" rel="stylesheet">
 
     <link href="css/button-theme-default.css" rel="stylesheet">
     <link href="css/checkbox-theme-default.css" rel="stylesheet">
@@ -140,16 +141,9 @@
                     this is inputSelect demo
                     -->
         <h3 class="demo-panel-title">ui-editable</h3>
-        <div class="row" ng-controller="editableCtrl">
+        <div class="row" ng-controller="editableCtrl">{{name}}
             <div class="col-xs-5">
-                <div class="ui-input-edit"
-                     ui-input-edit
-                     text="xx"
-                     type="input"
-                     ng-model="inputEditModel"
-                     data="inputEditData"
-                     key="text"
-                     as-value="value"></div>
+                <a href="#" ui-editable-text="name" buttons="no">{{name || 'empty' }}</a>
             </div>
         </div>
 
@@ -525,7 +519,7 @@
             <h4>Custom Equality <small>(options.equality)</small></h4>
             {{selectedNode}}
             <div  ui-tree class="ui-tree tree-classic" tree-model="treedata1" options="opts" selected-node="selectedNode" expanded-nodes="expandedData" >
-                label: {{node.name}} ({{node.age}})
+                <span ui-editable-text="node.name" buttons="no">{{node.name || 'empty' }}</span>
             </div>
 
             <h4>Light Style <small>(Basic style, default configuration, add node)</small></h4>

@@ -1,4 +1,4 @@
-angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','ui.editable'
+angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable'
     ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','dialogs.main','ui.tabs','ui.suggest',
     ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
 angular.module('demo',['ui'])
@@ -249,17 +249,17 @@ angular.module('demo',['ui'])
     .controller('editableCtrl',['$scope','$timeout',function(scope,$timeout){
 
     }])
-    .run(function($httpBackend) {
-        $httpBackend.whenPOST(/\/suggest/).respond(function(method, url, data) {
-            data = angular.fromJson(data);
-            return [200,{success:true,data:[{'key':1},{'key':2}]}]
-//            if(data.name === 'error') {
-//                return [500, 'Error message'];
-//            } else {
-//                return [200, {status: 'ok'}];
-//            }
-        });
-    });
+//    .run(function($httpBackend) {
+//        $httpBackend.whenPOST(/\/suggest/).respond(function(method, url, data) {
+//            data = angular.fromJson(data);
+//            return [200,{success:true,data:[{'key':1},{'key':2}]}]
+////            if(data.name === 'error') {
+////                return [500, 'Error message'];
+////            } else {
+////                return [200, {status: 'ok'}];
+////            }
+//        });
+//    });
 
 
 
