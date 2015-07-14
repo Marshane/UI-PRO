@@ -1,4 +1,4 @@
-angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable'
+angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll'
     ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','dialogs.main','ui.tabs','ui.suggest',
     ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
 angular.module('demo',['ui'])
@@ -84,20 +84,21 @@ angular.module('demo',['ui'])
         }
 
         $scope.custom=function() {
-            dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{},'lg');
-
+            dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:1},'lg')
+            .result.then(function(data){
+                $scope.data = data;
+                console.log(data);//{a:1}
+            });
         }
 
-    }]) // end controller(dialogsServiceTest)
-    .controller('customDialogCtrl',['$scope','$modalInstance',function($scope,$modalInstance){
-        //-- Variables --//
-
+    }])
+    .controller('customDialogCtrl',['$scope','$modalInstance','data',function($scope,$modalInstance,data){
+        console.log(data);//{a:1}
         $scope.no = function(){
             $modalInstance.close();
         };
-
         $scope.confirm=function() {
-            dialogs.confirm();
+            $modalInstance.close(data);
         }
 
         $scope.checkboxData=[{text:'a',value:1},{text:'b',value:2},

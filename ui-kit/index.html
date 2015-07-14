@@ -27,7 +27,7 @@
     <link href="css/ui-tree.css" rel="stylesheet">
     <link href="css/ui-tab.css" rel="stylesheet">
     <link href="css/ui-dialogs.css" rel="stylesheet">
-
+    <link href="css/ui-scroll.css" rel="stylesheet">
     <link href="css/ui-input-select.css" rel="stylesheet">
     <link href="css/ui-editable.css" rel="stylesheet">
 
@@ -74,6 +74,7 @@
     <script type="text/javascript" src="lab/ui.editable.js"></script>
     <script type="text/javascript" src="lab/ui.collapse.js"></script>
     <script type="text/javascript" src="lab/ui.suggest.js"></script>
+    <script type="text/javascript" src="lab/ui.scroll.js"></script>
 
     <script type="text/javascript" src="lab/ui.inputSelect.js"></script>
     <script type="text/javascript" src="scripts/dropdown-example.js"></script>
@@ -82,7 +83,7 @@
 <body>
     <div class="container">
     <!-- /demo-headline -->
-        <div class="demo-headline">
+        <div class="demo-headline"  ui-scrollfix="+65">
             <h1 class="demo-logo">
                 <div class="logo"></div>
                 UED UI
@@ -118,6 +119,14 @@
             </div>
             <div class="col-xs-3">
                 <a href="#" class="btn  ui-btn ui-btn-disabled">Disabled Button</a>
+            </div>
+        </div>
+
+
+        <h3 class="demo-panel-title">ui.scroll</h3>
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-default" ui-scroll-to="demo">回到顶部</button>
             </div>
         </div>
 
@@ -510,6 +519,8 @@
          <!--
             this is ui-tree demo
         -->
+    <span ui-editable-text="name0" buttons="no">{{node||'empty'}}</span>
+    <span ui-editable-text="name1" buttons="no">{{node||'empty'}}</span>
         <h3 class="demo-panel-title">Tree</h3>
         <div class="row tree" ng-controller="treeCtrl">
             <button ng-click="openAll()">展开</button>
@@ -519,7 +530,7 @@
             <h4>Custom Equality <small>(options.equality)</small></h4>
             {{selectedNode}}
             <div  ui-tree class="ui-tree tree-classic" tree-model="treedata1" options="opts" selected-node="selectedNode" expanded-nodes="expandedData" >
-                <span ui-editable-text="node.name" buttons="no">{{node.name || 'empty' }}</span>
+                {{node.name}}[<span ui-editable-text="node.name" buttons="no">{{node.name||'empty'}}</span>]
             </div>
 
             <h4>Light Style <small>(Basic style, default configuration, add node)</small></h4>
@@ -571,6 +582,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </body>
 </html>

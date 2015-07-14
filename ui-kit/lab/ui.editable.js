@@ -750,6 +750,7 @@ angular.module('xeditable').factory('editableDirectiveFactory',
                                     scope.$apply(function(){
                                         scope.$form.$show();
                                     });
+                                    e.stopPropagation();
                                 });
                             }
                         }
