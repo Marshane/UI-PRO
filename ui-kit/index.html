@@ -30,6 +30,7 @@
     <link href="css/ui-scroll.css" rel="stylesheet">
     <link href="css/ui-input-select.css" rel="stylesheet">
     <link href="css/ui-editable.css" rel="stylesheet">
+    <link href="css/ui-upload.css" rel="stylesheet">
 
     <link href="css/button-theme-default.css" rel="stylesheet">
     <link href="css/checkbox-theme-default.css" rel="stylesheet">
@@ -48,35 +49,39 @@
 
 
     <script type="text/javascript" src="lab/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="lab/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="lab/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="lab/jquery.fileupload.js"></script>
     <script type="text/javascript" src="lab/lodash.min.js"></script>
     <script type="text/javascript" src="lab/angular.js"></script>
     <script type="text/javascript" src="lab/angular-sanitize.js"></script>
     <script type="text/javascript" src="lab/angular-translate.js"></script>
     <script type="text/javascript" src="lab/ui.bindHtml.js"></script>
     <script type="text/javascript" src="lab/ui.js"></script>
-    <script type="text/javascript" src="lab/ui.dateparser.js"></script>
+    <!--<script type="text/javascript" src="lab/ui.dateparser.js"></script>-->
     <script type="text/javascript" src="lab/ui.position.js"></script>
     <script type="text/javascript" src="lab/ui.transition.js"></script>
     <script type="text/javascript" src="lab/ui.modal.js"></script>
     <script type="text/javascript" src="lab/ui.buttons.js"></script>
     <script type="text/javascript" src="lab/ui.checkbox.js"></script>
     <script type="text/javascript" src="lab/ui.dropdown.js"></script>
-    <script type="text/javascript" src="lab/ui.select.js"></script>
-    <script type="text/javascript" src="lab/ui.datepicker.js"></script>
-    <script type="text/javascript" src="lab/ui.timepicker.js"></script>
+    <!--<script type="text/javascript" src="lab/ui.select.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.datepicker.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.timepicker.js"></script>-->
     <script type="text/javascript" src="lab/ui.dialogs.js"></script>
-    <script type="text/javascript" src="lab/ui.tabs.js"></script>
-    <script type="text/javascript" src="lab/ui.carousel.js"></script>
-    <script type="text/javascript" src="lab/ui.tooltip.js"></script>
-    <script type="text/javascript" src="lab/ui.grid.js"></script>
-    <script type="text/javascript" src="lab/ui.scrollbar.js"></script>
-    <script type="text/javascript" src="lab/ui.tree.js"></script>
-    <script type="text/javascript" src="lab/ui.editable.js"></script>
-    <script type="text/javascript" src="lab/ui.collapse.js"></script>
-    <script type="text/javascript" src="lab/ui.suggest.js"></script>
-    <script type="text/javascript" src="lab/ui.scroll.js"></script>
+    <!--<script type="text/javascript" src="lab/ui.tabs.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.carousel.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.tooltip.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.grid.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.scrollbar.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.tree.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.editable.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.collapse.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.suggest.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.scroll.js"></script>-->
+    <!--<script type="text/javascript" src="lab/ui.upload.js"></script>-->
 
-    <script type="text/javascript" src="lab/ui.inputSelect.js"></script>
+    <!--<script type="text/javascript" src="lab/ui.inputSelect.js"></script>-->
     <script type="text/javascript" src="scripts/dropdown-example.js"></script>
     <!--<script type="text/javascript" src="scripts/tree-test-controll.js"></script>-->
 </head>
@@ -121,6 +126,15 @@
                 <a href="#" class="btn  ui-btn ui-btn-disabled">Disabled Button</a>
             </div>
         </div>
+    <div class="row demo-row">
+        <div class="col-xs-3">
+            <span class="btn ui-btn ui-upload-button">
+		        <i class="glyphicon glyphicon-plus"></i>
+		        <span>upload Button</span>
+		        <input type="file" ui-file-upload name="files[]" data-url="{{contextPath}}/flowmgmt/FlowMgmtAction/uploadFile.go" multiple done="uploadFinished(e,data)">
+		    </span>
+        </div>
+    </div>
 
 
         <h3 class="demo-panel-title">ui.scroll</h3>
@@ -272,10 +286,12 @@
         -->
         <h3 class="demo-panel-title">Checkbox</h3>
         <div ng-controller="checkboxCtrl">
+            {{checkboxData}}<br/>
             多选：{{checkedID}}
             <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)"
                  multi="1" ng-model="checkedID" space="6" ></div>
             <br/>
+            {{checkboxData2}}
             <br/>
             单选：{{checkedID2}}
             <div ui-checkbox data="checkboxData2" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)"

@@ -1,6 +1,7 @@
-angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll'
-    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','dialogs.main','ui.tabs','ui.suggest',
-    ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
+//angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll','ui.upload'
+//    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','dialogs.main','ui.tabs','ui.suggest',
+//    ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
+angular.module('ui',['ui.checkbox','ui.dropdown','ui.buttons','pascalprecht.translate','ui.modal','dialogs.main','ui.bindHtml']);
 angular.module('demo',['ui'])
     .controller('dropdownCtrl',['$scope','$log',function ($scope, $log) {
         $scope.items = [
@@ -30,14 +31,19 @@ angular.module('demo',['ui'])
 
 
     }])
-    .controller('checkboxCtrl', ['$scope','$log',function ($scope, $log) {
+    .controller('checkboxCtrl', ['$scope','$log','$timeout',function ($scope, $log,$timeout) {
 
         $scope.checkboxData=[{text:'a',value:1},{text:'b',value:2},
           {text:'b',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
-        $scope.checkboxData2=[{text:'aa',value:1},{text:'b',value:2},
+        $scope.checkboxData2=[{text:'aa',value:1},{text:'b',value:0},
             {text:'b',value:3},{text:'dd',value:4},{text:'e',value:5},{text:'f',value:6}];
-        $scope.checkedID='1,2'
 
+        $scope.checkedID2=1;
+        $scope.checkedID=[1,2];
+        $timeout(function(){
+            $scope.checkedID2=0;
+            $scope.checkedID=[1,3];
+        },2000);
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
     }])
@@ -86,7 +92,7 @@ angular.module('demo',['ui'])
         $scope.custom=function() {
             dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:1},'lg')
             .result.then(function(data){
-                $scope.data = data;
+                    $scope.data = data;
                 console.log(data);//{a:1}
             });
         }

@@ -1261,10 +1261,10 @@ var uiGrid;
                 }
             };
         }])
-        .directive(cellHeaderDirective, [function () {
+        .directive(cellHeaderDirective, ['$translate','$rootScope',function ($translate,$rootScope) {
             var setupColumnTitle = function (scope) {
                 if (scope.columnOptions.displayName) {
-                    scope.columnTitle = scope.columnOptions.displayName;
+                    scope.columnTitle = $translate.instant(scope.columnOptions.displayName);
                 } else {
                     if (!scope.columnOptions.fieldName) {
                         scope.columnTitle = "[Invalid Field Name]";
@@ -1317,6 +1317,9 @@ var uiGrid;
                                 if (newValue !== oldValue) {
                                     controller.setFilter(columnOptions.fieldName, newValue);
                                 }
+                            });
+                            $rootScope.$on('$translateChangeSuccess', function () {
+                                setupColumnTitle(scope);
                             });
                         }
                     };
@@ -1710,19 +1713,19 @@ var uiGrid;
             }
             if (!$templateCache.get(uiGrid.footerPagerTemplateId)) {
                 $templateCache.put(uiGrid.footerPagerTemplateId, '<div class="ui-grid-pager"><div class="ui-grid-pager-add pull-left">' +
-                    '     <span class="pull-left" ng-hide="totalItemsCount">暂无数据</span>' +
-                    '     <span class="pull-left" ng-show="totalItemsCount">当前{{startItemIndex+1}}-{{endItemIndex+1}}<span>, 共{{totalItemsCount}} 条</span></span >'+
+                    '     <span class="pull-left" ng-hide="totalItemsCount">{{"NODATA"|translate}}</span>' +
+                    '     <span class="pull-left" ng-show="totalItemsCount">{{startItemIndex+1}}-{{endItemIndex+1}}<span>&nbsp; {{"OF"|translate}} &nbsp;&nbsp;{{totalItemsCount}} &nbsp;{{"RECORDS"|translate}}</span></span >'+
                         '<div class="ui-grid-pager-num" ng-if="pageItemsInput">每页显示 <input type="text"/> 条<button class="btn btn-default">确定</button></div></div>' +
                     '<ul class="ui-grid-pager-main pull-right">' +
-                    '   <li ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(0)"><span>第一页</span></a></li>' + 
-                        '<li class="pre-pager-btn pager-btn" ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(gridOptions.currentPage - 1)"><span>上一页</span></a></li>' +
+                    '   <li ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(0)"><span>{{"FIRST"|translate}}</span></a></li>' + 
+                        '<li class="pre-pager-btn pager-btn" ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(gridOptions.currentPage - 1)"><span>{{"PREV"|translate}}</span></a></li>' +
                     '   <li ng-if="pageSelectionActive" ng-repeat="pageIndex in pageIndexes track by $index" ' +
                     'ng-class="{disabled:pageIndex===null, active:pageIndex===gridOptions.currentPage}">' +
                     '      <strong ng-if="pageIndex===null">• • •</strong> <a href="" ng-click="navigateToPage(pageIndex)" ng-if="pageIndex!==null">{{pageIndex+1}}</a></li>' +
                     '   <li class="pager-btn" ng-class="{disabled:!pageCanGoForward}" ng-if="extendedControlsActive">' +
-                    '     <a href="" ng-click="pageCanGoForward&&navigateToPage(gridOptions.currentPage + 1)"><span>下一页</span></a></li>' +
+                    '     <a href="" ng-click="pageCanGoForward&&navigateToPage(gridOptions.currentPage + 1)"><span>{{"NEXT"|translate}}</span></a></li>' +
                     '   <li class="pager-btn" ng-class="{disabled:!pageCanGoForward}" ng-if="extendedControlsActive">' +
-                    '     <a href="" ng-click="pageCanGoForward&&navigateToPage(lastPageIndex)"><span>最后页</span></a></li>' +
+                    '     <a href="" ng-click="pageCanGoForward&&navigateToPage(lastPageIndex)"><span>{{"LAST"|translate}}</span></a></li>' +
                     '</ul></div>');
             }
         }

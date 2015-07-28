@@ -22,7 +22,7 @@ angular.module('ui.checkbox', [])
                 });
                 scope.modelSplit=scope.modelSplit||',';
                 scope.multi=(scope.multi==='0'?0:1);
-                var watchAll,single;
+                var watchAll,single,dif;
                 var onchange=function(a){
                     if(_.isUndefined(a))return;
                     var _ind;
@@ -66,7 +66,6 @@ angular.module('ui.checkbox', [])
                             }
                         }
                     });
-
                     var obj={};
                     if(_.isArray(tmp)){
                         dif=function(){
@@ -95,7 +94,7 @@ angular.module('ui.checkbox', [])
                 scope.ngModel=scope.ngModel||[];
                 //处理单选情况
                 scope._model={};
-                if(!scope.multi){
+                var singleHandler=function(){
                     var __t=_.clone(scope.ngModel);
                     if(scope.checkedData.length){
                         __t=scope.checkedData[0][scope.asValue];
@@ -115,7 +114,35 @@ angular.module('ui.checkbox', [])
                         });
                         __t=null;
                     });
+                };
+                if(!scope.multi){
+                    singleHandler()
                 }
+                var watchNgModel=scope.$watch('ngModel',function(a){
+                    if(scope.multi) {
+                        var _checked = [];
+                        _.each(a, function (n) {
+                            var _tmpObj = {};
+                            _tmpObj[scope.asValue] = n;
+                            _checked.push(_tmpObj);
+                        });
+                        _.each(scope.data, function (i, index) {
+                            _.each(_checked, function (j) {
+                                if (i[scope.asValue] == j[scope.asValue]) {
+                                    scope.data[index].__checked = true;
+                                }
+                            });
+                        });
+                    }else{
+                        _.each(scope.data,function(i,index){
+                            if(i[scope.asValue]===a){
+                                i.__checked=true;
+                            }else{
+                                i.__checked=false;
+                            }
+                        });
+                    }
+                },true);
                 watchAll=scope.$watch('data',function(a){
                     oncheck(a);
                 },true);
@@ -129,7 +156,9 @@ angular.module('ui.checkbox', [])
     .run(["$templateCache", function ($templateCache) {
         $templateCache.put("ui-checkbox.html",
             '<div class="btn-group ui-checkbox">\
-                <label ng-repeat="it in data | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="it.__checked" btn-checkbox><i ng-class="{checked:it.__checked}"></i>{{it[key]}}</label>\
+                <label ng-repeat="it in data | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" \
+                ng-class="{active:it.__checked}" ng-model="it.__checked" btn-checkbox>\
+                <i ng-class="{checked:it.__checked}"></i>{{it[key]}}</label>\
             </div>');
         $templateCache.put("ui-checkbox-single.html",
             '<div class="btn-group ui-checkbox">\

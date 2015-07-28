@@ -47,13 +47,14 @@ angular.module('ui.scroll', [])
                 return 0;
             }
             function elmYPosition(eID) {
-                var elm = document.getElementById(eID);
-                var y = elm.offsetTop;
-                var node = elm;
-                while (node.offsetParent && node.offsetParent != document.body) {
-                    node = node.offsetParent;
-                    y += node.offsetTop;
-                } return y;
+//                var elm = document.getElementById(eID);
+//                var y = elm.offsetTop;
+//                var node = elm;
+//                while (node.offsetParent && node.offsetParent != document.body) {
+//                    node = node.offsetParent;
+//                    y += node.offsetTop;
+//                } return y;
+                return $(eID).offset().top
             }
         };
     })
