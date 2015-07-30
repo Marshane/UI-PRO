@@ -307,6 +307,7 @@ var uiGrid;
                 orderByReverse: false,
                 pageItems: null,
                 currentPage:$isolatedScope["currentPage"],
+                hidePager:$isolatedScope["hidePager"],
                 trackBy:$isolatedScope["trackBy"],
                 totalItems: null,
                 dragable:this.$parse($isolatedScope.dragable)($isolatedScope),
@@ -636,7 +637,8 @@ var uiGrid;
 
             this.gridOptions.gridColumnDefs = finalPartialGridColumnDefs;
             var headerElement = this.templatedHeader.configureSection(gridElement, finalPartialGridColumnDefs);
-            var footerElement = this.templatedFooter.configureSection(gridElement, templatedFooterPartialGridColumnDefs);
+            //var footerElement = this.templatedFooter.configureSection(gridElement, templatedFooterPartialGridColumnDefs);
+            var footerElement = !scope.hidePager&&this.templatedFooter.configureSection(gridElement, templatedFooterPartialGridColumnDefs);
             var bodyElement = this.templatedBody.configureSection(gridElement, finalPartialGridColumnDefs);
 
             var templatedBodyRowElement = this.templatedBody.getTemplatedRowElement(bodyElement);
@@ -1221,6 +1223,7 @@ var uiGrid;
                     selectionMode: '@',//选择行模式 None | SingleRow | MultiRow | MultiRowWithKeyModifiers
                     locale: '@',//提供本地化功能
                     trackBy:'@?',
+                    hidePager:'@?',
                     pageItemsInput:'@',
                     dragable:'@?',
                     onDataRequired: '&',//调用服务端数据回调
@@ -1245,7 +1248,10 @@ var uiGrid;
                         post: function (isolatedScope, instanceElement, tAttrs, controller, transcludeFn) {
                             var gridScope = controller.setupScope(isolatedScope, instanceElement, tAttrs);
                             isolatedScope.scopeCtrl=controller;
-                            
+
+                            if(gridScope.gridOptions.hidePager==='true'){
+                                gridScope.hidePager=true;
+                            }
 
                             gridScope.speedUpAsyncDataRetrieval = function ($event) {
                                 return controller.speedUpAsyncDataRetrieval($event);

@@ -34,15 +34,15 @@ angular.module('demo',['ui'])
     .controller('checkboxCtrl', ['$scope','$log','$timeout',function ($scope, $log,$timeout) {
 
         $scope.checkboxData=[{text:'a',value:1},{text:'b',value:2},
-          {text:'b',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
+          {text:'b',value:0},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
         $scope.checkboxData2=[{text:'aa',value:1},{text:'b',value:0},
             {text:'b',value:3},{text:'dd',value:4},{text:'e',value:5},{text:'f',value:6}];
 
         $scope.checkedID2=1;
-        $scope.checkedID=[1,2];
+        $scope.checkedID=[0,6];
         $timeout(function(){
             $scope.checkedID2=0;
-            $scope.checkedID=[1,3];
+            $scope.checkedID=[1,4];
         },2000);
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
@@ -82,7 +82,9 @@ angular.module('demo',['ui'])
         }
 
         $scope.notify=function() {
-            dialogs.notify();
+            dialogs.notify().result.then(function(){
+
+            });
         }
 
         $scope.confirm=function() {
@@ -90,7 +92,7 @@ angular.module('demo',['ui'])
         }
 
         $scope.custom=function() {
-            dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:1},'lg')
+            dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:1},{width:200})
             .result.then(function(data){
                     $scope.data = data;
                 console.log(data);//{a:1}

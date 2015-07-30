@@ -1,4 +1,4 @@
-angular.module('ui.checkbox', [])
+angular.module('ui.checkbox', ['ui.buttons'])
     .directive('uiCheckbox',[function(){
         return{
             restrict:'A',
@@ -37,6 +37,8 @@ angular.module('ui.checkbox', [])
                             _checked.push(_tmpObj);
                         });
                     }
+
+
                     _.each(scope.data,function(i,index){
                         _ind=null;
                         _.each(_checked,function(j){
@@ -78,7 +80,7 @@ angular.module('ui.checkbox', [])
                         dif=scope.ngModel;
                     }
                     obj[attrs.ngModel]=_.filter(a,function(i){
-                        return i[scope.asValue]===dif;
+                        return i[scope.asValue]==dif;
                     });
                     (scope.onChecked||angular.noop)(obj);
                     (scope.onChange||angular.noop)({data:a});
@@ -91,7 +93,13 @@ angular.module('ui.checkbox', [])
                 if(_.isUndefined(scope.asValue))return;
                 scope.data=scope.data||[];
                 scope.checkedData=scope.checkedData||[];
+                if(+scope.ngModel===0){
+                    scope.ngModel=[scope.ngModel];
+                }
                 scope.ngModel=scope.ngModel||[];
+                if(!_.isArray(scope.ngModel)){
+                    scope.ngModel=String(scope.ngModel).split(scope.modelSplit);
+                }
                 //处理单选情况
                 scope._model={};
                 var singleHandler=function(){
@@ -127,6 +135,7 @@ angular.module('ui.checkbox', [])
                             _checked.push(_tmpObj);
                         });
                         _.each(scope.data, function (i, index) {
+                            scope.data[index].__checked=false;
                             _.each(_checked, function (j) {
                                 if (i[scope.asValue] == j[scope.asValue]) {
                                     scope.data[index].__checked = true;
@@ -135,7 +144,7 @@ angular.module('ui.checkbox', [])
                         });
                     }else{
                         _.each(scope.data,function(i,index){
-                            if(i[scope.asValue]===a){
+                            if(i[scope.asValue]==a){
                                 i.__checked=true;
                             }else{
                                 i.__checked=false;
