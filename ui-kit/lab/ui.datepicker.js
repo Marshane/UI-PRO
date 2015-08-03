@@ -556,6 +556,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                             ngModel.$setValidity('date', true);
                             return viewValue;
                         } else if (angular.isString(viewValue)) {
+                            viewValue=viewValue.replace(/\-/g,'/');
                             var date = dateParser.parse(viewValue, dateFormat) || new Date(viewValue);
                             if (isNaN(date)) {
                                 ngModel.$setValidity('date', false);
