@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="boot.css">
+    <script src="common-concat-min-new.js"></script>
+    <script src="main.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<div class="col-xs-12">
+    <h2 class="pull-left">可用津贴总量：</h2>
+    <span class="pull-left">5,700.00 RMB( 总9,000,00RMB)</span>
+    <div class="col-xs-6 progress">
+        <div class="progress-bar" style="width: 60%;"></div>
+    </div>
+</div>
+<h3>津贴使用详情</h3>
+<div class="col-xs-4">
+    <p>Time：2015-01-01 ~ 2015-01-01</p>
+    <div class="col-xs-8">
+        <div class="col-xs-6">已使用<br/>1500</div>
+        <div class="col-xs-6">剩余津贴<br/>1500</div>
+        <div class="col-xs-12 progress">
+            <div class="progress-bar" style="width: 60%;"></div>
+        </div>
+    </div>
+    <div class="col-xs-4">津贴总量<br/>3000</div>
+</div>
+<div class="col-xs-4">
+    <p>Time：2015-01-01 ~ 2015-01-01</p>
+    <div class="col-xs-8">
+        <div class="col-xs-6">已使用<br/>1500</div>
+        <div class="col-xs-6">剩余津贴<br/>1500</div>
+        <div class="col-xs-12 progress">
+            <div class="progress-bar" style="width: 60%;"></div>
+        </div>
+    </div>
+    <div class="col-xs-4">津贴总量<br/>3000</div>
+</div>
+<div class="col-xs-4">
+    <p>Time：2015-01-01 ~ 2015-01-01</p>
+    <div class="col-xs-8">
+        <div class="col-xs-6">已使用<br/>1500</div>
+        <div class="col-xs-6">剩余津贴<br/>1500</div>
+        <div class="col-xs-12 progress">
+            <div class="progress-bar" style="width: 60%;"></div>
+        </div>
+    </div>
+    <div class="col-xs-4">津贴总量<br/>3000</div>
+</div>
+<div class="pull-right">Total：6 <span class="glyphicon glyphicon-chevron-up glyphicon-chevron-down"></span></div>
+
+<div class="main-title bill-title">
+    <h3 class="pull-left main-title-bkgd">Trading Particulars</h3>
+    <div class="pull-right">
+        <lable class="pull-left" style="margin-top:5px;width: 100px;text-align:right;">Date：</lable>
+        <p class=" input-group ui-datapicker pull-left" style="width:200px;margin-right:10px;margin-bottom:10px;">
+            <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                   ng-model="startDate" is-open="opened2" ng-click="opened2=1" show-weeks="true"/>
+                <span class="input-group-btn">
+                <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened2=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+        </p>
+        <label class="pull-left">--</label>
+        <p class="input-group ui-datapicker pull-left" style="width:200px;margin-left:10px;">
+            <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                   ng-model="endDate" is-open="opened3" ng-click="opened3=1" show-weeks="true"/>
+                <span class="input-group-btn">
+                <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened3=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+        </p>
+    </div>
+</div>
+<table class="ui-grid"
+       ui-grid
+       items="gridData"
+       selected-items="selectedItems"
+       total-items="total"
+       page-items="pagingOptions.pageSize"
+       current-page="pagingOptions.currentPage"
+       on-data-required="onGridPager(currentPage,pageItems)"
+       selection-mode="None">
+    <thead>
+    <tr>
+        <th field-name="functionName" display-name="Bill No"></th>
+        <th field-name="algo" display-name="Trading Time"></th>
+        <th field-name="dealNum" display-name="Usage Amount"></th>
+        <th field-name="errorNum" display-name="Remain Amount"></th>
+        <th field-name="algo" display-name="Item Detail"></th>
+        <th field-name="dealNum" display-name="Business Lobby"></th>
+        <th field-name="errorNum" display-name="User"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div>
+
+            </div></td>
+        </tr>
+    </tbody>
+</table>
+<script type='text/javascript'>
+    angular.bootstrap(document.getElementsByTagName('html')[0],['account','account.mix']);
+</script>
+</body>
+</html>
