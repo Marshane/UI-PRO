@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+    <!--<link rel="stylesheet" href="style.css">-->
+    <script type="text/javascript">
+    /**
+     * UI JS
+     * Author: Marshane
+     * 462879619@qq.com
+     */
+// $.extend({
+//     trim: function(text) {
+//         return (text || "").replace(/(^[\s\u3000]*)|([\s\u3000]*$)/g,"");
+//     }
+// });
+    String.prototype.trim=function(){
+        return String(this).replace(/(^[\s\u3000]*)|([\s\u3000]*$)/g,"");
+    };
+    /**
+     * 目标字符串是否包含
+     * @param source
+     * @return {Boolean}
+     */
+    String.prototype.hasString=function(source){
+        if(typeof source == 'object'){
+            for(var i= 0,j=source.length;i<j;i++)
+                if(!this.hasString(source[i])) return !1;
+            return !0;
+        }
+        if(this.indexOf(source) != -1) return !0;
+    };
+    /**
+     * 计算字符串长度中文全角算2个长度
+     * @returns {number}
+     */
+    String.prototype.len = function () {
+        var a = (this || "").match(/[^\x00-\x80]/g);
+        return this.length + (a ? a.length : 0)
+    };
+    /**
+     * 截取字符串用...表示
+     * @param k
+     * @returns {*}
+     */
+    String.prototype.cut = function (k) {
+        var g = "...",
+                d = [],
+                l = "";
+        if (!k) {
+            return this.trim()
+        }
+        if (this.len() > k) {
+            for (var e = this.split(""), l = 0, i = e.length; l < i; l++) {
+                if (0 < k) {
+                    d.push(e[l]), k -= e[l].len()
+                } else {
+                    break
+                }
+            }
+            l = d.join("") + g
+        } else {
+            l = this.trim()
+        }
+        return l
+    };
+    /**
+     * 将目标字符串进行去驼峰化处理
+     * @return {String}
+     */
+    String.prototype.hyphenate=function(){
+        return this.replace(/[A-Z]/g,
+                function(match) {
+                    return '-' + match.toLowerCase();
+                });
+    };
+    /**
+     * 将目标字符串进行驼峰化处理
+     * @param source
+     * @return {String}
+     */
+    String.prototype.toCamelCase=function(){
+        if (this.indexOf('-') < 0 && this.indexOf('_') < 0) {
+            return this;
+        }
+        return this.replace(/[-_][^-_]/g, function (match) {
+            return match.charAt(1).toUpperCase();
+        });
+    };
+    /**
+     * ui全局命名空间 总览
+     * @type {
+ *          {
+ *              DOM操作方法集合
+     *          dom:{g: Function, gt: Function, gc: gc, dc: Function, width: Function, height: Function, hide: Function, show: Function, toggle: Function, hasClass: Function, addClass: Function, removeClass: Function, toggleClass: Function, prev: Function, next: Function, remove: Function, append: Function, prepend: Function, after: Function, before: Function, first: Function, last: Function, parents: Function, children: Function, replace: Function, getAncestorBy: Function, _NAME_ATTRS: Function, attr: Function, css: Function, getDocument: Function, getComputedStyle: Function, getPosition: Function},
+     *          字符串方法集合
+     *          string: {template: Function, toHTML: Function, length: Function, trim: Function, format: Function, encodeHTML: Function, decodeHTML: Function},
+     *          getScript: Function, ajax: Function, get: Function, xmlHttp: Function,
+     *          数组方法集合
+     *          array: {include: Function, index: Function, unique: Function, each: Function, indexOf: Function, cantains: Function, empty: Function, remove: Function},
+     *          窗口（视口）方法集合
+     *          page: {getHeight: Function, getWidth: Function, getViewWidth: Function, getViewHeight: Function, getScrollLeft: Function, getScrollTop: Function, scrollTo: Function},
+     *          flash的操作
+     *          swf: {create: Function, createHTML: Function, version: null},
+     *          工具方法集合
+     *          util: {getVal: Function, index: Function, clone: Function, _concat: Function, json2str: Function, serialize: Function, toParm: Function, parseUrl: Function, getCursor: Function, cursorX: Function, insertTxt: Function, selectTxt: Function, txtEnd: Function, isEmptyObject: Function},
+     *          事件方法集合
+     *          evt: Function, each: Function, ea: Function, er: Function, once: Function,
+     *          json: Function, extend: Function,
+     *          format: Function, addZero: Function, trim: Function,
+     *          类型判断集合
+     *          isStrict: Function, isObject: Function, isElement: Function, isUndefined: Function, isFunction: Function, isNumber: Function, isString: Function, isArray: Function, isDate: Function, getType: Function,
+     *          ready: Function, readyDo: Array, isReady: Function, onReady: Function,
+     *          b: b,
+     *          fn: {random: Function, bind: Function},
+     *          bind: Function, _clearCache: Array, clear: Function
+ *          }
+ *      }
+     */
+    var ui={
+        dom:{
+            /**
+             * 获得ID
+             * @param id 目标元素
+             * @return {*}
+             */
+            g:function(id){
+                return ui.isElement(id) ? id :document.getElementById(id);
+            },
+            /**
+             * 获得目标元素中的匹配元素
+             * @param b 目标元素
+             * @param c 匹配元素节点名称
+             * @return {*}
+             */
+            gt:function(b,c){
+                return b.getElementsByTagName(c)
+            },
+            /**
+             * mini选择器
+             * 支持一下规则
+             *    tag
+             *   tag > .className
+             *   tag > tag
+             *   #id > tag.className
+             *   .className tag
+             *   tag, tag, #id
+             *   tag#id.className
+             *   .className
+             *   span > * > b
+             */
+            gc:function(){
+                function a(l, p) {
+                    if (!p) {
+                        p = l;
+                        l = document
+                    }
+                    l = l || document;
+                    if(!ui.isString(p)){
+                        return ui.isArray(p)?p:[p];
+                    }
+                    if (!/^[\w\-_#]+$/.test(p) && l.querySelectorAll) return b(l.querySelectorAll(p));
+                    if (p.indexOf(",") > -1) {
+                        p = p.split(/,/g);
+                        for (var o = [], n = 0, q = p.length; n < q; ++n) o = o.concat(a(l, p[n]));
+                        return m(o)
+                    }
+                    p = p.match(f);
+                    var r = p.pop();
+                    o = (r.match(g) || j)[1];
+                    n = !o && (r.match(h) || j)[1];
+                    q = r.split(".").slice(2);
+                    r = !o && (r.match(k) || j)[1];
+                    if (n && !r && l.getElementsByClassName) r = b(l.getElementsByClassName(n));
+                    else {
+                        r = !o && b(l.getElementsByTagName(r || "*"));
+                        if (n) r = e(r, "className", RegExp("(^|\\s)" + n + "(\\s|$)"), q);
+                        if (o) return (l = l.getElementById(o)) ? [l] : []
+                    }
+                    return p[0] && r[0] ? c(p, r) : r
+                }
+                function b(l) {
+                    try {
+                        return Array.prototype.slice.call(l)
+                    } catch(p) {
+                        for (var o = [], n = 0, q = l.length; n < q; ++n) o[n] = l[n];
+                        return o
+                    }
+                }
+                function c(l, p, o) {
+                    var n = l.pop();
+                    if (n === ">") return c(l, p, true);
+                    var q = [],
+                            r = -1,
+                            t = (n.match(g) || j)[1],
+                            s = !t && (n.match(h) || j)[1];
+                    n = !t && (n.match(k) || j)[1];
+                    var v = -1,
+                            A,
+                            y,
+                            z;
+                    for (n = n && n.toLowerCase(); A = p[++v];) {
+                        y = A.parentNode;
+                        do {
+                            z = (z = (z = !n || n === "*" || n === y.nodeName.toLowerCase()) && (!t || y.id === t)) && (!s || RegExp("(^|\\s)" + s + "(\\s|$)").test(y.className));
+                            if (o || z) break
+                        }
+                        while (y = y.parentNode);
+                        if (z) q[++r] = A
+                    }
+                    return l[0] && q[0] ? c(l, q) : q
+                }
+                function e(l, p, o, n) {
+                    var q = -1,
+                            r,
+                            t = -1,
+                            s = [];
+                    for (n = n || ""; r = l[++q];) if (o.test(r[p]) && r[p].hasString(n)) s[++t] = r;
+                    return s
+                }
+                var f = /(?:[\w\-\\.#]+)+(?:\[\w+?=([\'"])?(?:\\\1|.)+?\1\])?|\*|>/ig,
+                        h = /^(?:[\w\-_]+)?\.([\w\-_]+)/,
+                        g = /^(?:[\w\-_]+)?#([\w\-_]+)/,
+                        k = /^([\w\*\-_]+)/,
+                        j = [null, null],
+                        m = function() {
+                            var l = +new Date,
+                                    p = function() {
+                                        var o = 1;
+                                        return function(n) {
+                                            var q = n[l],
+                                                    r = o++;
+                                            if (!q) {
+                                                n[l] = r;
+                                                return true
+                                            }
+                                            return false
+                                        }
+                                    } ();
+                            return function(o) {
+                                for (var n = o.length, q = [], r = -1, t = 0, s; t < n; ++t) {
+                                    s = o[t];
+                                    if (p(s)) q[++r] = s
+                                }
+                                l += 1;
+                                return q
+                            }
+                        } ();
+                return a
+            }(),
+            /**
+             * 创建元素
+             * @param tagName 元素名称
+             * @param opt_attr属性名/值键对
+             * @return {*}
+             */
+            dc:function(tagName,opt_attr) {
+                var el=document.createElement(tagName),
+                        attr=opt_attr || {};
+                return this.attr(el,attr);
+            },
+            width:function(element){return element.offsetWidth},
+            height:function(element){return element.offsetHeight},
+            /**
+             * 隐藏显示的匹配元素。
+             * @param element 目标元素
+             */
+            hide:function(element){
+                var self=this;
+                if(element){
+                    var arr=[];
+                    if(element.length) arr=element;
+                    else arr.push(element);
+                    ui.each(arr,function(it){
+                        var c=self.css(it,"display");
+                        c!="none" && (it._curDisplay=c);
+                        it.style.display="none";
+                    })
+                }
+                return element;
+            },
+            /**
+             * 显示隐藏的匹配元素。
+             * @param element 目标元素
+             */
+            show:function(element){
+                if(element){
+                    var arr=[];
+                    if(element.length) arr=element;
+                    else arr.push(element);
+                    ui.each(arr,function(it){
+                        it.style.display=it._curDisplay||"";
+                    })
+                }
+                return element;
+            },
+            /**
+             * 如果元素是可见的，切换为隐藏的；如果元素是隐藏的，切换为可见的
+             * @param element 目标元素
+             */
+            toggle:function(element){
+                var self=this;
+                if(element){
+                    var arr=[];
+                    if(element.length) arr=element;
+                    else arr.push(element);
+                    ui.each(arr,function(it){
+                        'none' == self.css(it,'display') ? self.show(it) : self.hide(it);
+                    });
+                }
+                return element;
+            },
+            /**
+             * 检查当前的元素是否含有某个特定的类，如果有，则返回true
+             * @param element    目标元素
+             * @param _className  类名
+             * @return {Boolean}
+             */
+            hasClass:function(element,_className){
+                return !element || !element.className ? !1 :
+                        element.className !=
+                        element.className.replace(RegExp('\\b'+_className+'\\b'),'');
+            },
+            /**
+             * 为每个匹配的元素添加指定的类名。
+             * @param element 目标元素
+             * @param _className 类名
+             */
+            addClass:function(element,_className){
+                var self=this;
+                if(element){
+                    var arr=[];
+                    if(element.length) arr=element;
+                    else arr.push(element);
+                    ui.each(arr,function(it){
+                        if(it.className){
+                            if(!self.hasClass(it,_className))
+                                it.className +=' '+_className;
+                        }else it.className=_className;
+                    });
+                }
+                return element;
+            },
+            /**
+             * 从所有匹配的元素中删除全部或者指定的类。
+             * @param element  目标元素
+             * @param _className 类名
+             */
+            removeClass:function(element,_className){
+                var self=this;
+                if(element){
+                    var arr=[];
+                    if(element.length) arr=element;
+                    else arr.push(element);
+                    ui.each(arr,function(it){
+                        var l=_className.split(' ');
+                        l.length>1 ?ui.each(l,function(_it){
+                            self.removeClass(it,_it);
+                        }):it.className=it.className.replace(RegExp('\\b'+_className+'\\b'),'');
+                    })
+                }
+            },
+            /**
+             * 如果存在（不存在）就删除（添加）一个类。
+             * @param element    目标元素
+             * @param _className 类名
+             */
+            toggleClass:function(element,_className){
+                var self=this;
+                if(element){
+                    if(!ui.isArray(element))element=[element];
+                    ui.each(element,function(it){
+                        self.hasClass(it,_className) ? self.removeClass(it,_className) : self.addClass(it,_className);
+                    });
+                }
+            },
+            /**
+             * 获取目标元素前面那个紧邻的同辈元素
+             * @param {HTMLElement} element 目标元素
+             * @return {HTMLElement} 返回前面那个紧邻的同辈元素
+             */
+            prev:function(element){
+                element = element.previousSibling;
+                if (element == null) return false;
+                return ui.isElement(element) ? element : this.prev(element)
+            },
+            /**
+             * 获取目标元素后面那个紧邻的同辈元素
+             * @param {HTMLElement} element 目标元素
+             * @return {HTMLElement} 返回后面那个紧邻的同辈元素
+             */
+            next:function(element){
+                element = element.nextSibling;
+                if (element == null) return null;
+                return ui.isElement(element)
+                        ? element
+                        : ui.dom.next(element)
+            },
+            /**
+             * 从DOM树上移除目标元素 | 目标元素集合
+             * @param {HTMLElement | HtmlElementCollection} element 需要移除的元素 | 元素集合
+             * 对于移除的dom元素，IE下会释放该元素的空间，继续使用该元素的引用进行操作将会引发不可预料的问题。
+             */
+            remove:function(element){
+                if(element){
+                    var arr=[];
+                    if(element.length) arr=element;
+                    else arr.push(element);
+                    ui.each(arr,function(o){
+                        o.parentNode && o.parentNode.removeChild(o)
+                    })
+                }
+            },
+            /**
+             * 向每个匹配的元素内部追加内容
+             * @param {HTMLElement} element 目标元素
+             * @param {HTMLElement | string} f 要追加到目标中的内容
+             * @return {HTMLElement} 目标元素
+             */
+            append:function(element,f,cb){
+                if('string' == typeof f){
+                    f=ui.string.toHTML(f);
+                }
+                if(!ui.isArray(f))f=[f];
+                for(var i= 0,len= f.length;i<len;i++){
+                    element.appendChild(f[i]);
+                }
+                if(ui.isFunction(cb)){
+                    return cb(f)
+                }
+                return element
+            },
+            /**
+             * 向每个匹配的元素内部前置元素
+             * @param element 目标元素
+             * @param f       所要插入的元素
+             * @param cb      回调
+             * @returns {*}
+             */
+            prepend:function(element,f,cb){
+                if('string' == typeof f){
+                    f=ui.string.toHTML(f);
+                }
+                if(!ui.isArray(f))f=[f];
+                for(var i=f.length-1,n;i>=0;i--){
+                    n = element.firstChild;
+                    n ? ui.dom.before(n, f[i]) : ui.dom.append(element, f[i])
+                }
+                if(ui.isFunction(cb)){
+                    return cb(f)
+                }
+                return element
+            },
+            /**
+             * 在每个匹配的元素之后插入元素
+             * @param element 目标元素
+             * @param f       所要插入的元素
+             */
+            after:function(element,f){
+                var n = element.parentNode;
+                n.lastChild == element ? n.appendChild(f) : n.insertBefore(f, element.nextSibling)
+            },
+            /**
+             * 在每个匹配的元素之前插入元素
+             * @param element目标元素
+             * @param f 所要插入的元素
+             */
+            before:function(element,f){
+                element.parentNode.insertBefore(f,element)
+            },
+            /**
+             * 获取第一个元素
+             * @param b 目标元素
+             * @param c 匹配名字
+             * @returns {*}
+             */
+            first:function(b,c){
+                return this.children(b,c)[0];
+            },
+            /**
+             * 获取最后个元素
+             * @param b 目标元素
+             * @param c 匹配名字
+             * @returns {*}
+             */
+            last:function(b,c){
+                var children=this.children(b,c);
+                return children[children.length-1];
+            },
+            /**
+             * 取得一个包含着所有匹配元素的祖先元素的元素集合（不包含根元素）
+             * @param a 目标元素
+             * @param h 匹配名字
+             * @returns {Array}
+             */
+            parents: function (a, h) {
+                if (h) {
+                    var f = [],
+                            d = ui.dom.parents(a);
+                    ui.each(d, function (e) {
+                        e.nodeType==1&&(e.tagName.toLowerCase()===h||ui.dom.hasClass(e, h))&& f.push(e)
+                    });
+                    return f
+                }
+                return (d = a.parentNode) ? "HTML" == d.nodeName ? [d] : [d].concat(this.parents(d)) : []
+            },
+            /**
+             * 获得元素子集
+             * @param b 目标元素
+             * @param c 子集过滤器
+             * @returns {Array}
+             */
+            children:function(b,c){
+                var e=[];
+                if(ui.isString(b)) b=ui.dom.gc(b)[0];
+                c && (c = c.split("|"));
+                ui.each(b.childNodes, function (b) {
+                    var k = !1;
+                    if (c) for (var a = 0, f = c.length; a < f; a++) if (ui.dom.hasClass(b, c[a])) {
+                        k = !0;
+                        break
+                    }
+                    ui.isElement(b) && (!c || k) && e.push(b)
+                });
+                return e
+            },
+            /**
+             * 替换元素
+             * @param element 替换元素
+             * @param f       替换目标元素
+             */
+            replace:function (element,f) {
+                f.parentNode.replaceChild(element, f)
+            },
+            /**
+             * 获取目标元素符合条件的最近的祖先元素
+             * @param {HTMLElement | string} element 目标元素或目标元素的id
+             * @param {Function} fn 判断祖先元素条件的函数
+             * @returns {HTMLElement | null} 符合条件的最近的祖先元素，查找不到时返回null
+             */
+            getAncestorBy:function(element,fn){
+                element=ui.dom.g(element);
+                while(element=element.parentNode&&element.nodeName==1){
+                    if(fn(element)){
+                        return element;
+                    }
+                }
+                return null;
+            },
+            /**
+             * 驼峰容错纠正
+             * @returns {{cellpadding: string, cellspacing: string, colspan: string, rowspan: string, valign: string, usemap: string, frameborder: string}}
+             * @private
+             */
+            _NAME_ATTRS:function () {
+                var result = {
+                    'cellpadding': 'cellPadding',
+                    'cellspacing': 'cellSpacing',
+                    'colspan': 'colSpan',
+                    'rowspan': 'rowSpan',
+                    'valign': 'vAlign',
+                    'usemap': 'useMap',
+                    'frameborder': 'frameBorder'
+                };
+                if (ui.b.ie < 8) {
+                    result['for'] = 'htmlFor';
+                    result['class'] = 'className';
+                } else {
+                    result['htmlFor'] = 'for';
+                    result['className'] = 'class';
+                }
+                return result;
+            },
+            /**
+             * 获取|设置目标元素属性
+             * @param {HTMLElement} element 目标元素
+             * @param {Array|String} key
+             * @param {String} value
+             * @return {HTMLDocument|String} 目标元素所属的document对象或属性
+             */
+            attr:function(element,key,value){
+                var self=this;
+                function _setAttr(_el,_k,_v){
+                    _k=self._NAME_ATTRS[_k] || _k;
+                    if(''==_v){
+                        _el.removeAttribute(_k);
+                    }else{
+                        switch(_k){
+                            case 'class':
+                                _el.className=_v;
+                                break;
+                            case 'style':
+                                _el.style.cssText=_v;
+                                break;
+                            default:
+                                _el.setAttribute(_k,_v);
+                        }
+                    }
+                }
+                if(!element)return !1;
+                if(void 0 == value && !ui.isObject(key)){
+                    switch(key){
+                        case 'class':
+                            return element.className;
+                        case 'style':
+                            return element.style.cssText;
+                        default :
+                            return element.getAttribute(key) || '';
+                    }
+                }else{
+                    if(ui.isObject(key)){
+                        for(var k in key){
+                            _setAttr(element,k,key[k]);
+                        }
+                    }else{
+                        _setAttr(element,key,value);
+                    }
+                }
+                return element;
+            },
+            /**
+             * 设置元素css样式
+             * @param element目标元素
+             * @param key    元素属性
+             * @param value  元素值
+             * @return {*}
+             */
+            css:function(element,key,value){
+                if(void 0 == value && !ui.isObject(key)){
+                    if(window.getComputedStyle){
+                        key=key.hyphenate();
+                        return window.getComputedStyle(element,null).getPropertyValue(key);
+                    }
+                    if(element.currentStyle){
+                        return key=='opacity' ?
+                                        0 <=element.style.filter.indexOf('opacity=') ? parseFloat(element.style.filter.match(/opacity=([^)]*)/)[1])/100 : '1' : element.currentStyle[key];
+                    }
+                }else{
+                    if(element){
+                        if(!element.length){
+                            element=[element];
+                        }
+                        ui.each(element,function(it){
+                            if(ui.isObject(key)){
+                                for(var k in key){
+                                    if(key.hasOwnProperty(k)){
+                                        'opacity' == k && ui.isUndefined(it.style.opacity) ?
+                                                it.style.filter = (it.filter || '').replace(/alpha\([^)]*\)/,'') + 'alpha(opacity='+100*key[k]+')' :
+                                                it.style[k]=key[k];
+                                    }
+                                }
+                            }else{
+                                'opacity' == key && ui.isUndefined(it.style.opacity) ?
+                                        it.style.filter = (it.filter || '').replace(/alpha\([^)]*\)/,'') + 'alpha(opacity='+100*value+')' :
+                                        it.style[key]=value;
+                            }
+                        });
+                    }
+                }
+                return element;
+            },
+            /**
+             * 获取目标元素所属的document对象
+             * @param {HTMLElement|string} element 目标元素或目标元素的id
+             * @return {HTMLDocument} 目标元素所属的document对象
+             */
+            getDocument:function(element){
+                element=ui.dom.g(element);
+                return element.nodeType == 9 ? element:element.ownerDocument||element.document;
+            },
+            /**
+             * 获取目标元素的computed style值。如果元素的样式值不能被浏览器计算，则会返回空字符串（IE）
+             * @param HTMLElement|string} element 目标元素或目标元素的id
+             * @param {string} key 要获取的样式名
+             * @return {String} 目标元素的computed style值
+             */
+            getComputedStyle:function(element,key){
+                element=ui.dom.g(element);
+                var doc=getDocument(element),
+                        styles;
+                if(doc.defaultView&&doc.defaultView.getComputedStyle){
+                    styles=doc.defaultView.getComputedStyle(element,key);
+                    if(styles) return styles[key]||styles.getPropertyValue(key);
+                }
+                return '';
+            },
+            /**
+             * 获取目标元素相对于整个文档左上角的位置
+             * @param {HTMLElement|string} element 目标元素或目标元素的id
+             * @return {Object} 目标元素的位置，键值为top和left的Object。
+             */
+            getPosition:function(element){
+                element=ui.dom.g(element);
+                var doc=ui.dom.getDocument(element),
+                        pos={'left':0,'right':0},
+                        viewport=(ui.b.ie&&!ui.b.isStrict) ? doc.body : doc.documentElement,
+                        parent,
+                        box;
+                if(element==viewport){return pos;}
+                //IE and Gecko 1.9+
+                if(element.getBoundingClientRect){
+                    //当HTML或者BODY有border width时, 原生的getBoundingClientRect返回值是不符合预期的
+                    //考虑到通常情况下 HTML和BODY的border只会设成0px,所以忽略该问题.
+                    box=element.getBoundingClientRect();
+                    pos.left=Math.floor(box.left)+Math.max(doc.documentElement.scrollLeft+doc.body.scrollLeft);
+                    pos.top=Math.floor(box.top)+Math.max(doc.documentElement.scrollTop+doc.body.scrollTop);
+                    // IE会给HTML元素添加一个border，默认是medium（2px）
+                    // 但是在IE 6 7 的怪异模式下，可以被html { border: 0; } 这条css规则覆盖
+                    // 在IE7的标准模式下，border永远是2px，这个值通过clientLeft 和 clientTop取得
+                    // 但是。。。在IE 6 7的怪异模式，如果用户使用css覆盖了默认的medium
+                    // clientTop和clientLeft不会更新
+                    pos.left -=doc.documentElement.clientLeft;
+                    pos.top -=doc.documentElement.clientTop;
+                }else{// safari/opera/firefox
+                    parent=element;
+                    do{
+                        pos.left +=parent.offsetLeft;
+                        pos.top +=parent.offsetTop;
+                        // safari里面，如果遍历到了一个fixed的元素，后面的offset都不准了
+                        if(ui.b.isWebkit && ui.dom.css(parent,'position')=='fixed'){
+                            pos.left +=doc.body.scrollLeft;
+                            pos.top +=doc.body.scrollTop;
+                            break;
+                        }
+                        parent=parent.offsetParent;
+                    }while(parent && parent != element);
+                    // 对body offsetTop的修正
+                    if(ui.b.opera || (ui.b.isWebkit && ui.dom.css(element,'position')=='absolute')){
+                        pos.top -=doc.body.offsetTop;
+                    }
+                    // 计算除了body的scroll
+                    parent = element.offsetParent;
+                    while (parent && parent != doc.body) {
+                        pos.left -= parent.scrollLeft;
+                        // see https://bugs.opera.com/show_bug.cgi?id=249965
+                        if (!ui.b.opera || parent.tagName != 'TR') {
+                            pos.top -= parent.scrollTop;
+                        }
+                        parent = parent.offsetParent;
+                    }
+                }
+                return pos;
+            }
+        },
+        string:{
+            /**
+             * 模板引擎
+             * 用例：template(tpl)(data)
+             * @param b
+             * @returns {Function}
+             */
+            template: function (b) {
+                return new Function("obj", "var p=[],print=function(){p.push.apply(p,arguments);};with(obj){p.push('" + b.replace(/[\r\t\n]/g, " ").split("<%").join("\t").replace(/((^|%>)[^\t]*)'/g, "$1\r").replace(/\t=(.*?)%>/g, "',$1,'").split("\t").join("');").split("%>").join("p.push('").split("\r").join("\\'") + "');}return p.join('');")
+            },
+            /**
+             * 目标HTML字符串转换成HTML元素
+             * @param {string} source 目标HTML字符串
+             *
+             * @return {HTMLElement} 返回HTML元素
+             */
+            toHTML:function (source){
+                var div=ui.dom.dc("div"),
+                        nodes=[];
+                div.innerHTML=source;
+                ui.each(div.childNodes,function(o) {
+                    if(o.nodeType===1)
+                        nodes.push(o)
+                });
+                return nodes
+            },
+            /**
+             * 计算目标字符串长度 中文算2个字符
+             * @param {string} source 目标字符串
+             *
+             * @returns 字符串长度
+             */
+            length:function(source){
+                return source.replace(/[^\x00-\xff]/g,"xx").length;
+            },
+            /**
+             * 删除目标字符串两端的空白字符
+             * @param {string} source 目标字符串
+             *
+             * @returns 处理后的目标字符
+             */
+            trim:function(source){
+                return source.replace(/^\s+|\s+$/g, "")
+            },
+            /**
+             * 对目标字符串进行格式化
+             * @param {string} source 目标字符串
+             * 替换目标字符串中的{0}、{1}...部分。
+             *
+             * @returns {string} 格式化后的字符串
+             */
+            format:function(source){
+                if (arguments.length == 1) return source;
+                var data = Array.prototype.slice.call(arguments, 1);
+                return source.replace(/\{(\d+)\}/g,function(_0, _1) {
+                    return data[_1]
+                })
+            },
+            /**
+             * 对目标字符串进行html编码
+             * @param {string} source 目标字符串
+             */
+            encodeHTML:function(source){
+                return String(source)
+                        .replace(/&/g,'&amp;')
+                        .replace(/</g,'&lt;')
+                        .replace(/>/g,'&gt;')
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#39;");
+            },
+            /**
+             * 对目标字符串进行html解码
+             * @param {string} source 目标字符串
+             */
+            decodeHTML:function(source){
+                var str = String(source)
+                        .replace(/&quot;/g,'"')
+                        .replace(/&lt;/g,'<')
+                        .replace(/&gt;/g,'>')
+                        .replace(/&amp;/g, "&");
+                //处理转义的中文和实体字符
+                return str.replace(/&#([\d]+);/g, function(_0, _1){
+                    return String.fromCharCode(parseInt(_1, 10));
+                });
+            }
+        },
+        getScript: function (b, c, e) {
+            var _D=ui.dom;
+            var g = _D.dc("script");
+            ui.b.ie ? g.onreadystatechange = function () {
+                if ("loaded" == this.readyState || "complete" == this.readyState) c && c(), g = null
+            } : g.onload = function () {
+                c && c();
+                g = null
+            };
+            e && _D.attr(g, "charset", e);
+            _D.attr(g, {"type":"text/javascript","src": b,"async":"true"});
+            _D.gt(document, "head")[0].appendChild(g)
+        },
+        /**
+         * 简易的ajax
+         * ui.ajax({
+     *     url:'',//action地址
+     *     timeout:'',//超时数
+     *     type:'',   //请求类型
+     *     data:'',   //数据 字符串或对象
+     *     success:function(){} //成功回调
+     * })
+         * @param a
+         * @returns {*}
+         */
+        ajax:function(a){
+            var b = ui.xmlHttp(),
+                    c,
+                    e;
+            b.onreadystatechange = function() {
+                if (b.readyState == 1) {
+                    if (a.timeout && a.fail) e = setTimeout(function() {
+                                if (!c) {
+                                    b.abort();
+                                    a.fail()
+                                }
+                            },
+                            a.timeout)
+                } else if (b.readyState == 2) a.send && a.send();
+                else if (b.readyState == 4) {
+                    c = 1;
+                    if (b.status == 200) try {
+                        a.success(b.responseText)
+                    } catch(g) {} else if (a.fail) {
+                        clearTimeout(e);
+                        a.fail()
+                    }
+                }
+            };
+            if (ui.isObject(a.data)) {
+                var f = [];
+                for (var h in a.data) f.push(h + "=" + encodeURIComponent(a.data[h]));
+                a.data = f.join("&")
+            }
+
+            if (a.type == "get") {
+                b.open("GET", [a.url,(a.url.hasString("?") ? "&": "?"),a.data,'&_r=',new Date().getTime()].join(''), a.async);
+                b.send(null)
+            } else {
+                b.open("POST", a.url, a.async);
+                b.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                b.send(a.data)
+            }
+            return b
+        },
+        get:function(a,b,c){
+            var e = ui.xmlHttp(),
+                    f = a.hasString("?") ? "&": "?";
+            e.onreadystatechange = function() {
+                if (e.readyState == 4 && e.status == 200) try {
+                    c(e.responseText)
+                } catch(k) {} else return e
+            };
+            if (b != undefined) if (ui.isObject(b)) {
+                var h = [];
+                for (var g in b) h.push(g + "=" + encodeURIComponent(b[g]));
+                a += f + h.join("&")
+            } else a += f + b;
+            a+='&_r='+new Date().getTime();
+            e.open("GET", a, true);
+            e.send(null);
+            return e
+        },
+        xmlHttp:function(){
+            var a;
+            if (window.ActiveXObject) a = new ActiveXObject("Microsoft.XMLHTTP");
+            else if (window.XMLHttpRequest) a = new XMLHttpRequest;
+            return a
+        },
+        /**
+         * 操作数组的方法
+         * @namespace ui.array
+         * @date 2011-10-18
+         */
+        array:{
+            //  判断是否包含某个值或者对象
+            include: function(arr, value) {
+                return this.index(arr, value) != -1;
+            },
+            //  判断一个对象在数组中的位置
+            index: function(arr, value) {
+                for (var i=0, il = arr.length; i < il; i++) {
+                    if (arr[i] == value) return i;
+                }
+                return -1;
+            },
+//        //    过滤重复项
+//        unique: function(arr) {
+//            var len = arr.length;
+//            for (var i=0, il = len; i < il; i++) {
+//                var it = arr[i];
+//                for (var j = len - 1; j>i; j--) {
+//                    if (arr[j] == it) arr.splice(j, 1);
+//                }
+//            }
+//            return arr;
+//        },
+            /**
+             * 过滤数组中的相同项。如果两个元素相同，会删除后一个元素。  ["a","b","c","c","b"] ==>["a","b","c"]
+             * @param {Array} source 需要过滤相同项的数组
+             * @param {Function} compareFn 比较两个数组项是否相同的函数,两个数组项作为函数的参数
+             *
+             * @returns {Array} 过滤后的新数组
+             */
+            unique:function(source,compareFn){
+                var len=source.length,
+                        result=source.slice(0),
+                        i,
+                        datum;
+                if(typeof compareFn !='function'){
+                    compareFn=function(item1,item2){
+                        return item1===item2
+                    }
+                }
+                /**
+                 * 从后往前双重循环比较
+                 * 如果两个元素相同，删除后一个
+                 */
+                while(--len>0){
+                    datum=result[len];
+                    i=len;
+                    while(i--){
+                        if(compareFn(datum,result[i])){
+                            result.splice(len,1);
+                            break;
+                        }
+                    }
+                }
+                return result;
+            },
+            /**
+             * 遍历数组中所有元素 (each方法不支持对Object的遍历)
+             * @param {Array} source 需要遍历的数组
+             * @param {Function} iterator 对每个数组元素进行调用的函数，该函数有两个参数，第一个为数组元素，第二个为数组索引值，function (item, index)
+             *
+             * @returns {Array} 遍历的数组
+             */
+            each:function(source,iterator){
+                if (source){
+                    if (ui.isUndefined(source[0]))
+                        for (var n in source) ui.isFunction(source[n]) || iterator(source[n], n);
+                    else {
+                        var n = 0;
+                        for (var o = c.length; n < o; n++)
+                            ui.isFunction(source[n]) || iterator(source[n], n)
+                    }
+                }
+            },
+            /**
+             * 查询数组中指定元素的索引位置
+             * @param {Array} source 需要查询的数组
+             * @param {Any} match 查询项
+             * @param {number} [index]  查询的起始位索引位置，如果为负数，则从source.length+index往后开始查找
+             *
+             * @returns {number} 指定元素的索引位置，查询不到时返回-1
+             */
+            indexOf:function(source,match,index){
+                var len=source.length;
+                if(index<0){
+                    index=Math.max(0,len+index);
+                }
+                for(;index<len;index++){
+                    if(index in source&&source[index]===match){
+                        return index
+                    }
+                }
+                return -1;
+            },
+            /**
+             * 判断一个数组中是否包含给定元素
+             * @param {Array} source 需要判断的数组
+             * @param {Any} match  查询项
+             *
+             * @return {boolean} 判断结果
+             */
+            cantains:function(source,match){
+                return this.indexOf(soucrce,match)>=0;
+            },
+            /**
+             * 清空一个数组
+             * @param {Array} source 需要清空的数组
+             */
+            empty:function(source){
+                source.length=0
+            },
+            /**
+             * 删除数组中给定的元素
+             * @param {Array} source 需要删除的数组
+             * @param {Any} match   删除项
+             *
+             * @return {Array} 返回删除后的数组
+             */
+            remove:function(source,match){
+                var a=this.index(source,match);
+                if (a>=0){
+                    source.splice(a, 1)
+                }
+                return source;
+            }
+        },
+        page:{
+            /**
+             * 获取页面高度
+             * @returns {number} 页面高度
+             */
+            getHeight:function(){
+                var doc = document,body = doc.body,html = doc.documentElement,
+                        client = doc.compatMode == 'BackCompat' ? body : doc.documentElement;
+                return Math.max(html.scrollHeight, body.scrollHeight, client.clientHeight);
+            },
+            getWidth:function(){
+                var doc = document,body = doc.body,html = doc.documentElement,
+                        client = doc.compatMode == 'BackCompat' ? body : doc.documentElement;
+                return Math.max(html.scrollWidth, body.scrollWidth, client.clientWidth);
+            },
+            /**
+             * 获取页面视觉区域宽度
+             * @returns {number} 页面视觉区域宽度
+             */
+            getViewWidth:function(){var doc = document,client = doc.compatMode == 'BackCompat' ?
+                    doc.body : doc.documentElement;return client.clientWidth;},
+            /**
+             * 获取页面视觉区域高度
+             * @returns {number} 页面视觉区域高度
+             */
+            getViewHeight:function(){var doc = document,client = doc.compatMode == 'BackCompat' ? doc.body : doc.documentElement;return client.clientHeight;},
+            /**
+             * 获取横向滚动量
+             * @param [HTMLElement] el
+             * @return {number} 横向滚动量
+             */
+            getScrollLeft:function(el){
+                var d = document.documentElement,
+                        b = a;
+                if (b) {
+                    var c = b.offsetLeft;
+                    while (b.offsetParent && b.offsetParent != document.body) {
+                        b = b.offsetParent;
+                        c += b.offsetLeft
+                    }
+                    return c
+                }
+                return self.pageXOffset || d && d.scrollLeft || document.body.scrollLeft
+            },
+            /**
+             * 获取纵向滚动量
+             * @param [HTMLElement] a
+             * @return {number} 纵向滚动量
+             */
+            getScrollTop:function(a){
+                var d = document.documentElement,
+                        b = a;
+                if (b) {
+                    var c = b.offsetTop;
+                    while (b.offsetParent && b.offsetParent != document.body) {
+                        b = b.offsetParent;
+                        c += b.offsetTop
+                    }
+                    return c
+                }
+                return self.pageYOffset || d && d.scrollTop || document.body.scrollTop
+            },
+            /**
+             * 滚动动画
+             * @param c滚动元素
+             * @param z滚动速度
+             * @returns {boolean}
+             */
+            scrollTo: function (c,z) {
+                var b = this.getScrollTop(),
+                        j = ui.isElement(c)?this.getScrollTop(c):c,
+                        h = j > b ? j - b : b - j,
+                        e = Math.round(h / 50),
+                        d = Math.round(h / 20),
+                        g = j > b ? b + d : b - d,
+                        a = 0;
+                z=z||1;
+                if (h < 100) {
+                    scrollTo(0, j);
+                    return !1
+                }
+                if (e > 20) {
+                    e = 20
+                }
+                if (j > b) {
+                    for (var f = b; f < j; f += d) {
+                        setTimeout("scrollTo(0," + g + ")", a * e*z);
+                        g += d;
+                        if (g > j) {
+                            g = j
+                        }
+                        a++
+                    }
+                } else {
+                    for (var f = b; f > j; f -= d) {
+                        setTimeout("scrollTo(0," + g + ")", a * e*z);
+                        g -= d;
+                        if (g < j) {
+                            g = j
+                        }
+                        a++
+                    }
+                }
+            }
+        },
+        /**
+         * 操作flash对象的方法，包括创建flash对象、获取flash对象以及判断flash插件的版本号
+         * @namespace ui.swf
+         */
+        swf:{
+            /**
+             * 在页面中创建一个flash对象
+             * @grammar ui.swf.create(options[, container])
+             *
+             * @param option
+             * @param {Object}  options                     创建flash的选项参数
+             * @param {string}  options.id                  要创建的flash的标识
+             * @param {string}  options.url                 flash文件的url
+             * @param {String}  options.errorMessage        未安装flash player或flash player版本号过低时的提示
+             * @param {string}  options.ver                 最低需要的flash player版本号
+             * @param {string}  options.width               flash的宽度
+             * @param {string}  options.height              flash的高度
+             * @param {string}  options.align               flash的对齐方式，允许值：middle/left/right/top/bottom
+             * @param {string}  options.base                设置用于解析swf文件中的所有相对路径语句的基本目录或URL
+             * @param {string}  options.bgcolor             swf文件的背景色
+             * @param {string}  options.salign              设置缩放的swf文件在由width和height设置定义的区域内的位置。允许值：l/r/t/b/tl/tr/bl/br
+             * @param {boolean} options.menu                是否显示右键菜单，允许值：true/false
+             * @param {boolean} options.loop                播放到最后一帧时是否重新播放，允许值： true/false
+             * @param {boolean} options.play                flash是否在浏览器加载时就开始播放。允许值：true/false
+             * @param {string}  options.quality             设置flash播放的画质，允许值：low/medium/high/autolow/autohigh/best
+             * @param {string}  options.scale               设置flash内容如何缩放来适应设置的宽高。允许值：showall/noborder/exactfit
+             * @param {string}  options.wmode               设置flash的显示模式。允许值：window/opaque/transparent
+             * @param {string}  options.allowscriptaccess   设置flash与页面的通信权限。允许值：always/never/sameDomain
+             * @param {string}  options.allownetworking     设置swf文件中允许使用的网络API。允许值：all/internal/none
+             * @param {boolean} options.allowfullscreen     是否允许flash全屏。允许值：true/false
+             * @param {boolean} options.seamlesstabbing     允许设置执行无缝跳格，从而使用户能跳出flash应用程序。该参数只能在安装Flash7及更高版本的Windows中使用。允许值：true/false
+             * @param {boolean} options.devicefont          设置静态文本对象是否以设备字体呈现。允许值：true/false
+             * @param {boolean} options.swliveconnect       第一次加载flash时浏览器是否应启动Java。允许值：true/false
+             * @param {Object}  options.vars                要传递给flash的参数，支持JSON或string类型。
+             *
+             * @param {HTMLElement|string} [container]      flash对象的父容器元素，不传递该参数时在当前代码位置创建flash对象。
+             */
+            create:function(options,container){
+                options = options || {};
+                var html = ui.swf.createHTML(options) || options['errorMessage'] || '';
+                if (container && 'string' == typeof container) {
+                    container = document.getElementById(container);
+                }
+                if (container) {
+                    container.innerHTML = html;
+                } else {
+                    document.write(html);
+                }
+            },
+            createHTML:function(options){
+                options = options || {};
+                var version = ui.swf.version,
+                        needVersion = options['ver'] || '6.0.0',
+                        vUnit1, vUnit2, i, k, len, item, tmpOpt = {},
+                        encodeHTML = ui.string.encodeHTML;
+                // 复制options，避免修改原对象
+                for (k in options) {
+                    tmpOpt[k] = options[k];
+                }
+                options = tmpOpt;
+                // 浏览器支持的flash插件版本判断
+                if (version) {
+                    version = version.split('.');
+                    needVersion = needVersion.split('.');
+                    for (i = 0; i < 3; i++) {
+                        vUnit1 = parseInt(version[i], 10);
+                        vUnit2 = parseInt(needVersion[i], 10);
+                        if (vUnit2 < vUnit1) {
+                            break;
+                        } else if (vUnit2 > vUnit1) {
+                            return ''; // 需要更高的版本号
+                        }
+                    }
+                } else {
+                    return ''; // 未安装flash插件
+                }
+                var vars = options['vars'],
+                        objProperties = ['classid', 'codebase', 'id', 'width', 'height', 'align'];
+                // 初始化object标签需要的classid、codebase属性值
+                options['align'] = options['align'] || 'middle';
+                options['classid'] = 'clsid:d27cdb6e-ae6d-11cf-96b8-444553540000';
+                options['codebase'] = 'http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0';
+                options['movie'] = options['url'] || '';
+                delete options['vars'];
+                delete options['url'];
+                // 初始化flashvars参数的值
+                if ('string' == typeof vars) {
+                    options['flashvars'] = vars;
+                } else {
+                    var fvars = [];
+                    for (k in vars) {
+                        item = vars[k];
+                        fvars.push(k + "=" + encodeURIComponent(item));
+                    }
+                    options['flashvars'] = fvars.join('&');
+                }
+                // 构建IE下支持的object字符串，包括属性和参数列表
+                var str = ['<object '];
+                for (i = 0, len = objProperties.length; i < len; i++) {
+                    item = objProperties[i];
+                    str.push(' ', item, '="', encodeHTML(options[item]), '"');
+                }
+                str.push('>');
+                var params = {
+                    'wmode'             : 1,
+                    'scale'             : 1,
+                    'quality'           : 1,
+                    'play'              : 1,
+                    'loop'              : 1,
+                    'menu'              : 1,
+                    'salign'            : 1,
+                    'bgcolor'           : 1,
+                    'base'              : 1,
+                    'allowscriptaccess' : 1,
+                    'allownetworking'   : 1,
+                    'allowfullscreen'   : 1,
+                    'seamlesstabbing'   : 1,
+                    'devicefont'        : 1,
+                    'swliveconnect'     : 1,
+                    'flashvars'         : 1,
+                    'movie'             : 1
+                };
+                for (k in options) {
+                    item = options[k];
+                    k = k.toLowerCase();
+                    if (params[k] && (item || item === false || item === 0)) {
+                        str.push('<param name="' + k + '" value="' + encodeHTML(item) + '" />');
+                    }
+                }
+                // 使用embed时，flash地址的属性名是src，并且要指定embed的type和pluginspage属性
+                options['src']  = options['movie'];
+                options['name'] = options['id'];
+                delete options['id'];
+                delete options['movie'];
+                delete options['classid'];
+                delete options['codebase'];
+                options['type'] = 'application/x-shockwave-flash';
+                options['pluginspage'] = 'http://www.macromedia.com/go/getflashplayer';
+                // 构建embed标签的字符串
+                str.push('<embed');
+                // 在firefox、opera、safari下，salign属性必须在scale属性之后，否则会失效
+                // 经过讨论，决定采用BT方法，把scale属性的值先保存下来，最后输出
+                var salign;
+                for (k in options) {
+                    item = options[k];
+                    if (item || item === false || item === 0) {
+                        if ((new RegExp("^salign\x24", "i")).test(k)) {
+                            salign = item;
+                            continue;
+                        }
+                        str.push(' ', k, '="', encodeHTML(item), '"');
+                    }
+                }
+                if (salign) {
+                    str.push(' salign="', encodeHTML(salign), '"');
+                }
+                str.push('></embed></object>');
+                return str.join('');
+            },
+            /**
+             * 浏览器支持的flash插件版本
+             *
+             * @return {String} 版本号
+             */
+            version:(function(){
+                var n = navigator;
+                if (n.plugins && n.mimeTypes.length) {
+                    var plugin = n.plugins["Shockwave Flash"];
+                    if (plugin && plugin.description) {
+                        return plugin.description
+                                .replace(/([a-zA-Z]|\s)+/, "")
+                                .replace(/(\s)+r/, ".") + ".0";
+                    }
+                } else if (window.ActiveXObject && !window.opera) {
+                    for (var i = 12; i >= 2; i--) {
+                        try {
+                            var c = new ActiveXObject('ShockwaveFlash.ShockwaveFlash.' + i);
+                            if (c) {
+                                var version = c.GetVariable("$version");
+                                return version.replace(/WIN/g,'').replace(/,/g,'.');
+                            }
+                        } catch(e) {}
+                    }
+                }
+            })()
+        },
+        util:{
+            /**
+             * 获得表单的数据
+             * @param el
+             * @returns {*}
+             */
+            getVal:function(el){
+                if(!el) return null;
+                if(el.tagName=='SELECT'){
+                    var _s=[],__s=[];
+                    ui.each(el.options,function(o,i){
+                        if(o.nodeType==1&&o.selected){
+                            _s.push(o.value);
+                            __s.push(o.text);
+                        }
+                    })
+                }else{
+                    return el.value;
+                }
+                return{
+                    value:_s,
+                    text:__s
+                }
+            },
+            /**
+             * 目标索引
+             * @param f
+             * @param d
+             * @return {*}
+             */
+            index: function (f, d) {
+                for (var h = 0, a = f.length; h < a; h++) {
+                    if (b[h] == d) {
+                        return h
+                    }
+                }
+                return !1
+            },
+            /**
+             * 目标拷贝
+             * @param f
+             * @return {*}
+             */
+            clone: function (f) {
+                var a = f.constructor,
+                        d = null;
+                if (a == Object) {
+                    d = new a()
+                } else {
+                    if (a == Function) {
+                        return ui.util.clone(f)
+                    } else {
+                        d = new a(f.valueOf())
+                    }
+                }
+                for (var e in f) {
+                    if (d[e] != f[e]) {
+                        if (typeof (f[e]) != "object") {
+                            d[e] = f[e]
+                        } else {
+                            d[e] = arguments.callee(f[e])
+                        }
+                    }
+                }
+                d.toString = f.toString;
+                d.valueOf = f.valueOf;
+                return d
+            },
+            /**
+             * 对象数组合并
+             * @return {Array}
+             * @private
+             */
+            _concat:function(){
+                var arg=arguments,
+                        l=arguments.length,
+                        a=[];
+                for(var i=0;i<l;i++){
+                    ui.each(arg[i],function(d){
+                        if(d) a.push(d);
+                    });
+                }
+                return a;
+            },
+            /**
+             * 参数化实现
+             * @param b
+             * @return {*}
+             */
+            json2str:function(b){
+                var c=[],
+                        f =ui.isArray(b);
+                if (ui.isObject(b)){
+                    if (null === b) return "null";
+                    if (window.JSON && window.JSON.stringify) return JSON.stringify(b);
+                    for (var h in b) c.push((f ? "" :'"' + h + '":') + this.json2str(b[h]));
+                    c=c.join();
+                    return f ? "[" + c + "]" :"{" + c + "}"
+                }
+                return ui.isNumber(b) ||ui.isFunction(b) ? b.toString() :
+                        ui.isUndefined(b) ? "undefined" :!b ? '""' :'"' + b + '"'
+            },
+            /**
+             * 获取form数据
+             * @param form
+             * @param isEncode
+             * @return {json数组}
+             */
+            serialize:function(form){
+                var data={}, b=[], c=[], f=[],key,value;
+                if(!ui.isElement(form)) form=ui.dom.gc(form)[0];
+                if(form){
+                    f=form.getElementsByTagName('input');
+                    b=form.getElementsByTagName('select');
+                    c=form.getElementsByTagName('textarea');
+                    f=ui.util._concat(f,b,c);
+                    ui.each(f,function(t){
+                        key= t.name;
+                        value= t.value;
+                        if(key){
+                            if(t.type=='checkbox'){
+                                if(t.checked){
+                                    if(data[key]){
+                                        data[key]=data[key]+','+value;
+                                    }else{
+                                        data[key]=value;
+                                    }
+                                }
+                            }else if(t.type=='radio'){
+                                if(t.checked) data[key]=value;
+                            }else{
+                                data[key]=value;
+                            }
+                        }
+                    });
+                }
+                return data;
+            },
+            /**
+             * 解析{}参数为 字符串
+             * @param a
+             * @returns {*}
+             */
+            toParm:function(a){
+                if(ui.isObject(a)){
+                    var b=[];
+                    for (var c in a) b.push(c+'='+a[c]);
+                    return b.join('&');
+                }
+                return a;
+            },
+            /**
+             * 解析URL参数为{}
+             * @param a
+             * @param b
+             * @returns {{}}
+             */
+            parseUrl: function(a, b) {
+                var c = a ? a: document.location.href;
+                a = {};
+                b = b || "?";
+                if (!c.hasString(b)) return a;
+                b = c.split(b)[1].split("&");
+                for (c = 0; c < b.length; c++) {
+                    var e = b[c].replace(/#.*$/g, "").split("=");
+                    e[1] || (e[1] = "");
+                    a[e[0]] =e[1];
+                }
+                return a
+            },
+            /**
+             * 获得光标
+             * @param textarea
+             * @returns {{text: string, start: number, end: number}}
+             */
+            getCursor: function (textarea) {
+                var rangeData = {
+                    text: "",
+                    start: 0,
+                    end: 0
+                };
+                if(textarea.setSelectionRange) {
+                    textarea.focus();
+                    rangeData.start = textarea.selectionStart;
+                    rangeData.end = textarea.selectionEnd||0;
+                    rangeData.text = (rangeData.start != rangeData.end) ? textarea.value.substring(rangeData.start, rangeData.end) : "";
+                } else if(document.selection) {
+                    try{
+                        textarea.focus();
+                        var i,
+                                oS = document.selection.createRange(),
+                                oR = document.body.createTextRange();
+                        oR.moveToElementText(textarea);
+                        rangeData.text = oS.text;
+                        rangeData.bookmark = oS.getBookmark();
+                        for(i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i++) {
+                            if(textarea.value.charAt(i) == '\r') {
+                                i++;
+                            }
+                        }
+                        rangeData.start = i;
+                        rangeData.end = rangeData.text.length + rangeData.start;
+                    }catch(e){}
+                }
+                return rangeData;
+            },
+            /**
+             * 光标定位
+             * @param a
+             */
+            cursorX:function (a) {
+                if (document.selection) {
+                    var f = document.selection.createRange(),
+                            j = 0;
+                    f.moveStart("character", -a.value.length);
+                    a = f.text.split(" ");
+                    f = document.selection.createRange().text;
+                    return j = a[a.length - 1].replace(/\r/g, "").length - f.length
+                }
+                return a.selectionStart
+            },
+            /**
+             * 在光标所在处插入文本
+             * @param a
+             * @param f
+             * @param j
+             * @param b
+             */
+            insertTxt:function (a,f,j,b){
+                void 0 == b && (b = 0);
+                a.focus();
+                if (document.selection){
+                    a = document.selection.createRange();
+                    a.moveStart("character", -b);
+                    a.text = f;
+                }else {
+                    var c = a.value,
+                            h = j + f.length - b;
+                    a.value = c.substring(0, j - b) + f + c.substring(j, c.length);
+                    this.selectTxt(a, h, h, h)
+                }
+            },
+            /**
+             * 选中文本
+             * @param a
+             * @param f
+             * @param j
+             */
+            selectTxt:function (a,f,j){
+                try{
+                    a.focus();
+                    if (document.createRange) a.setSelectionRange(f, j);
+                    else {
+                        a = a.createTextRange();
+                        a.collapse(1);
+                        a.moveStart("character", f);
+                        a.moveEnd("character", j - f);
+                        a.select()
+                    }
+                } catch (b) {}
+            },
+            /**
+             * 定位光标到文本末尾
+             * @param a
+             * @param f
+             */
+            txtEnd:function (a,f){
+                try{
+                    a.focus();
+                    if (document.createRange) a.setSelectionRange(f,f);
+                    else {
+                        a = a.createTextRange();
+                        a.moveStart("character", f);
+                        a.collapse(1);
+                        a.select()
+                    }
+                } catch (b) {}
+            },
+            /**
+             * 判断对象是否为空
+             * @param obj
+             * @returns {boolean}
+             */
+            isEmptyObject:function(obj){
+                var ret=!0;
+                if(ui.isArray(obj)){
+                    ret=!obj.length;
+                }else{
+                    obj=new Object(obj);
+                    for(var key in obj){
+                        return !1;
+                    }
+                }
+                return ret;
+            }
+        },
+        /**
+         * 事件封装
+         * @param b
+         * @returns {*}
+         */
+        evt: function (b) {
+            if (b && b.clone) return b;
+            b = window.event || b || {};
+            return {
+                clone: !0,
+                stop: function () {
+                    b && b.stopPropagation ? b.stopPropagation() : b.cancelBubble = !0
+                },
+                prevent: function () {
+                    b && b.preventDefault ? b.preventDefault() : b.returnValue = !1
+                },
+                target: b.target || b.srcElement,
+                relatedTarget: b.relatedTarget || (b.fromElement && b.fromElement === b.srcElement ? b.toElement : b.fromElement),
+                x: b.clientX || b.pageX,
+                y: b.clientY || b.pageY,
+                button: b.button,
+                key: b.keyCode,
+                shift: b.shiftKey,
+                alt: b.altKey,
+                ctrl: b.ctrlKey,
+                type: b.type,
+                wheel: b.wheelDelta / 120 || -b.detail / 3
+            }
+        },
+        /**
+         * 集合遍历
+         * @param b
+         * @param c
+         */
+        each:function(b,c){
+            if (b) if (ui.isUndefined(b[0])) for (var f in b) ui.isFunction(b[f])||c(b[f], f);
+            else {
+                f=0;
+                for (var h=b.length; f < h; f++) ui.isFunction(b[f])||c(b[f], f)
+            }
+        },
+        /**
+         * 事件绑定
+         * @param el
+         * @param type
+         * @param func
+         * @returns {Array}
+         */
+        ea:function (el,type,func,bool) {
+            var coll=[];
+            if (el) {
+                if(!ui.isArray(el)){
+                    el=[el];
+                }
+                ui.each(el,function(el){
+                    coll.push(el.addEventListener ? ("mousewheel" == type && ui.b.firefox
+                            && (type = "DOMMouseScroll"), el.addEventListener(type, func, bool), !0)
+                            : el.attachEvent ? el.attachEvent("on" + type, func) : !1)
+                });
+                return coll;
+            }
+        },
+        /**
+         * 事件解除绑定
+         * @param el
+         * @param type
+         * @param func
+         * @returns {Array}
+         */
+        er:function (el,type,func) {
+            var coll=[];
+            if (el) {
+                if(!ui.isArray(el)){
+                    el=[el];
+                }
+                ui.each(el,function(el){
+                    coll.push(el.removeEventListener ? ("mousewheel" == type && ui.b.firefox
+                            && (type = "DOMMouseScroll"), el.removeEventListener(type, func,!1), !0)
+                            : el.detachEvent ? el.detachEvent("on" + type, func) : !1)
+                });
+                return coll;
+            }
+        },
+        /**
+         * 单次事件绑定
+         * @param el
+         * @param type
+         * @param func
+         */
+        once:function(el,type,func){
+            var a=function(e){
+                func(e);
+                ui.er(el,type,a);
+            };
+            ui.ea(el,type,a);
+        },
+        /**
+         * json转换
+         * @param b
+         * @returns {{}}
+         */
+        json:function(b){
+            var c={};
+            try {
+                c=eval("(" + b + ")")
+            } catch (f){}
+            return c
+        },
+        /**
+         * 对象合并
+         * @param a
+         * @param b
+         */
+        extend:function(a,b){
+            for (var c in b) {
+                a[c] = b[c];
+            }
+            return a;
+        },
+        /**
+         *
+         * @param args
+         * @return {*}
+         */
+        format:function(args){
+            if(1==arguments.length) return args;
+            var arr=Array.prototype.slice.call(arguments,1);
+            return args.replace(/\{(\d+)\}/g,function(a,b){
+                return arr[b]
+            })
+        },
+        addZero:function(b,c,d){c||(c=2);return Array(Math.abs(("" + b)
+                .length - (c + 1))).join(d||0) + b},
+        trim:function(b){return b.replace(/^\s+|\s+$/g, "")},
+        /**
+         * 类型检测
+         * @returns {boolean}
+         */
+        isStrict:function(){return document.compatMode == "CSS1Compat"},
+        isObject:function(b){return "object" == typeof b},
+        isElement:function(b){return b && 1 == b.nodeType},
+        isUndefined:function(b){return "undefined" == typeof b},
+        isFunction:function(b){return "Function" == this.getType(b)},
+        isNumber:function(b){return "Number" == this.getType(b)},
+        isString:function(b){return "String" == this.getType(b)},
+        isArray:function(b){return "Array" == this.getType(b)},
+        isDate: function(b) {return "Date" == this.getType(b)},
+        getType:function(b){return Object.prototype.toString.call(b).slice(8, -1)},
+        /**
+         * 检测DOM 加载完成
+         * @param b
+         * @returns {*}
+         */
+        ready:function (b){
+            if (ui.ready.done) return b();
+            ui.isReady.done ? ui.readyDo.push(b) : (ui.readyDo = [b], ui.isReady())
+        },
+        readyDo:[],
+        isReady:function(){
+            if (!ui.isReady.done) {
+                ui.isReady.done = !0;
+                if ("complete" == document.readyState) ui.onReady();
+                else if (document.addEventListener) if ("interactive" == document.readyState && !ui.b.ie9) ui.onReady();
+                else document.addEventListener("DOMContentLoaded", function () {
+                        document.removeEventListener("DOMContentLoaded", arguments.callee, !1);
+                        ui.onReady()
+                    }, !1);
+                else if (document.attachEvent) {
+                    var b = top != self;
+                    b ? document.attachEvent("onreadystatechange", function () {
+                        "complete" === document.readyState && (document.detachEvent("onreadystatechange", arguments.callee), ui.onReady())
+                    }) : document.documentElement.doScroll && !b &&
+                            function () {
+                                if (!ui.ready.done) {
+                                    try {
+                                        document.documentElement.doScroll("left")
+                                    } catch (b) {
+                                        setTimeout(arguments.callee, 0);
+                                        return
+                                    }
+                                    ui.onReady()
+                                }
+                            }()
+                }
+                ui.ea(window, "load", ui.onReady)
+            }
+        },
+        onReady:function(){
+            if (!ui.ready.done) {
+                ui.ready.done = !0;
+                for (var b = 0, c = ui.readyDo.length; b < c; b++) try {
+                    ui.readyDo[b]()
+                } catch (e) {}
+                ui.readyDo = null
+            }
+        },
+        /**
+         * 浏览器版本检测
+         */
+        b:function(){
+            var b = {},
+                    c = navigator.userAgent;
+            b.win = c.hasString("Windows") || c.hasString("Win32");
+            b.ie = c.hasString("MSIE");
+            b.ie6 = c.hasString("MSIE 6") && !c.hasString("MSIE 7") && !c.hasString("MSIE 8");
+            b.ie7 = c.hasString("MSIE 7") && !c.hasString("MSIE 8");
+            b.ie8 = c.hasString("MSIE 8");
+            b.ie9 = c.hasString("MSIE 9");
+            b.ie10 = c.hasString("MSIE 10");
+            b.opera = window.opera || c.hasString("Opera");
+            b.safari = c.hasString("WebKit");
+            b.chrome = c.hasString("Chrome");
+            b.mac = c.hasString("Mac");
+            b.ipad = c.hasString("iPad");
+            b.iphone = c.hasString("iPhone");
+            b.os4 = c.hasString("OS 4");
+            b.os5 = c.hasString("OS 5");
+            b.firefox = c.hasString("Firefox");
+            return b
+        }(),
+        fn:{
+            /**
+             * 产生个随机数
+             * @param b
+             * @param c
+             * @returns {number}
+             */
+            random: function (b, c) {
+                void 0 == b && (b = 0);
+                void 0 == c && (c = 9);
+                return Math.floor(Math.random() * (c - b + 1) + b)
+            },
+            /**
+             * 域绑定
+             * @param fn
+             * @param scope
+             * @returns {Function}
+             */
+            bind:function(fn,scope){
+                var _args=arguments.length>2?[].slice.call(arguments,2):null;
+                return function(){
+                    fn=ui.isString(fn)?scope[fn]:fn;
+                    var args=_args?_args.concat([].slice.call(arguments,0)):arguments;
+                    return fn.apply(scope||fn,args)
+                }
+            }
+        },
+        bind:function(fun,scope,bool){
+            bool && ui.clear(function(){
+                scope=null
+            });
+            return function(){
+                return fun.apply(scope,Array.prototype.slice.call(arguments));
+            }
+        },
+        _clearCache:[],
+        clear:function(fun){
+            ui._clearCache.push(fun);
+        }
+    };
+    try{document.execCommand('BackgroundImageCache',!1,!0);}catch(e){};
+    (function(){
+        var d=document.getElementsByTagName('html')[0];
+        for(var i in ui.b){
+            ui.b[i]&&ui.dom.addClass(d,'fix_'+i);
+        }
+    })();
+    ui.ea(window,'unload',function(){
+        for(var i= 0,l=ui._clearCache.length;i<l;i++){
+            ui._clearCache[i]();
+        }
+    });
+    ui.cache={};
+    ui.log=function(a){
+        try{
+            console.warn(a)
+        }catch(e){}
+    };
+    ui.setPNG=function(img,w,h) {
+        if(navigator.userAgent.indexOf('MSIE 6')>-1){
+            var i = "display:inline-block;";
+            var s = "<span style=\"width:" + w + "px; height:" + h + "px;" + i + ";" + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + img.src + "', sizingMethod='scale');\"></span>";
+            img.outerHTML = s;
+        }
+    };
+    ui.queue={};
+    /**
+     * 类的创建和继承方法
+     */
+    ui.Class = {
+        /*
+         * create a class, and setup constructor
+         */
+        create: function() {
+            var f = function() {
+                this.init.apply(this, arguments);
+            };
+            for (var i = 0, il = arguments.length, it; i<il; i++) {
+                it = arguments[i];
+                if (it == null) continue;
+                ui.extend(f.prototype, it);
+            }
+            return f;
+        },
+        /*
+         * inherit a class, and not support multiple
+         */
+        inherit: function(superC, opt){
+            function temp() {};
+            temp.prototype = superC.prototype;
+            var f = function(){
+                this.init.apply(this, arguments);
+            };
+            f.prototype = new temp();
+            ui.extend(f.prototype, opt);
+            f.prototype.superClass_ = superC.prototype;
+            f.prototype.super_ = function(){
+                this.superClass_.init.apply(this, arguments);
+            };
+            return f;
+        }
+    };
+    </script>
+</head>
+
+<body>
+<div id="j-time"></div>
+<div id="j-timer"></div>
+<input id="j-text" type="text" value="10000" />
+<p>
+    <button onclick="onStart()">start</button>
+    <button onclick="onStop()">stop</button>
+    <button onclick="onPause()">pause</button>
+</p>
+<br/>
+<div id="j-status"></div>
+
+<script type="text/javascript">
+    ;
+    (function() {
+        var dom = ui.dom;
+        var fn = ui.fn;
+        var trigger = function(evt) {
+            var callback = this.op[evt],
+                    args = [].slice.call(arguments, 1);
+            ui.isFunction(callback) && callback.apply(this, args)
+        };
+        var _ = function(op) {
+            this.op = ui.extend({
+                tick: 1,
+                start: 0,
+                status: 'initialized',
+                duration: 0
+            }, op || {});
+        };
+        _.prototype = {
+            start: function(duration) {
+                var op = this.op;
+                if (!+duration && !op.duration) return this;
+                duration && (duration *= 1000);
+                if (op.status === 'started') return this;
+                op.duration = op.duration || duration;
+                this.time = setTimeout(this.end.bind(this, true), op.duration);
+                if (ui.isFunction(op.ontick)) {
+                    this.inter = setInterval(function() {
+                        trigger.call(this, 'ontick', this.getDuration())
+                    }.bind(this), op.tick * 1000);
+                }
+                op.start = +new Date;
+                op.status = 'started';
+                trigger.call(this, 'onstart', this.getDuration());
+                return this;
+            },
+            getDuration: function() {
+                var op = this.op;
+                if (op.status === 'started') {
+                    return Math.ceil((op.duration - (+new Date - op.start)) / 1e3)
+                }
+                return 0
+            },
+            pause: function() {
+                var op = this.op;
+                if (op.status !== 'started') return this;
+                op.duration -= +new Date - op.start;
+                this.destory();
+                op.status = 'paused';
+                trigger.call(this, 'onpause');
+                return this;
+            },
+            end: function(reset) {
+                var op = this.op;
+                this.destory();
+                op.status = 'stopped';
+                trigger.call(this, 'onend');
+                if (reset) op.duration = 0;
+            },
+            getStatus:function(){
+                return this.op.status
+            },
+            stop: function() {
+                var op = this.op;
+                if (!/started|paused/.test(op.status)) return this;
+                this.end(true);
+                op.status = 'stoped';
+                trigger.call(this, 'onstop');
+                return this
+            },
+            destory: function() {
+                clearTimeout(this.time);
+                clearInterval(this.inter);
+            }
+        };
+        ui.timer = _;
+    })();
+    var timeParser = function(a) {
+        if (!a || isNaN(a)) return 0;
+        var arr = [];
+        var f = '天时分秒'.split('');
+        var p = [86400, 3600, 60],
+                h = a % p[0],
+                m = h % p[1],
+                s = m % p[2];
+        var m = [h, m, s];
+        var i = 0;
+        while (i < 4) {
+            a = Math.floor(a / p[i]);
+            if (a) {
+                arr.push(a, f[i]);
+            }
+            a = m[i];
+            ++i;
+        }
+        arr.push(s, f[3]);
+        return arr.join('')
+    };
+
+    var el = ui.dom.g('j-timer');
+    var time = ui.dom.g('j-time');
+    var text = ui.dom.g('j-text');
+    var _status=ui.dom.g('j-status');
+    var timer = new ui.timer({
+        ontick: function(val) {
+            el.innerHTML = val;
+            time.innerHTML = timeParser(val);
+        },
+        onstart: function(val) {
+            el.innerHTML = val;
+            time.innerHTML = timeParser(val);
+
+            _status.innerHTML=timer.getStatus();
+
+        },
+        onstop: function() {
+            _status.innerHTML=timer.getStatus();
+        },
+        onpause: function() {
+            _status.innerHTML=timer.getStatus();
+        },
+        onend: function() {
+            _status.innerHTML=timer.getStatus();
+        }
+    });
+
+    function onStart() {
+        timer.start(+text.value);
+    }
+
+    function onStop() {
+        timer.stop();
+    }
+
+    function onPause() {
+        timer.pause();
+    }
+    console.log(ui.util.json2str({a:1,b:2}));
+</script>
+</body>
+
+</html>
