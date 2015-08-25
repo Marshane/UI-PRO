@@ -31,15 +31,13 @@ gulp.task('css', function () {
 
 // js处理
 gulp.task('js', function () {
-    var mainSrc = 'scripts/*.js',
-        mainDst = 'dist/js/',
-        appSrc = 'lab/*.js',
+    var appSrc = 'lab/*.js',
         appDst = 'dist/js/';
 
     gulp.src(appSrc)
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify())
-        .pipe(concat("lab.js"))
+//        .pipe(concat("lab.js"))
         .pipe(gulp.dest(appDst))
         .pipe(livereload(server));
 

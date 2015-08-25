@@ -1,6 +1,9 @@
 angular.module('ui.utils',[
-    'ui.cut',
-    'ui.uploader',
-    'ui.dateFormat',
-    'ui.loading'
+    'ui.cut'
 ]);
+angular.module('ui.cut',[])
+    .filter('cut',[function(){
+        return function(txt,num){
+            return String(txt).cut(num);
+        }
+    }]);
