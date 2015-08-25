@@ -1,0 +1,8 @@
+.l-hd{height:50px;}
+.l-hd-navbar{position: fixed;right: 0;left: 0;background-color: #18222b;padding:0 100px;z-index:1030;}
+.l-hd-tt{float: left;padding: 15px; font-size: 18px;line-height: 20px;height: 50px;color:#00d1ff;}
+.l-hd-nav .btn-primary{background-color: #18222b;border-color:#18222b;padding:14px 12px;}
+.container{background-color: #163041;width:100%!important;color:#fff;}
+.l-bd{padding:0 100px;}
+.l-bd-tt{padding-bottom: 9px;margin: 40px 0 20px;}
+.l-bd .row{margin-bottom:20px;}

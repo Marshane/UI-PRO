@@ -14,3 +14,8 @@ table.ui-grid tfoot td {padding: 0px;}
 .ui-grid-pager-main {height:40px;margin:0;}
 .ui-grid-pager-main li a{padding:0 15px;line-height:41px;}
 .ui-grid-pager-main .active{margin-left:-1px;}
+.ui-grid-pager-main li  span,.ui-grid-pager-main li  strong{line-height:40px;}
+.ui-grid-pager-main li  strong{padding:0 15px;}
+.ui-grid-pager-main .pre-pager-btn {border-right: 1px solid;}
+.ui-grid-pager-main .pre-pager-btn { border-left: 1px solid;}
+.ui-grid-pager-main .pager-btn {border-left: 1px solid;}

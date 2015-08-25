@@ -1,3 +1,4 @@
 /*checkbox基本样式*/
-.ui-checkbox i{border-color:#bdbcbd;background-color: #fff;}
+.ui-checkbox label:hover{color:#fff;}
+.ui-checkbox i{border-color:#bdbcbd; color: #555; background-color: #fff;}
 .ui-checkbox .btn:active,.ui-checkbox .btn:focus,.ui-checkbox .btn.active{-webkit-box-shadow:none; box-shadow:none;}

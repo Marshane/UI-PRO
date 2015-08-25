@@ -1,0 +1,16 @@
+body{background-color: #163041; color:#fff;}
+.head{height:50px; position: fixed;top:0; left: 0; background-color: #18222b; width:100%; padding:0 30px; z-index:1030;
+    box-shadow:3px 3px 3px #18222b;}
+.logo{float: left; margin:15px 10px 0 0; font-size: 18px; line-height: 20px; height:50px; color:#00d1ff;}
+.head .btn-primary{background-color: #18222b;border-color:#18222b;padding:14px 12px;}
+
+.main{padding:80px 30px;}
+.main h2{border-bottom: 1px solid #666; padding-bottom:15px; margin-bottom:15px;}
+.main h4{margin-bottom:20px;}
+h2 em{font-size:18px;}
+
+.row .col-xs-12{margin-bottom:20px;}
+.row .col-xs-3{margin-bottom:15px;}
+.col-xs-5 p{background:url('http://tp4.sinaimg.cn/1088413295/50/40057000557/1') repeat-y -44px 0; padding-left:15px;}
+
+textarea{width:100%; height: 100%; background-color:#1864ab;}

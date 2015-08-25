@@ -6,7 +6,7 @@ small, strike, strong, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td{ margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline;}
+table, caption, tbody, tfoot, thead, tr, th, td{ margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit;}
 body {line-height: 1;}
 ol, ul {list-style: none;}
 
@@ -53,7 +53,7 @@ h3{font-size: 24px;}
 h4{font-size: 18px;}
 h5{font-size: 14px;}
 h6{font-size: 12px;}
-p {margin: 0 0 10px;}、
+p {margin: 0 0 10px;}
 ul,ol {margin-top: 0;margin-bottom: 10px;}
 ul ul,ol ul,ul ol,ol ol {margin-bottom: 0;}
 dl {margin-top: 0;margin-bottom: 20px;}
@@ -84,4 +84,5 @@ input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio
 .text-center {text-align: center;}
 
 /*清除浮动*/
+.clearfix{clear:both;}
 .clearfix:after,.dl-horizontal dd:after,.container:after,.container-fluid:after,.row:after,.form-horizontal .form-group:after,.btn-toolbar:after,.btn-group-vertical > .btn-group:after,.nav:after,.navbar:after,.navbar-header:after,.navbar-collapse:after,.pager:after,.panel-body:after,.modal-footer:after {clear: both;}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+  <head>
+    <meta charset="utf-8">
+    <title>UI - Free Bootstrap Framework and Theme</title>
+    <meta name="description" content=""/>
+    <!-- Loading Bootstrap -->
+        
+   
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/layout.css" rel="stylesheet">
+    <link href="css/modules.css" rel="stylesheet">
+    <link href="css/state.css" rel="stylesheet">
+    <link href="css/theme.css" rel="stylesheet">
+
+    <link href="css/ui-button.css" rel="stylesheet">
+    <link href="css/ui-checkbox.css" rel="stylesheet">
+    <link href="css/ui-input.css" rel="stylesheet">
+    <link href="css/ui-dropdown.css" rel="stylesheet">
+    <link href="css/ui-select.css" rel="stylesheet">
+    <link href="css/ui-datepicker.css" rel="stylesheet">
+    <link href="css/ui-carousel.css" rel="stylesheet">
+    <link href="css/ui-grid.css" rel="stylesheet">
+    <link href="css/ui-scrollbar.css" rel="stylesheet">
+    <link href="css/ui-tree.css" rel="stylesheet">
+    <link href="css/ui-tab.css" rel="stylesheet">
+    <link href="css/ui-dialogs.css" rel="stylesheet">
+  
+    <link href="css/button-theme-default.css" rel="stylesheet">
+    <link href="css/checkbox-theme-default.css" rel="stylesheet">
+    <link href="css/input-theme-default.css" rel="stylesheet">
+    <link href="css/dropdown-theme-default.css" rel="stylesheet">
+    <link href="css/select-theme-default.css" rel="stylesheet">
+    <link href="css/datepicker-theme-default.css" rel="stylesheet">
+    <link href="css/carousel-theme-default.css" rel="stylesheet">
+    <link href="css/grid-theme-default.css" rel="stylesheet">
+    <link href="css/scrollbar-theme-default.css" rel="stylesheet">
+    <link href="css/tree-theme-default.css" rel="stylesheet">
+    <link href="css/tab-theme-default.css" rel="stylesheet">
+    <link href="css/dialogs-theme-default.css" rel="stylesheet">
+
+
+      <script type="text/javascript" src="lab/jquery-1.10.2.min.js"></script>
+      <script type="text/javascript" src="lab/jquery.ui.widget.js"></script>
+      <script type="text/javascript" src="lab/jquery.iframe-transport.js"></script>
+      <script type="text/javascript" src="lab/jquery.fileupload.js"></script>
+      <script type="text/javascript" src="lab/lodash.min.js"></script>
+      <script type="text/javascript" src="lab/angular.js"></script>
+      <script type="text/javascript" src="lab/angular-sanitize.js"></script>
+      <script type="text/javascript" src="lab/angular-translate.js"></script>
+      <script type="text/javascript" src="lab/ui.bindHtml.js"></script>
+      <script type="text/javascript" src="lab/ui.js"></script>
+      <script type="text/javascript" src="lab/ui.dateparser.js"></script>
+      <script type="text/javascript" src="lab/ui.position.js"></script>
+      <script type="text/javascript" src="lab/ui.transition.js"></script>
+      <script type="text/javascript" src="lab/ui.modal.js"></script>
+      <script type="text/javascript" src="lab/ui.buttons.js"></script>
+      <script type="text/javascript" src="lab/ui.checkbox.js"></script>
+      <script type="text/javascript" src="lab/ui.dropdown.js"></script>
+      <script type="text/javascript" src="lab/ui.select.js"></script>
+      <script type="text/javascript" src="lab/ui.datepicker.js"></script>
+      <script type="text/javascript" src="lab/ui.timepicker.js"></script>
+      <script type="text/javascript" src="lab/ui.dialogs.js"></script>
+      <script type="text/javascript" src="lab/ui.tabs.js"></script>
+      <script type="text/javascript" src="lab/ui.carousel.js"></script>
+      <script type="text/javascript" src="lab/ui.tooltip.js"></script>
+      <script type="text/javascript" src="lab/ui.grid.js"></script>
+      <script type="text/javascript" src="lab/ui.scrollbar.js"></script>
+      <script type="text/javascript" src="lab/ui.tree.js"></script>
+      <script type="text/javascript" src="lab/ui.editable.js"></script>
+      <script type="text/javascript" src="lab/ui.collapse.js"></script>
+      <script type="text/javascript" src="lab/ui.suggest.js"></script>
+      <script type="text/javascript" src="lab/ui.scroll.js"></script>
+      <script type="text/javascript" src="lab/ui.upload.js"></script>
+
+      <script type="text/javascript" src="lab/ui.inputSelect.js"></script>
+
+    <script src="scripts/dropdown-example.js"></script>
+    <!--<script src="scripts/tree-test-controll.js"></script>-->
+</head>
+<body>
+    <div class="container" ng-controller="testCtrl">
+        <!--form表单-->
+        <h3>form查询</h3>
+        <form class="form-horizontal clearfix">
+            <div class="form-group col-xs-12">
+              <label class="col-xs-2 control-label">Alarm Object:</label>
+              <div class="col-xs-3">
+                  <input type="text" ng-model="flowName" class="form-control ui-input" autocomplete="off">
+              </div>
+              <label class="col-xs-2 control-label">Alarm Name:</label>
+              <div class="col-xs-3">
+                <div ng-controller="selectCtrl" style="width:200px">
+                   <div
+                       ui-select
+                       default="choose"
+                       ng-model="selectDataId"
+                       options="selectData"
+                       key="text"
+                       as-value="value"
+                       width="100%"></div>
+                   </div>
+                </div>
+            </div>
+            <div ng-show="isCollapsed">
+               <div class="form-group col-xs-12">
+                <label class="col-xs-2 control-label">Alarm Type:</label>
+                <div class="col-xs-9" ng-icheck multi="1" filter-name="alarm_category" default-checked="" ng-controller="checkboxCtrl">
+                      <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="checkedID" space="6" ></div>
+                </div>
+               </div>
+               <div class="form-group col-xs-12">
+                <label class="col-xs-2 control-label">Alarm Level  :</label>
+                <p class="input-group ui-datapicker pull-left" style="width:200px; margin-bottom:10px">
+                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd hh:mm:ss" close-on-date-selection="false" datepicker-milliseconds
+                           ng-model="timeSelection" is-open="opened1" ng-click="opened1=1" show-weeks="true"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened1=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+               </div>
+               <div class="form-group col-xs-12">
+                <label class="col-xs-2 control-label">Alarm Status :</label>
+                <p class=" input-group ui-datapicker pull-left" style="width:200px;margin-right:10px;margin-bottom:10px;">
+                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                           ng-model="startDate" is-open="opened2" ng-click="opened2=1" show-weeks="true"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened2=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+                <label class="pull-left">--</label>
+                <p class="input-group ui-datapicker pull-left" style="width:200px;margin-left:10px;">
+                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                           ng-model="endDate" is-open="opened3" ng-click="opened3=1" show-weeks="true"/>
+                    <span class="input-group-btn">
+                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened3=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+               </div>
+            </div>
+            <div class="form-group col-xs-12">
+              <div class="col-xs-offset-2 col-xs-10">
+                 <button type="button" class="btn btn-default pull-left ui-btn" ng-click="search_alarm()" style="margin-right:10px;" ng-class="{'btn-default-submit':1}">Search</button>
+                 <button type="button" class="btn btn-default  pull-left ui-btn" ng-click="btnCollapsedHandler(false)" ng-show="!isCollapsed"><span class="caret"></span> <span>Advanced</span></button>
+                 <button type="button" class="btn btn-default ui-btn" ng-show="isCollapsed" ng-click="btnCollapsedHandler(true)"><span class="caret"></span> <span>Basic</span></button>
+              </div>
+            </div>
+        </form>
+        <h3>form表单</h3>
+        <form class="form-horizontal clearfix">
+                       <div class="form-group col-xs-12">
+                         <label class="col-xs-3 control-label">Alarm Name：</label>
+                         <div class="col-xs-3 form-control-static">alarm.warnName</div>
+                         <label class="col-xs-2 control-label">Alarm Object：</label>
+                         <div class="col-xs-3 form-control-static">alarm.warnObj</div>
+                       </div>
+                       <div class="form-group col-xs-12">
+                           <label class="col-xs-3 control-label">Alarm Type：</label>
+                           <div class="col-xs-3 form-control-static">alarm.classifyName</div>
+                           <label class="col-xs-2 control-label">First Time：</label>
+                           <div class="col-xs-3 form-control-static">alarm.recentTimeStr</div>
+                       </div>
+                       <div class="form-group col-xs-12">
+                         <label class="col-xs-3 control-label">Times：</label>
+                         <div class="col-xs-3 form-control-static">alarm.times</div>
+                         <label class="col-xs-2 control-label">Last Time：</label>
+                         <div class="col-xs-3 form-control-static">alarm.lastTime</div>
+                       </div>
+                       <div class="form-group col-xs-12">
+                          <label class="col-xs-3 control-label">Alarm Code： </label>
+                          <div class="col-xs-3 form-control-static">alarm.warnId</div>
+                          <label class="col-xs-2 control-label">Alarm Onwer：</label>
+                          <div class="col-xs-3 form-control-static">alarm.gmwt</div>
+                      </div>
+                  </form>
+        <h3>表格操作栏</h3>           
+        <div class="am-state am-state-grid-search no-bb am-bt">
+          <button type="button" class="btn btn-default am-border-bb-none am-border-bl-none" ng-click="clean_alarm()">Clean</button>
+          <button type="button" class="btn btn-default am-border-bb-none" ng-click="merge_alarm()">Merge</button>
+          <button type="button" class="btn btn-default am-border-bb-none" ng-click="export_alarm()">Export</button>
+        </div>
+        <h3>表格</h3> 
+        <!--表格-->
+        <div class="col-xs-12" ng-controller="gridCtrl">
+                 <table class="ui-grid" 
+                      ui-grid
+                      items="gridData"
+                      selected-items="ngGridModel"
+                      total-items="total"
+                      page-items="pagingOptions.pageSize"
+                      dragable="true"
+                      current-page="pagingOptions.currentPage"
+                      on-data-required="onGridPager(currentPage,pageItems)"
+                      selection-mode="None">
+                      <thead>
+                      <tr>
+                        <th field-name="functionName" dragable="1" display-name="Funtion name"></th>
+                        <th field-name="algo" display-name="Algo" dragable="1"></th>
+                        <th field-name="dealNum" display-name="Deal Num" dragable="1"></th>
+                        <th field-name="errorNum" display-name="Error Num" dragable="1"></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                 </table>
+        </div>
+         <h3>表格（操作栏）</h3>           
+        <div class="am-state am-state-grid-search no-bb am-bt">
+          <button type="button" class="btn btn-default am-border-bb-none am-border-bl-none" ng-click="clean_alarm()">Clean</button>
+          <button type="button" class="btn btn-default am-border-bb-none" ng-click="merge_alarm()">Merge</button>
+          <button type="button" class="btn btn-default am-border-bb-none" ng-click="export_alarm()">Export</button>
+        </div>
+        <div class="col-xs-12" ng-controller="gridCtrl">
+                 <table class="ui-grid" 
+                      ui-grid
+                      items="gridData"
+                      selected-items="ngGridModel"
+                      total-items="total"
+                      page-items="pagingOptions.pageSize"
+                      dragable="true"
+                      current-page="pagingOptions.currentPage"
+                      on-data-required="onGridPager(currentPage,pageItems)"
+                      selection-mode="None">
+                      <thead>
+                      <tr>
+                        <th field-name="functionName" dragable="1" display-name="Funtion name"></th>
+                        <th field-name="algo" display-name="Algo" dragable="1"></th>
+                        <th field-name="dealNum" display-name="Deal Num" dragable="1"></th>
+                        <th field-name="errorNum" display-name="Error Num" dragable="1"></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                 </table>
+        </div>
+    </div>
+</body>
+</html>
+

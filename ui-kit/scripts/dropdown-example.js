@@ -1,8 +1,32 @@
-//angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll','ui.upload'
-//    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','dialogs.main','ui.tabs','ui.suggest',
-//    ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
-angular.module('ui',['ui.checkbox','ui.dropdown','ui.buttons','pascalprecht.translate','ui.modal','dialogs.main','ui.bindHtml']);
+angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll','ui.upload'
+    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','ui.dialogs','ui.tabs','ui.suggest','ui.utils',
+    ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
+//angular.module('ui',['ui.checkbox','ui.dropdown','ui.buttons','pascalprecht.translate','ui.modal','dialogs.main','ui.bindHtml']);
 angular.module('demo',['ui'])
+    .directive('uiPrism',['$compile', function($compile) {
+        return {
+            restrict: 'A',
+            transclude: true,
+            scope: {
+                source: '@'
+            },
+            link: function(scope, element, attrs, controller, transclude) {
+                scope.$watch('source', function(v) {
+                    element.find("code").html(v);
+
+                    Prism.highlightElement(element.find("code")[0]);
+                });
+
+                transclude(function(clone) {
+                    if (clone.html() !== undefined) {
+                        element.find("code").html(clone.html());
+                        $compile(element.contents())(scope.$parent);
+                    }
+                });
+            },
+            template: "<code></code>"
+        };
+    }])
     .controller('dropdownCtrl',['$scope','$log',function ($scope, $log) {
         $scope.items = [
             'The first choice!',
@@ -78,7 +102,9 @@ angular.module('demo',['ui'])
 
 
         $scope.error=function() {
-            dialogs.error();
+            dialogs.error().result.then(function(){
+                console.log('fff');
+            });
         }
 
         $scope.notify=function() {
@@ -116,10 +142,10 @@ angular.module('demo',['ui'])
     .controller('tabsCtrl', ['$scope','$log',function ($scope, $log) {
 
         $scope.ng={
-            tab:1
+            tab:0
         };
 
-        $scope.tabsData=[{value:0,title:'Tab1',content:'this is tab1'},{value:1,title:'Tab2',content:'this is tab2'}];
+        $scope.tabsData=[{value:0,title:'Markup',content:'this is tab1'},{value:1,title:'Javascript',content:'this is tab2'}];
 
 
 
@@ -134,14 +160,62 @@ angular.module('demo',['ui'])
 //        $scope.dynamicTooltipText = 'dynamic';
     }])
     .controller('gridCtrl',['$scope','$log',function ($scope, $log) {
-          $scope.gridData=[{functionName:22,algo:2,dealNum:3,errorNum:8},{functionName:22,algo:2,dealNum:3,errorNum:8}];    
-          $scope.pagingOptions = {
-                    pageSize: 1,
-                    currentPage: 0
-                }
-    }])
-    .controller('scrollbarCtrl', ['$scope','$log',function ($scope, $log) {
 
+          (function(){
+              $scope.gridData=[
+                                {functionName:22434322243,algo:2,dealNum:3,errorNum:8},
+                                {functionName:2343432,algo:2,dealNum:3,errorNum:8}
+                              ];
+              $scope.pagingOptions = {
+                  pageSize: 1,
+                  currentPage: 0
+              };
+          })();
+          (function(){
+              //表格分页配置
+              $scope.pagingOptions2 = {
+                  pageSize: 1,
+                  currentPage: 0
+              };
+              //table 请求回调  页面载入或 分页时 自动调用
+              $scope.onGridPager=function(start,limit){
+                  $scope.gridData2=[
+                                    {interfaceId:1,functionName:22434322243,algo:2,dealNum:3,errorNum:8},
+                                    {interfaceId:2,functionName:2343432,algo:2,dealNum:3,errorNum:8},
+                                    {interfaceId:3,functionName:22434322243,algo:2,dealNum:3,errorNum:8},
+                                    {interfaceId:4,functionName:2343432,algo:2,dealNum:3,errorNum:8}
+                                   ];
+              };
+              /*表格勾选*/
+              $scope.gridSelectedItems = [];
+              $scope.onGridSelected=function(areAllSelected){
+                  $scope.gridSelectedItems.splice(0,$scope.gridSelectedItems.length);
+                  !areAllSelected?$scope.gridSelectedItems.splice(0,$scope.gridSelectedItems.length):
+                      $scope.gridSelectedItems.push.apply($scope.gridSelectedItems,$scope.gridData2);
+              };
+              $scope.onGridChecked=function(item){
+                  var f=_.filter($scope.gridSelectedItems,function(it){return it.interfaceId===item.interfaceId});
+                  return !!f.length;
+              };
+              $scope.onNgChange=function(item){
+                  var _index;
+                  _.each($scope.gridSelectedItems,function(it,index){
+                      if(it.interfaceId===item.interfaceId){
+                          _index=index;
+                          return;
+                      }
+                  });
+                  return _index;
+              };
+          })();
+    }])
+    .controller('scrollbarCtrl', ['$scope',function ($scope) {
+        $scope.onScrollAc=function(self){
+            console.log('on-scroll');
+        };
+        $scope.onScrollBottomAc=function(self){
+            console.log('on-scroll-bottom');
+        };
     }])
     .controller('treeCtrl',['$scope','$log',function ($scope, $log) {
 
@@ -246,9 +320,9 @@ angular.module('demo',['ui'])
                 $scope.isCollapsed = !$scope.isCollapsed;
             }
     }])
-    .controller('suggestCtrl',['$scope','$timeout',function(scope,$timeout){
-        scope.data=[{'key':1},{'key':2}];
-        scope.key='text';
+    .controller('suggestCtrl',['$scope',function(scope){
+        scope.data=[{'key':1,text:'aaa'},{'key':2,text:'bbb'}];
+//        scope.key='text';
     }])
     .controller('inputSelectCtrl',['$scope','$timeout',function(scope,$timeout){
         scope.ngModelList=[{text:'aa',value:11},{text:'bb',value:22},{text:'csd',value:3432},{text:'asd',value:124634},

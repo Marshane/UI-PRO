@@ -434,7 +434,7 @@ angular.module('dialogs.services',['ui.modal','dialogs.controllers'])
  * need it.
  */
 
-angular.module('dialogs.main',['dialogs.services','ngSanitize']) // requires angular-sanitize.min.js (ngSanitize) //code.angularjs.org/1.2.1/angular-sanitize.min.js
+angular.module('ui.dialogs',['dialogs.services','ngSanitize']) // requires angular-sanitize.min.js (ngSanitize) //code.angularjs.org/1.2.1/angular-sanitize.min.js
 		
 	.config(['$translateProvider',function($translateProvider){
 		/** 

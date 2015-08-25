@@ -16,7 +16,8 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
         minDate: null,
         maxDate: null
     })
-    .controller('DatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$timeout', '$log', 'dateFilter', 'datepickerConfig', function ($scope, $attrs, $parse, $interpolate, $timeout, $log, dateFilter, datepickerConfig) {
+    .controller('DatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$timeout', '$log', 'dateFilter', 'datepickerConfig',
+        function ($scope, $attrs, $parse, $interpolate, $timeout, $log, dateFilter, datepickerConfig) {
         var self = this,
             ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl;
         // Modes chain
@@ -144,7 +145,12 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 ngModelCtrl.$render();
             } else {
                 self.activeDate = date;
-                $scope.datepickerMode = self.modes[ self.modes.indexOf($scope.datepickerMode) - 1 ];
+                if($scope.$parent.$parent.datepickerMode===$scope.datepickerMode){
+                    ngModelCtrl.$setViewValue(date.setMonth(date.getMonth()));
+                    ngModelCtrl.$render();
+                }else{
+                    $scope.datepickerMode = self.modes[ self.modes.indexOf($scope.datepickerMode) - 1 ];
+                }
             }
             if (bool) {
                 if ($scope.asynRemind)
@@ -484,7 +490,8 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     scope.getText = function (key) {
                         return scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
                     };
-//                            console.log(scope);
+
+
                     if (format) {
                         format = format.toUpperCase();
                         scope.HH = format.indexOf('HH') >= 0;
@@ -512,6 +519,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         dateFormat=_dataFormat(value) || datepickerPopupConfig.datepickerPopup;
                         ngModel.$render();
                     });
+                    scope._format=attrs.datepickerPopup;
 
                     // popup element used to display calendar
                     var popupEl = angular.element('<div datepicker-popup-wrap><div datepicker on-select="onselect()"></div></div>');

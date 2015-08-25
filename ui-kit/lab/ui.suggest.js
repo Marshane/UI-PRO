@@ -8,11 +8,13 @@
                 url:'',
                 params:{},
                 split:'',
+                active:'active',
                 max:10,
                 interval:300,
                 selected:null,
-                name:'ui_menu_list'
+                name:'ui-menu-list'
             },op||{});
+            console.log(op);
             this.id=_.isElement(op.id)?op.id:$(op.id);
             if(!this.id.length){
                 return;
@@ -27,7 +29,7 @@
             this.ul=node[1];
         },
         _createHTML:function(){
-            var b=$('<div style="display:none;"></div>'),c=$('<div class="'+this.op.name+'"</div>'),d=$('<ul></ul>');
+            var b=$('<div style="display:none;"></div>'),c=$('<div class="'+this.op.name+'"></div>'),d=$('<ul></ul>');
             c.append(d);
             b.append(c);
             setTimeout(function(){document.getElementsByTagName('body')[0].appendChild(b[0])},0);//fix ie
@@ -106,6 +108,10 @@
                 clearTimeout(this.interval)
             }
             this.interval=setTimeout(function(){
+                if(!a.url){
+                    b._render(a.data);
+                    return;
+                }
                 if(a.data&&d[0].val===f&&!a.realtime){//避免重复值出发请求
                     b._render(a.data);
                 }else{
@@ -129,8 +135,8 @@
             },a.interval);
         },
         _setOn:function(index){
-            this.list.removeClass('cur');
-            this.list[index||this.index].className='cur';
+            this.list.removeClass(this.op.active);
+            this.list[index||this.index].className=this.op.active;
         },
         _insertAdd:function(item){
             var val=this.cov[this.index];
@@ -141,7 +147,7 @@
         },
         _offset:function(){
             var a=this.id,b=a.offset(),c=['position:absolute','z-index:2000','display:block',
-                'width:'+(a.outerWidth()-1)+'px','left:'+(b.left)+'px','top:'+(b.top+a.outerHeight()-1)+'px'];
+                'width:'+(a.outerWidth()-1)+'px','left:'+(b.left)+'px','top:'+(b.top+a.outerHeight()+1)+'px'];
             this.listEL[0].style.cssText=c.join(';');
         },
         _handleListAction:function(){
@@ -208,7 +214,8 @@
                 require:'?ngModel',
                 scope:{
                     onSelect:'&',
-                    params:'='
+                    params:'=',
+                    data:'='
                 },
                 link:function(scope, element, attrs,ngModel) {
                     var asValue=attrs.asValue;
@@ -219,6 +226,8 @@
                             url:attrs.url,
                             objParam:attrs.objParam,
                             realtime:+attrs.realtime,
+                            data:scope.data,
+                            active:attrs.active,
                             max:10,
                             key:attrs.key,
                             selected:function(item,self){
