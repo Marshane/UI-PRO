@@ -125,33 +125,32 @@
             <div class="col-xs-12">
                 <div class="col-xs-8">
                     <h4>例子</h4>
-                    <div class="col-xs-2">
+                    <h5 class="clearfix">按钮常用状态</h5>
+                    <div class="col-xs-3">
                         <button class="btn  ui-btn ui-btn-primary">Primary Button</button>
                     </div>
-                    <div class="col-xs-2">
-                        <button class="btn  ui-btn ui-btn-warning">Warning Button</button>
-                    </div>
-                    <div class="col-xs-2">
+                    <!--<div class="col-xs-2">-->
+                        <!--<button class="btn  ui-btn ui-btn-warning">Warning Button</button>-->
+                    <!--</div>-->
+                    <div class="col-xs-3">
                         <button class="btn  ui-btn ui-btn-danger">Danger Button</button>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-xs-3">
                         <button class="btn  ui-btn ui-btn-success">Success Button</button>
                     </div>
-                    <div class="col-xs-2">
+                    <div class="col-xs-3">
                         <button class="btn  ui-btn ui-btn-disabled">Disabled Button</button>
                     </div>
-
-                    <div class="radio-group">
-                        {{radioGroup}}
-                        <label class="ui-radio">
-                            <input type="radio" name="radioName" value="1" ng-model="radioGroup">
-                            radio 1
-                        </label>
-                        <label class="ui-radio">
-                            <input type="radio" name="radioName" value="2" ng-model="radioGroup">
-                            radio 2
-                        </label>
+                    <p class="clearfix"><br/></p>
+                    <h5 class="clearfix">按钮组   {{radioModel}}</h5>
+                    <div class="col-xs-12">
+                        <div class="btn-group ui-btn-group">
+                            <label class="btn  ui-btn  ui-btn-primary" ng-model="radioModel" btn-radio="'Left'">Left</label>
+                            <label class="btn  ui-btn  ui-btn-primary" ng-model="radioModel" btn-radio="'Middle'">Middle</label>
+                            <label class="btn  ui-btn  ui-btn-primary" ng-model="radioModel" btn-radio="'Right'">Right</label>
+                        </div>
                     </div>
+
                 </div>
                 <div class="col-xs-4">
                     <h4>设置</h4>
@@ -164,10 +163,15 @@
                         <pre class="language-markup">
 <code>
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-primary&quot;&gt;Primary Button&lt;/a&gt;
-    &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-warning&quot;&gt;Warning Button&lt;/a&gt;
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-danger&quot;&gt;Danger Button&lt;/a&gt;
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-success&quot;&gt;Success Button&lt;/a&gt;
-    &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-disabled&quot;&gt;Disabled Button&lt;/a&gt;</code>
+    &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-disabled&quot;&gt;Disabled Button&lt;/a&gt;
+
+    &lt;div class=&quot;btn-group&quot;&gt;
+        &lt;label class=&quot;btn  ui-btn  ui-btn-primary&quot; ng-model=&quot;radioModel&quot; btn-radio=&quot;'Left'&quot;&gt;Left&lt;/label&gt;
+        &lt;label class=&quot;btn  ui-btn  ui-btn-primary&quot; ng-model=&quot;radioModel&quot; btn-radio=&quot;'Middle'&quot;&gt;Middle&lt;/label&gt;
+        &lt;label class=&quot;btn  ui-btn  ui-btn-primary&quot; ng-model=&quot;radioModel&quot; btn-radio=&quot;'Right'&quot;&gt;Right&lt;/label&gt;
+    &lt;/div&gt;</code>
                         </pre>
                     </div>
                     <!--<div ui-tab heading="JavaScript">-->

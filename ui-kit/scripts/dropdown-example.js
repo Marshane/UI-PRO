@@ -65,12 +65,12 @@ angular.module('demo',['ui'])
         $scope.checkboxData2=[{text:'aa',value:1},{text:'bx',value:9},
             {text:'b',value:0},{text:'dd',value:4},{text:'e',value:5},{text:'f',value:6}];
 
-        $scope.checkedID2=1;
-        $scope.checkedID=[0,6];
-        $timeout(function(){
-            $scope.checkedID2=0;
-            $scope.checkedID=[1,4];
-        },4000);
+//        $scope.checkedID2=0;
+//        $scope.checkedID=[0,6];
+//        $timeout(function(){
+//            $scope.checkedID2=0;
+//            $scope.checkedID=[1,4];
+//        },4000);
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
     }])

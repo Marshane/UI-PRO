@@ -21,7 +21,6 @@ angular.module('ui.checkbox', ['ui.buttons'])
                     scope[it]=attrs[it];
                 });
                 scope.modelSplit=scope.modelSplit||',';
-//                scope.multi=(scope.multi==='0'?0:1);
                 if(scope.multi==='0'){
                     scope.multi=0;
                     elem.addClass('ui-checkbox-single');
@@ -150,7 +149,7 @@ angular.module('ui.checkbox', ['ui.buttons'])
                         });
                     }else{
                         _.each(scope.data,function(i,index){
-                            if(i[scope.asValue]==a){
+                            if(i[scope.asValue]===a){
                                 i.__checked=true;
                             }else{
                                 i.__checked=false;
