@@ -21,7 +21,13 @@ angular.module('ui.checkbox', ['ui.buttons'])
                     scope[it]=attrs[it];
                 });
                 scope.modelSplit=scope.modelSplit||',';
-                scope.multi=(scope.multi==='0'?0:1);
+//                scope.multi=(scope.multi==='0'?0:1);
+                if(scope.multi==='0'){
+                    scope.multi=0;
+                    elem.addClass('ui-checkbox-single');
+                }else{
+                    scope.multi=1;
+                }
                 var watchAll,single,dif;
                 var onchange=function(a){
                     if(_.isUndefined(a))return;
@@ -171,6 +177,7 @@ angular.module('ui.checkbox', ['ui.buttons'])
             </div>');
         $templateCache.put("ui-checkbox-single.html",
             '<div class="btn-group ui-checkbox">\
-                <label ng-repeat="it in data  | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" ng-model="_model.ngModel" btn-checkbox btn-checkbox-true="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class=""></i>{{it[key]}}</label>\
+                <label ng-repeat="it in data  | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" \
+                 ng-model="_model.ngModel" btn-radio="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class=""><s ng-if="it.__checked"></s></i>{{it[key]}}</label>\
             </div>');
     }]);

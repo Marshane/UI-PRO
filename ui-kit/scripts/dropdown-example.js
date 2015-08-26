@@ -27,6 +27,9 @@ angular.module('demo',['ui'])
             template: "<code></code>"
         };
     }])
+    .controller('buttonCtrl',['$scope',function ($scope) {
+
+    }])
     .controller('dropdownCtrl',['$scope','$log',function ($scope, $log) {
         $scope.items = [
             'The first choice!',
@@ -57,17 +60,17 @@ angular.module('demo',['ui'])
     }])
     .controller('checkboxCtrl', ['$scope','$log','$timeout',function ($scope, $log,$timeout) {
 
-        $scope.checkboxData=[{text:'a',value:1},{text:'b',value:2},
+        $scope.checkboxData=[{text:'a',value:1},{text:'bx',value:2},
           {text:'b',value:0},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
-        $scope.checkboxData2=[{text:'aa',value:1},{text:'b',value:0},
-            {text:'b',value:3},{text:'dd',value:4},{text:'e',value:5},{text:'f',value:6}];
+        $scope.checkboxData2=[{text:'aa',value:1},{text:'bx',value:9},
+            {text:'b',value:0},{text:'dd',value:4},{text:'e',value:5},{text:'f',value:6}];
 
         $scope.checkedID2=1;
         $scope.checkedID=[0,6];
         $timeout(function(){
             $scope.checkedID2=0;
             $scope.checkedID=[1,4];
-        },2000);
+        },4000);
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
     }])
@@ -313,6 +316,7 @@ angular.module('demo',['ui'])
     }])
     .controller('collapseCtrl',['$scope','$log',function ($scope, $log) {
           $scope.isCollapsed = false;
+        $scope.noWrapSlides=2;
     }])
     .controller('testCtrl',['$scope','$log',function ($scope, $log) {
        $scope.isCollapsed = false;

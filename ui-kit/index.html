@@ -120,30 +120,40 @@
     </div>
     <div id="j-main" class="main">
         <!--button-->
-        <div id="j-button" class="row">
+        <div id="j-button" class="row" ng-controller="buttonCtrl">
             <h2>button <em>(ui.button)</em></h2>
             <div class="col-xs-12">
-                <div class="col-xs-7">
+                <div class="col-xs-8">
                     <h4>例子</h4>
-                    <div class="col-xs-3">
-                        <a href="#" class="btn  ui-btn ui-btn-primary">Primary Button</a>
+                    <div class="col-xs-2">
+                        <button class="btn  ui-btn ui-btn-primary">Primary Button</button>
                     </div>
-                    <div class="col-xs-3">
-                    <a href="#" class="btn  ui-btn ui-btn-warning">Warning Button</a></div>
-                        <div class="col-xs-3">
-                    <a href="#" class="btn  ui-btn ui-btn-default">Default Button</a></div>
-                            <div class="col-xs-3">
-                    <a href="#" class="btn  ui-btn ui-btn-danger">Danger Button</a></div>
-                                <div class="col-xs-3">
-                    <a href="#" class="btn  ui-btn ui-btn-success">Success Button</a></div>
-                                    <div class="col-xs-3">
-                    <a href="#" class="btn  ui-btn ui-btn-inverse">Inverse Button</a></div>
-                                        <div class="col-xs-3">
-                    <a href="#" class="btn  ui-btn ui-btn-info">Info Button</a></div>
-                                            <div class="col-xs-3">
-                    <a href="#" class="btn  ui-btn ui-btn-disabled">Disabled Button</a></div>
+                    <div class="col-xs-2">
+                        <button class="btn  ui-btn ui-btn-warning">Warning Button</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn  ui-btn ui-btn-danger">Danger Button</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn  ui-btn ui-btn-success">Success Button</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn  ui-btn ui-btn-disabled">Disabled Button</button>
+                    </div>
+
+                    <div class="radio-group">
+                        {{radioGroup}}
+                        <label class="ui-radio">
+                            <input type="radio" name="radioName" value="1" ng-model="radioGroup">
+                            radio 1
+                        </label>
+                        <label class="ui-radio">
+                            <input type="radio" name="radioName" value="2" ng-model="radioGroup">
+                            radio 2
+                        </label>
+                    </div>
                 </div>
-                <div class="col-xs-5">
+                <div class="col-xs-4">
                     <h4>设置</h4>
                     <p>无</p>
                 </div>
@@ -155,11 +165,8 @@
 <code>
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-primary&quot;&gt;Primary Button&lt;/a&gt;
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-warning&quot;&gt;Warning Button&lt;/a&gt;
-    &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-default&quot;&gt;Default Button&lt;/a&gt;
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-danger&quot;&gt;Danger Button&lt;/a&gt;
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-success&quot;&gt;Success Button&lt;/a&gt;
-    &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-inverse&quot;&gt;Inverse Button&lt;/a&gt;
-    &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-info&quot;&gt;Info Button&lt;/a&gt;
     &lt;a href=&quot;#&quot; class=&quot;btn  ui-btn ui-btn-disabled&quot;&gt;Disabled Button&lt;/a&gt;</code>
                         </pre>
                     </div>
@@ -626,10 +633,10 @@
                 <div class="col-xs-7" ng-controller="checkboxCtrl">
                     <h4>例子</h4>
                     <div class="col-xs-10">
-                        <p>多选model：{ {checkedID} }</p>
+                        <p>多选model：{{checkedID}}</p>
                         <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)"
                              multi="1" ng-model="checkedID" space="6"></div>
-                        <p>单选model：{ {checkedID2} }</p>
+                        <p>单选model：{{checkedID2}}</p>
                         <div ui-checkbox data="checkboxData2" key="text" as-value="value" checked-data="checkedData2" on-checked="onChecked2(checkedID2)"
                              multi="0" ng-model="checkedID2" space="6"></div>
                     </div>
