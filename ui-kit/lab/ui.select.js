@@ -1,5 +1,5 @@
 angular.module('ui.select',[])
-    .directive('uiSelect', ['$filter','$timeout','$translate','$compile','$templateCache', function ($filter, $timeout,$translate,$compile,$templateCache) {
+    .directive('uiSelect', ['$filter','$window','$timeout','$translate','$compile','$templateCache', function ($filter,$window, $timeout,$translate,$compile,$templateCache) {
         return{
             restrict:'A',
             require:'^ngModel',
@@ -230,7 +230,12 @@ angular.module('ui.select',[])
                         });
                         scope.onOpen=function(){
                             var os=element.offset();
-                            scope.menu.css({'left':(-element.width()+10)+'px','top':(os.top+element.height()-3)+'px','width':element.width()+'px'});
+                            scope.menu.css({'left':(-element.width()+10)+'px','top':function(){
+                                if(os.top+element.height()+scope.menu.height()-5 > $window.scrollY+$window.innerHeight){
+                                    return (os.top-scope.menu.height()-2)+'px'
+                                }
+                                return (os.top+element.height()-1)+'px'
+                            }(),'width':element.width()+'px'});
                             $timeout(function(){
                                 os=element.offset();
                                 scope.menu.css({'left':os.left+'px'});
