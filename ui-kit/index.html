@@ -638,10 +638,10 @@
                     <h4>例子</h4>
                     <div class="col-xs-10">
                         <p>多选model：{{checkedID}}</p>
-                        <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)"
-                             multi="1" ng-model="checkedID" space="6"></div>
+                        <div ui-checkbox data="checkboxData" key="text" as-value="value"  on-checked="onChecked(checkedID)"
+                             ng-model="checkedID" space="6"></div>
                         <p>单选model：{{checkedID2}}</p>
-                        <div ui-checkbox data="checkboxData2" key="text" as-value="value" checked-data="checkedData2" on-checked="onChecked2(checkedID2)"
+                        <div ui-checkbox data="checkboxData2" key="text" as-value="value"  on-checked="onChecked2(checkedID2)"
                              multi="0" ng-model="checkedID2" space="6"></div>
                     </div>
                 </div>
@@ -649,7 +649,7 @@
                     <h4>设置</h4>
                     <p>{String | Array} ng-model：实体数据</p>
                     <p>{Object - Collection} data：数据</p>
-                    <p>{Number} multi [可选]：是否多选 （1 多选） （0 单选）</p>
+                    <p>{Number} multi [可选]：是否多选 （1 多选 默认选项） （0 单选）</p>
                     <p>{Object - Collection} checked-data [可选]：默认已选择 </p>
                     <p>{Number} space [可选]：bootstrap栅格化规则 12/space</p>
                     <p>{Function} on-checked [可选]：选择时的回调 @return 返回当前这条数据 </p>

@@ -61,6 +61,8 @@ angular.module('ui.checkbox', ['ui.buttons'])
                     if(a.length&&_.isUndefined(a[0].__checked))onchange(a);
                     if(scope.multi){
                         scope.ngModel=[];
+                    }else{
+                        scope.ngModel='';
                     }
                     scope.checkedData.length=0;
                     _.each(a,function(i){
@@ -90,7 +92,7 @@ angular.module('ui.checkbox', ['ui.buttons'])
                     (scope.onChecked||angular.noop)(obj);
                     (scope.onChange||angular.noop)({data:a});
 
-                    if(!scope.multi&&!scope.checkedData.length){
+                    if(!scope.multi && !scope.checkedData.length){
                         scope.ngModel='';
                     }
                     tmp=_.clone(scope.ngModel);
@@ -98,11 +100,11 @@ angular.module('ui.checkbox', ['ui.buttons'])
                 if(_.isUndefined(scope.asValue))return;
                 scope.data=scope.data||[];
                 scope.checkedData=scope.checkedData||[];
-                if(+scope.ngModel===0){
-                    scope.ngModel=[scope.ngModel];
+
+                if(scope.multi){
+                    scope.ngModel=(scope.ngModel===0?[scope.ngModel]:scope.ngModel)||[];
                 }
-                scope.ngModel=scope.ngModel||[];
-                if(!_.isArray(scope.ngModel)){
+                if(!_.isArray(scope.ngModel) &&scope.multi){
                     scope.ngModel=String(scope.ngModel).split(scope.modelSplit);
                 }
                 //处理单选情况
@@ -149,11 +151,11 @@ angular.module('ui.checkbox', ['ui.buttons'])
                         });
                     }else{
                         _.each(scope.data,function(i,index){
-                            if(i[scope.asValue]===a){
-                                i.__checked=true;
-                            }else{
-                                i.__checked=false;
-                            }
+                                if(i[scope.asValue]===a){
+                                    i.__checked=true;
+                                }else{
+                                    i.__checked=false;
+                                }
                         });
                     }
                 },true);
