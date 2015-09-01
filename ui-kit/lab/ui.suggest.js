@@ -14,7 +14,6 @@
                 selected:null,
                 name:'ui-menu-list'
             },op||{});
-            console.log(op);
             this.id=_.isElement(op.id)?op.id:$(op.id);
             if(!this.id.length){
                 return;
@@ -56,9 +55,12 @@
                     this._hide();
                 }
             }else{
+
                 if(b.val().trim()||(a.realtime&&b.val().trim()==='')){
                     this._getData();
-                }else {
+                }else if(a.data.length) {
+                    this._getData();
+                }else{
                     this._hide();
                 }
             }
@@ -79,6 +81,7 @@
                     return con.join('');
                 };
             this.cov=[];
+            this.temp=[];
             if(_.isArray(a)){
                 var d=this.id.val().trim();
                 if(!a || !a.length){
@@ -86,14 +89,25 @@
                     return;
                 }
                 var cov=[];
+                var temp=[];
+                if(c.match){
+                    a= _.filter(a,function(it){
+                        if(c.key){
+                            return it[c.key].indexOf(d)>=0
+                        }
+                        return it.indexOf(d)>=0
+                    });
+                }
                 for(var i=0;i<Math.min(c.max,a.length);i++){
                     cov.push(g(c.key,a[i]));
                     b.push(ui.format(c.tpl,cov[i]));
+                    temp.push(a[i]);
                     if(d===cov[i]){
                         f=i;
                     }
                 }
                 this.cov=cov;
+                this.temp=temp;
             }
             this.ul[0].innerHTML=b.join('');
             this.list=this.ul.find('li');
@@ -161,7 +175,7 @@
                     }
                 }(i);
                 this.list[i].onclick=function(e){
-                    self._insertAdd(self.op.data[self.index]);
+                    self._insertAdd(self.temp[self.index]);
                     ui.evt(e).stop();
                 }
             }
@@ -175,7 +189,10 @@
                         ui.evt(e).stop();
                     })
                    .bind('blur',function(){
-                        setTimeout(function(){self._hide()},100);
+                        setTimeout(function(){
+                            self._hide();
+                            self.op.onblur(self);
+                        },100);
                     })
                    .bind('keyup',function(e){
                         key=ui.evt(e).key;
@@ -196,7 +213,7 @@
                             return !1;
                         }
                         if(e.key==13){
-                            self._insertAdd(self.op.data[self.index]);
+                            self._insertAdd(self.temp[self.index]);
                             e.prevent();
                         }
                     });
@@ -214,6 +231,8 @@
                 require:'?ngModel',
                 scope:{
                     onSelect:'&',
+                    onBlur:'&',
+                    ctrl:'=',
                     params:'=',
                     data:'='
                 },
@@ -228,7 +247,13 @@
                             realtime:+attrs.realtime,
                             data:scope.data,
                             active:attrs.active,
+                            match:attrs.match,//静态数据 实时匹配
                             max:10,
+                            onblur:function(self){
+                                scope.$apply(function(){
+                                    scope.onBlur({self: self});
+                                });
+                            },
                             key:attrs.key,
                             selected:function(item,self){
                                 if(scope.onSelect){
@@ -243,6 +268,8 @@
                                 }
                             }
                         });
+                        scope._ngModel=ngModel;
+                        if(angular.isDefined(attrs.ctrl))scope.ctrl=scope;
                     }
                     scope.$watch('ngModel',function(a){
                         if(a===''){

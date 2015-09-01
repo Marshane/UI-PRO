@@ -152,9 +152,9 @@ angular.module('ui.tree', [])
                     }
                     if ($scope.onNodeToggle)
                         $scope.onNodeToggle({node: this.node, expanded: expanding});
-                    console.log(this);
-                    console.log($scope.expandedNodes);
-                    console.log($scope.expandedNodesMap);
+//                    console.log(this);
+//                    console.log($scope.expandedNodes);
+//                    console.log($scope.expandedNodesMap);
                 };
 
                 $scope.selectNodeLabel = function( selectedNode ){
@@ -208,7 +208,8 @@ angular.module('ui.tree', [])
                     '<li ng-repeat="node in node.' + $scope.options.nodeChildren + ' | filter:filterExpression:filterComparator ' + orderBy + '" ng-class="headClass(node)" '+classIfDefined($scope.options.injectClasses.li, true)+'>' +
                     '<i class="tree-branch-head" ng-class="iBranchClass()" ng-click="selectNodeHead(node)"></i>' +
                     '<i class="tree-leaf-head '+classIfDefined($scope.options.injectClasses.iLeaf, false)+'"></i>' +
-                    '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ng-click="selectNodeLabel(node)" tree-transclude></div>' +
+                    '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ' +
+                        'ng-click="selectNodeLabel(node)" tree-transclude></div>' +
                     '<treeitem ng-if="nodeExpanded()"></treeitem>' +
                     '</li>' +
                     '</ul>';

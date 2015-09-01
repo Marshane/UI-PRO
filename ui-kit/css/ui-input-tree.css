@@ -1,0 +1,10 @@
+.ui-input-tree{position: relative;}
+.ui-input-tree .glyphicon{position: absolute; right:10px; top:8px;}
+/*.ui-input-tree .glyphicon-remove{ right:30px;}*/
+
+.ui-input-tree-popup{ position: absolute; background-color:#163041; color: #fff; overflow: hidden; border:1px solid #104d6a; padding:5px; overflow-y:auto;}
+.ui-input-tree-popup .btn:hover{ color: #fff;}
+.ui-input-tree-popup .btn i{color:#333;}
+.ui-input-tree-popup .ui-tree{color:#fff}
+.ui-input-tree-popup  .ui-tree.tree-classic li .tree-selected{background-color: #0e5580}
+.ui-input-tree-popup .ui-input-close{position: absolute; right:5px; top:3px; z-index:10; cursor: pointer; color: #fff}
