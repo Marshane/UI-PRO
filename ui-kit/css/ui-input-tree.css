@@ -1,5 +1,5 @@
 .ui-input-tree{position: relative;}
-.ui-input-tree .glyphicon{position: absolute; right:10px; top:8px;}
+.ui-input-tree .glyphicon{position: absolute; right:10px; top:8px; cursor: pointer}
 /*.ui-input-tree .glyphicon-remove{ right:30px;}*/
 
 .ui-input-tree-popup{ position: absolute; background-color:#163041; color: #fff; overflow: hidden; border:1px solid #104d6a; padding:5px; overflow-y:auto;}

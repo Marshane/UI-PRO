@@ -82,7 +82,6 @@ angular.module('ui.inputTree', [])
                 data:'=',
                 ngModel:'=',
                 selectNode:'=?',
-                onChecked:'&',
                 onSelect:'&'
             },
             controller:["$compile","$templateCache", "$timeout",popupCtrl],
@@ -128,7 +127,7 @@ angular.module('ui.inputTree', [])
                             //防止回车触发document click事件 导致浮动框关闭
                             ui.evt(evt).prevent();
                         };
-                        scope.onSelect=function(node){
+                        scope._onSelect=function(node){
                             if(node[scope.childKey] && node[scope.childKey].length){
                                 scope.selectNode={};//清空选中数据
                                 return;
@@ -136,6 +135,9 @@ angular.module('ui.inputTree', [])
                             ctrl[1].$setViewValue(scope.asValue ? node[scope.asValue] : node);
                             scope._ngModel=node[scope.key];
                             ctrl[0].hide();
+                            if(scope.onSelect){
+                                scope.onSelect({node:node});
+                            }
                         }
                     }
                 }
@@ -149,7 +151,7 @@ angular.module('ui.inputTree', [])
              <span class="glyphicon glyphicon-remove" ng-if="_ngModel" ng-click="del($event)"></span>\
             ');
         $templateCache.put("templates/input-select-popup.html",
-            '<div  ui-tree class="ui-tree tree-classic" tree-model="data" selected-node="selectNode" on-selection="onSelect(node)">\
+            '<div  ui-tree class="ui-tree tree-classic" tree-model="data" selected-node="selectNode" on-selection="_onSelect(node)">\
                 {{node[key]}}\
             </div>');
     }]);

@@ -266,16 +266,17 @@
                     <h4>例子</h4>
                     <p>model：{{id}}</p>
                     <div class="col-xs-10">
-                        <div class="ui-input-tree" ui-input-tree  ng-model="id" on-select="onSelect()" data="data" key="remark" as-value="codeName"></div>
+                        <div class="ui-input-tree" ui-input-tree  ng-model="id" on-select="onSelect(node)" data="data" key="remark" as-value="codeName"></div>
                     </div>
                 </div>
                 <div class="col-xs-5">
                     <h4>设置</h4>
-                    <p>文件上传</p>
-                    <p>{String} data-url：提交url</p>
-                    <p>{String} multiple [可选]：支持多个文件</p>
-                    <p>{Function} done [可选]：上传回调 uploadFinished(e,data)</p>
-                    <p>得到文件名：data.originalFiles[0].name;</p>
+                    <p>{Array | Collection} ng-model：实体数据</p>
+                    <p>{Object - Collection} data：数据</p>
+                    <p>{Function} on-select [可选]：选择回调 @return node节点数据</p>
+                    <p>{Object} select-node [可选]：当前选择的node节点数据</p>
+                    <p>{String} key：对应数据中要在列表中显示的文本</p>
+                    <p>{String} as-value [可选]：指定该字段作为ng-model值时 此时ng-model非对象类型</p>
                 </div>
             </div>
             <div class="col-xs-12">
@@ -283,11 +284,17 @@
                     <div ui-tab heading="Markup">
                         <pre class="language-markup">
 <code>
-    &lt;span class=&quot;btn ui-btn ui-upload-button&quot;&gt;
-    &lt;i class=&quot;glyphicon glyphicon-plus&quot;&gt;&lt;/i&gt;
-    &lt;span&gt;上传&lt;/span&gt;
-    &lt;input type=&quot;file&quot; ui-file-upload name=&quot;files[]&quot; data-url=&quot;{{contextPath}}/flowmgmt/FlowMgmtAction/uploadFile.go&quot; multiple done=&quot;uploadFinished(e,data)&quot;&gt;
-    &lt;/span&gt;</code>
+    &lt;div class=&quot;ui-input-tree&quot; ui-input-tree  ng-model=&quot;id&quot; on-select=&quot;onSelect()&quot; data=&quot;data&quot; key=&quot;remark&quot; as-value=&quot;codeName&quot;&gt;&lt;/div&gt;</code>
+                        </pre>
+                    </div>
+                    <div ui-tab heading="JavaScript">
+                        <pre class="language-javascript">
+<code>
+    angular.module('ui',['ui.inputTree']);
+    angular.module('demo',['ui'])
+        .controller('inputTreeCtrl',['$scope',function ($scope) {
+            $scope.isCollapsed = false;
+        }]);</code>
                         </pre>
                     </div>
                 </div>
