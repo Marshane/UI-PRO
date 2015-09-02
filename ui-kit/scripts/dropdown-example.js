@@ -336,7 +336,7 @@ angular.module('demo',['ui'])
                 $scope.isCollapsed = !$scope.isCollapsed;
             }
     }])
-    .controller('suggestCtrl',['$scope',function(scope){
+    .controller('suggestCtrl',['$scope','$timeout',function(scope,$timeout){
         function createSubTree(level, width, prefix) {
             if (level > 0) {
                 var res = [];
@@ -348,7 +348,9 @@ angular.module('demo',['ui'])
             else
                 return [];
         }
-        scope.data=createSubTree(1,300,'');
+        $timeout(function(){
+            scope.data=createSubTree(1,300,'');
+        },2000);
         scope.onSelect2=function(self){
             console.log(self);
         };

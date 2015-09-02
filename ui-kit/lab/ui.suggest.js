@@ -245,7 +245,7 @@
                             url:attrs.url,
                             objParam:attrs.objParam,
                             realtime:+attrs.realtime,
-                            data:scope.data,
+                            data:scope.data||[],
                             active:attrs.active,
                             match:attrs.match,//静态数据 实时匹配
                             max:10,
@@ -271,6 +271,9 @@
                         scope._ngModel=ngModel;
                         if(angular.isDefined(attrs.ctrl))scope.ctrl=scope;
                     }
+                    scope.$watchCollection('data',function(a){
+                        if(a&&a.length)scope.suggest.op.data=a;
+                    });
                     scope.$watch('ngModel',function(a){
                         if(a===''){
                             element.val('');

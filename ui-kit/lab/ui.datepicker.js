@@ -142,9 +142,10 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     dt.setSeconds(nowDate.getSeconds());
                 }
                 ngModelCtrl.$setViewValue(dt);
-                ngModelCtrl.$render();
+                //ngModelCtrl.$render();
             } else {
                 self.activeDate = date;
+                console.log(date);
                 if($scope.$parent.$parent.datepickerMode===$scope.datepickerMode){
                     ngModelCtrl.$setViewValue(date.setMonth(date.getMonth()));
                     ngModelCtrl.$render();
@@ -581,11 +582,14 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     ngModel.$parsers.unshift(parseDate);
                     // Inner change
                     scope.dateSelection = function (dt) {
+                        console.log(dt,scope.date);
                         if (angular.isDefined(dt)) {
                             scope.date = dt;
                         }
                         ngModel.$setViewValue(scope.date);
+
                         ngModel.$render();
+
                         if (closeOnDateSelection) {
                             scope.isOpen = false;
                             element[0].focus();
@@ -602,6 +606,9 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                             ngModel.$viewValue=new Date(ngModel.$viewValue).getTime();
                         }
                         var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
+//                        if(!ngModel.$modelValue){
+//                            ngModel.$modelValue=new Date(ngModel.$viewValue);
+//                        }
                         element.val(date);
                         scope.date = parseDate(ngModel.$modelValue);
                     };
