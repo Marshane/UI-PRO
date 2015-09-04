@@ -142,12 +142,11 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     dt.setSeconds(nowDate.getSeconds());
                 }
                 ngModelCtrl.$setViewValue(dt);
-                //ngModelCtrl.$render();
+                ngModelCtrl.$render();
             } else {
                 self.activeDate = date;
-                console.log(date);
                 if($scope.$parent.$parent.datepickerMode===$scope.datepickerMode){
-                    ngModelCtrl.$setViewValue(date.setMonth(date.getMonth()));
+                    ngModelCtrl.$setViewValue(date);
                     ngModelCtrl.$render();
                 }else{
                     $scope.datepickerMode = self.modes[ self.modes.indexOf($scope.datepickerMode) - 1 ];
@@ -582,12 +581,10 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     ngModel.$parsers.unshift(parseDate);
                     // Inner change
                     scope.dateSelection = function (dt) {
-                        console.log(dt,scope.date);
                         if (angular.isDefined(dt)) {
                             scope.date = dt;
                         }
                         ngModel.$setViewValue(scope.date);
-
                         ngModel.$render();
 
                         if (closeOnDateSelection) {
@@ -606,9 +603,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                             ngModel.$viewValue=new Date(ngModel.$viewValue).getTime();
                         }
                         var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
-//                        if(!ngModel.$modelValue){
-//                            ngModel.$modelValue=new Date(ngModel.$viewValue);
-//                        }
+
                         element.val(date);
                         scope.date = parseDate(ngModel.$modelValue);
                     };
@@ -722,22 +717,11 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         viewValue.setHours(0);
                         viewValue.setMinutes(0);
                         viewValue.setSeconds(0);
-                        ft=ft[0].split('-');
-                        if(ft.length===2){
-                            viewValue.setDate(0);
-                        }
-                        if(ft.length===1){
-                            viewValue.setMonth(0);
-                        }
                     }
                     reValid();
                     return viewValue.getTime()
                 };
-                // ngModelController.$formatters.push(valid);
                 ngModelController.$parsers.push(valid);
-                // ngModelController.$parsers.push(function(){
-                //     ngModelController.$render();
-                // });
             }
         };
     }])
@@ -789,7 +773,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 "  <tbody>\n" +
                 "    <tr ng-repeat=\"row in rows track by $index\">\n" +
                 "      <td ng-repeat=\"dt in row track by dt.date\" class=\"text-center\" role=\"gridcell\" id=\"{{dt.uid}}\" aria-disabled=\"{{!!dt.disabled}}\">\n" +
-                "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" ng-click=\"select(dt.date,1)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-info': dt.current}\">{{dt.label}}</span></button>\n" +
+                "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" dt=\"{{dt.date}}\" ng-click=\"select(dt.date,1)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-info': dt.current}\">{{dt.label}}</span></button>\n" +
                 "      </td>\n" +
                 "    </tr>\n" +
                 "  </tbody>\n" +

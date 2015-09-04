@@ -81,6 +81,7 @@ angular.module('demo',['ui'])
         },4000);
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
+//        $scope.dateSelection22=+new Date;
     }])
     .controller('timepickerCtrl', ['$scope','$log',function ($scope, $log) {
 
