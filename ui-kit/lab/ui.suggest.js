@@ -46,6 +46,19 @@
             if(d.length==1 && _.indexOf(d,a)) d=[];
             return d;
         },
+        selectTxt:function (a,f,j){
+            try{
+                a.focus();
+                if (document.createRange) a.setSelectionRange(f, j);
+                else {
+                    a = a.createTextRange();
+                    a.collapse(1);
+                    a.moveStart("character", f);
+                    a.moveEnd("character", j - f);
+                    a.select()
+                }
+            } catch (b) {}
+        },
         _show:function(){
             var a=this.op,b=this.id;
             if(a.split){
@@ -55,7 +68,6 @@
                     this._hide();
                 }
             }else{
-
                 if(b.val().trim()||(a.realtime&&b.val().trim()==='')){
                     this._getData();
                 }else if(a.data.length) {
@@ -91,6 +103,9 @@
                 var cov=[];
                 var temp=[];
                 if(c.match){
+                    if(c.fixedData[c.key]===d){
+                        d='';
+                    }
                     a= _.filter(a,function(it){
                         if(c.key){
                             return it[c.key].indexOf(d)>=0
@@ -98,7 +113,12 @@
                         return it.indexOf(d)>=0
                     });
                 }
-                for(var i=0;i<Math.min(c.max,a.length);i++){
+                var len=Math.min(c.max,a.length);
+                if(c.fixedData){
+                    a.unshift(c.fixedData);
+                    ++len;
+                }
+                for(var i=0;i<len;i++){
                     cov.push(g(c.key,a[i]));
                     b.push(ui.format(c.tpl,cov[i]));
                     temp.push(a[i]);
@@ -150,6 +170,9 @@
         },
         _setOn:function(index){
             this.list.removeClass(this.op.active);
+            if(!_.isUndefined(index)){
+                this.index=index;//重新指定索引
+            }
             this.list[index||this.index].className=this.op.active;
         },
         _insertAdd:function(item){
@@ -179,6 +202,7 @@
                     ui.evt(e).stop();
                 }
             }
+            //每次输入重新定位到第0个
             $(self.list[0]).addClass('cur');
             this.index=0;
         },
@@ -186,6 +210,7 @@
             var self=this,key,target;
             this.id.bind('focus',ui.bind(this._show,this))
                    .bind('click',function(e){
+                        self.selectTxt(self.id[0],0,self.id.val().length);
                         ui.evt(e).stop();
                     })
                    .bind('blur',function(){
@@ -233,11 +258,14 @@
                     onSelect:'&',
                     onBlur:'&',
                     ctrl:'=',
+                    ngModel:'=',
                     params:'=',
+                    fixedData:'=',
                     data:'='
                 },
                 link:function(scope, element, attrs,ngModel) {
                     var asValue=attrs.asValue;
+                    var key=attrs.key;
                     if(!scope.suggest){
                         scope.suggest=new ui.Suggest({
                             id:element,
@@ -254,10 +282,11 @@
                                     scope.onBlur({self: self});
                                 });
                             },
-                            key:attrs.key,
+                            key:key,
                             selected:function(item,self){
+                                scope.item=item;
                                 if(scope.onSelect){
-                                    scope.$apply(function(){
+                                    $timeout(function(){
                                         if(asValue){
                                             ngModel.$setViewValue(item[asValue]);
                                         }else{
@@ -271,16 +300,34 @@
                         scope._ngModel=ngModel;
                         if(angular.isDefined(attrs.ctrl))scope.ctrl=scope;
                     }
+                    scope.$watch('fixedData',function(a){
+                        if(a){
+                            scope.suggest.op.fixedData=a;
+                        }
+                    });
                     scope.$watchCollection('data',function(a){
                         if(a&&a.length)scope.suggest.op.data=a;
                     });
-                    scope.$watch('ngModel',function(a){
-                        if(a===''){
+                    var wa=scope.$watch('ngModel',function(a){
+                        if(_.isUndefined(a) || a==='' || _.isNull(a)){
                             element.val('');
+                            return
                         }
-                        $timeout(function(){
-                            element.val(element.attr('isvalue'));
-                        },200);
+                        var obj=_.filter(scope.data,function(it){
+                            if(asValue && it[asValue]==a){
+                                return it;
+                            }
+                            return it[key]==a;
+                        });
+                        if(scope.fixedData && asValue && scope.fixedData[asValue]==a){
+                            obj=[scope.fixedData];
+                        }
+                        if(obj.length){
+                            element.val(obj[0][key]);
+                        }
+                    });
+                    scope.$on('$destroy',function (){
+                        wa();
                     });
                 }
             }

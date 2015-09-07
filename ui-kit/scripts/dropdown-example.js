@@ -351,6 +351,9 @@ angular.module('demo',['ui'])
         }
         $timeout(function(){
             scope.data=createSubTree(1,300,'');
+            scope.fixedData={label:'default',id:'0'};
+            scope.suggestSelect2='id1';
+
         },2000);
         scope.onSelect2=function(self){
             console.log(self);
