@@ -103,7 +103,7 @@
                 var cov=[];
                 var temp=[];
                 if(c.match){
-                    if(c.fixedData[c.key]===d){
+                    if(c.fixedData && c.fixedData[c.key]===d){
                         d='';
                     }
                     a= _.filter(a,function(it){
