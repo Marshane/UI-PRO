@@ -74,7 +74,7 @@ angular.module('ui.inputTree', [])
             };
             return popupCtrl;
         })();
-        var _opts=['key','asValue','width','isOpen','childKey'];
+        var _opts=['key','asValue','width','isOpen'];
         return{
             restrict: 'A',
             require:['uiInputTree','?ngModel'],
@@ -82,6 +82,7 @@ angular.module('ui.inputTree', [])
                 data:'=',
                 ngModel:'=',
                 selectNode:'=?',
+                options:'=?',
                 onSelect:'&'
             },
             controller:["$compile","$templateCache", "$timeout",popupCtrl],
@@ -89,18 +90,22 @@ angular.module('ui.inputTree', [])
                 return{
                     pre: function (scope, elem,attr,ctrl) {
                         if (elem.children().length === 0) {
+                            scope.options= _.extend({
+                                nodeChildren:"children",
+                                dirSelectable:false
+                            },scope.options||{});
                             elem.append($compile($templateCache.get('templates/input-tree.html'))(scope));
                         }
                         ctrl[0].setupScope(scope,elem);
                     },
                     post: function (scope, elem, attr,ctrl){
+                        var op=scope.options;
                         for (var i = 0, l = _opts.length; i < l; i++) {
                             var opt = _opts[i];
                             if (attr[opt]) {
                                 scope[opt] =attr[opt];
                             }
                         }
-                        scope.childKey=scope.childKey||'children';
                         var input=elem.find('input');
                         (function(){
                             elem.on('click',function(){
@@ -128,7 +133,7 @@ angular.module('ui.inputTree', [])
                             ui.evt(evt).prevent();
                         };
                         scope._onSelect=function(node){
-                            if(node[scope.childKey] && node[scope.childKey].length){
+                            if(node[op.nodeChildren] && node[op.nodeChildren].length){
                                 scope.selectNode={};//清空选中数据
                                 return;
                             }
@@ -138,7 +143,33 @@ angular.module('ui.inputTree', [])
                             if(scope.onSelect){
                                 scope.onSelect({node:node});
                             }
-                        }
+                        };
+                        var wa=scope.$watch('ngModel',function(a){
+                            if(!_.isUndefined(a) && a!==''){
+                                if(scope.asValue){
+                                    scope.selectNode=function(){
+                                        var d=angular.copy(scope.data);
+                                        var obj={};
+                                        var emu=function(d){
+                                            for(var i in d){
+                                                if(d[i]==a){
+                                                    obj=d;
+                                                    return
+                                                }else{
+                                                    if(_.isObject(d[i])){
+                                                        emu(d[i]);
+                                                    }
+                                                }
+                                            }
+                                        };
+                                        emu(d);
+                                        return obj
+                                    }();
+                                    scope._ngModel=scope.selectNode[scope.key];
+                                    wa();
+                                }
+                            }
+                        },true);
                     }
                 }
             }
@@ -151,7 +182,7 @@ angular.module('ui.inputTree', [])
              <span class="glyphicon glyphicon-remove" ng-if="_ngModel" ng-click="del($event)"></span>\
             ');
         $templateCache.put("templates/input-select-popup.html",
-            '<div  ui-tree class="ui-tree tree-classic" tree-model="data" selected-node="selectNode" on-selection="_onSelect(node)">\
+            '<div  ui-tree class="ui-tree tree-classic" options="options"  tree-model="data" selected-node="selectNode" on-selection="_onSelect(node)">\
                 {{node[key]}}\
             </div>');
     }]);

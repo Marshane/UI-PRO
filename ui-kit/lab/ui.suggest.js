@@ -260,7 +260,7 @@
                     ctrl:'=',
                     ngModel:'=',
                     params:'=',
-                    fixedData:'=',
+                    fixedData:'=?',
                     data:'='
                 },
                 link:function(scope, element, attrs,ngModel) {

@@ -54,7 +54,7 @@ h4{font-size: 18px;}
 h5{font-size: 14px;}
 h6{font-size: 12px;}
 p {margin: 0 0 10px;}
-ul,ol {margin-top: 0;margin-bottom: 10px;}
+ul,ol {margin-top: 0;}
 ul ul,ol ul,ul ol,ol ol {margin-bottom: 0;}
 dl {margin-top: 0;margin-bottom: 20px;}
 dt,dd {line-height: 1.42857143;}
@@ -86,3 +86,25 @@ input[type="radio"][disabled],input[type="checkbox"][disabled],input[type="radio
 /*清除浮动*/
 .clearfix{clear:both;}
 .clearfix:after,.dl-horizontal dd:after,.container:after,.container-fluid:after,.row:after,.form-horizontal .form-group:after,.btn-toolbar:after,.btn-group-vertical > .btn-group:after,.nav:after,.navbar:after,.navbar-header:after,.navbar-collapse:after,.pager:after,.panel-body:after,.modal-footer:after {clear: both;}
+
+/*border*/
+.br{border-right:1px solid #104d6a!important;}
+.bl{border-left:1px solid #104d6a!important;}
+.bt{border-top:1px solid #104d6a!important;}
+.bb{border-bottom:1px solid #104d6a!important;}
+.no-br{border-right:none!important;}
+.no-bl{border-left:none!important;}
+.no-bt{border-top:none!important;}
+.no-bb{border-bottom:none!important;}
+
+/*margin*/
+.mt-1{margin-top:-1px;}
+.ml-1{margin-left:-1px;}
+.ml-2{margin-left:-2px;}
+.mb-1{margin-bottom:-1px;}
+.mr10{margin-right:10px;}
+.mt10{margin-top:10px;}
+
+/*padding*/
+.pr10{padding-right:10px;}
+.pt10{padding-top:10px;}

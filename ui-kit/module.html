@@ -5,8 +5,7 @@
     <title>UI - Free Bootstrap Framework and Theme</title>
     <meta name="description" content=""/>
     <!-- Loading Bootstrap -->
-        
-   
+
     <link href="css/base.css" rel="stylesheet">
     <link href="css/layout.css" rel="stylesheet">
     <link href="css/modules.css" rel="stylesheet">
@@ -74,84 +73,183 @@
       <script type="text/javascript" src="lab/ui.upload.js"></script>
 
       <script type="text/javascript" src="lab/ui.inputSelect.js"></script>
+      <script type="text/javascript" src="lab/ui.inputTree.js"></script>
       <script type="text/javascript" src="lab/ui.utils.js"></script>
 
       <script type="text/javascript" src="prism.js"></script>
       <script type="text/javascript" src="scripts/dropdown-example.js"></script>
       <link href="prism.css" rel="stylesheet">
-      <link href="new-index.css" rel="stylesheet">
+      <link href="module.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container" ng-controller="testCtrl">
-        <!--form表单-->
-        <h3>form查询</h3>
-        <form class="form-horizontal clearfix">
-            <div class="form-group col-xs-12">
-              <label class="col-xs-2 control-label">Alarm Object:</label>
-              <div class="col-xs-3">
-                  <input type="text" ng-model="flowName" class="form-control ui-input" autocomplete="off">
-              </div>
-              <label class="col-xs-2 control-label">Alarm Name:</label>
-              <div class="col-xs-3">
-                <div ng-controller="selectCtrl" style="width:200px">
-                   <div
-                       ui-select
-                       default="choose"
-                       ng-model="selectDataId"
-                       options="selectData"
-                       key="text"
-                       as-value="value"
-                       width="100%"></div>
-                   </div>
-                </div>
-            </div>
-            <div ng-show="isCollapsed">
-               <div class="form-group col-xs-12">
-                <label class="col-xs-2 control-label">Alarm Type:</label>
-                <div class="col-xs-9" ng-icheck multi="1" filter-name="alarm_category" default-checked="" ng-controller="checkboxCtrl">
-                      <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="checkedID" space="6" ></div>
-                </div>
-               </div>
-               <div class="form-group col-xs-12">
-                <label class="col-xs-2 control-label">Alarm Level  :</label>
-                <p class="input-group ui-datapicker pull-left" style="width:200px; margin-bottom:10px">
-                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd hh:mm:ss" close-on-date-selection="false" datepicker-milliseconds
+     <div class="head">
+        <h1 class="logo">UI</h1>
+        <div class="btn-group ui-dropdown l-hd-nav pull-left" dropdown>
+            <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                Directives<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ui-scroll-to="#j-form-search"><a href="#">form查询</a></li>
+                <li ui-scroll-to="#j-form"><a href="#">form表单</a></li>
+                <li ui-scroll-to="#j-actionBar"><a href="#">表格操作栏</a></li>
+                <li ui-scroll-to="#j-grid"><a href="#">表格</a></li>
+                <li ui-scroll-to="#j-grid-actionBar"><a href="#">表格（操作栏）</a></li>
+                <li ui-scroll-to="#j-sidebar-search"><a href="#">侧边栏搜索</a></li>
+                <li ui-scroll-to="#j-state-btn"><a href="#">状态栏按钮</a></li> 
+                 <li ui-scroll-to="#j-state-figure"><a href="#">状态栏图例</a></li>
+                <li ui-scroll-to="#j-state"><a href="#">状态栏</a></li>
+                <li ui-scroll-to="#j-side-tab"><a href="#">侧边栏切换</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="j-main" class="main">
+        <!--form查询-->
+        <div id="j-form-search" class="row">
+            <h2>form查询</h2>
+            <div class="col-xs-12" ng-controller="testCtrl">
+               <form class="form-horizontal clearfix">
+                  <div class="form-group col-xs-12">
+                     <label class="col-xs-2 control-label">Alarm Object:</label>
+                     <div class="col-xs-3">
+                        <input type="text" ng-model="flowName" class="form-control ui-input" autocomplete="off">
+                     </div>
+                     <label class="col-xs-2 control-label">Alarm Name:</label>
+                     <div class="col-xs-3">
+                         <div ng-controller="selectCtrl" style="width:200px">
+                             <div
+                                ui-select
+                                default="choose"
+                                ng-model="selectDataId"
+                                options="selectData"
+                                key="text"
+                                as-value="value"
+                                width="100%"></div>
+                         </div>
+                     </div>
+                  </div>
+                  <div ng-show="isCollapsed">
+                     <div class="form-group col-xs-12">
+                         <label class="col-xs-2 control-label">Alarm Type:</label>
+                         <div class="col-xs-9" ng-icheck multi="1" filter-name="alarm_category" default-checked="" ng-controller="checkboxCtrl">
+                             <div ui-checkbox data="checkboxData" key="text" as-value="value" checked-data="checkedData" on-checked="onChecked(checkedID)" multi="1" ng-model="checkedID" space="6" ></div>
+                         </div>
+                     </div>
+                     <div class="form-group col-xs-12">
+                          <label class="col-xs-2 control-label">Alarm Level  :</label>
+                          <p class="input-group ui-datapicker pull-left" style="width:200px; margin-bottom:10px">
+                            <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd hh:mm:ss" close-on-date-selection="false" datepicker-milliseconds
                            ng-model="timeSelection" is-open="opened1" ng-click="opened1=1" show-weeks="true"/>
-                    <span class="input-group-btn">
-                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened1=1;"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </p>
-               </div>
-               <div class="form-group col-xs-12">
-                <label class="col-xs-2 control-label">Alarm Status :</label>
-                <p class=" input-group ui-datapicker pull-left" style="width:200px;margin-right:10px;margin-bottom:10px;">
-                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                            <span class="input-group-btn">
+                              <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened1=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                           </p>
+                     </div>
+                     <div class="form-group col-xs-12">
+                        <label class="col-xs-2 control-label">Alarm Status :</label>
+                        <p class=" input-group ui-datapicker pull-left" style="width:200px;margin-right:10px;margin-bottom:10px;">
+                            <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
                            ng-model="startDate" is-open="opened2" ng-click="opened2=1" show-weeks="true"/>
-                    <span class="input-group-btn">
-                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened2=1;"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </p>
-                <label class="pull-left">--</label>
-                <p class="input-group ui-datapicker pull-left" style="width:200px;margin-left:10px;">
-                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
-                           ng-model="endDate" is-open="opened3" ng-click="opened3=1" show-weeks="true"/>
-                    <span class="input-group-btn">
-                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened3=1;"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </p>
-               </div>
+                            <span class="input-group-btn">
+                              <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened2=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                        <label class="pull-left">--</label>
+                        <p class="input-group ui-datapicker pull-left" style="width:200px;margin-left:10px;">
+                             <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds ng-model="endDate" is-open="opened3" ng-click="opened3=1" show-weeks="true"/>
+                             <span class="input-group-btn">
+                                <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened3=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                             </span>
+                        </p>
+                     </div>
+                  </div>
+                  <div class="form-group col-xs-12">
+                       <div class="col-xs-offset-2 col-xs-10">
+                          <button type="button" class="btn btn-default pull-left ui-btn" ng-click="search_alarm()" style="margin-right:10px;" ng-class="{'btn-default-submit':1}">Search</button>
+                          <button type="button" class="btn btn-default  pull-left ui-btn" ng-click="btnCollapsedHandler(false)" ng-show="!isCollapsed"><span class="caret"></span> <span>Advanced</span></button>
+                          <button type="button" class="btn btn-default ui-btn" ng-show="isCollapsed" ng-click="btnCollapsedHandler(true)"><span class="caret"></span> <span>Basic</span></button>
+                       </div>
+                  </div>
+               </form>
+            </div>   
+            <div class="col-xs-12">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code>
+   &lt;form class=&quot;form-horizontal clearfix&quot;&gt;
+      &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+           &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Alarm Object:&lt;/label&gt;
+           &lt;div class=&quot;col-xs-3&quot;&gt;
+              &lt;input type=&quot;text&quot; ng-model=&quot;flowName&quot; class=&quot;form-control ui-input&quot; autocomplete=&quot;off&quot;&gt;
+           &lt;/div&gt;
+           &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Alarm Name:&lt;/label&gt;
+           &lt;div class=&quot;col-xs-3&quot;&gt;
+               &lt;div ng-controller=&quot;selectCtrl&quot; style=&quot;width:200px&quot;&gt;
+                   &lt;div
+                      ui-select
+                      default=&quot;choose&quot;
+                      ng-model=&quot;selectDataId&quot;
+                      options=&quot;selectData&quot;
+                      key=&quot;text&quot;
+                      as-value=&quot;value&quot;
+                      width=&quot;100%&quot;&gt;&lt;/div&gt;
+               &lt;/div&gt;
+           &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div ng-show=&quot;isCollapsed&quot;&gt;
+           &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+               &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Alarm Type:&lt;/label&gt;
+               &lt;div class=&quot;col-xs-9&quot; ng-icheck multi=&quot;1&quot; filter-name=&quot;alarm_category&quot; default-checked=&quot;&quot; ng-controller=&quot;checkboxCtrl&quot;&gt;
+                   &lt;div ui-checkbox data=&quot;checkboxData&quot; key=&quot;text&quot; as-value=&quot;value&quot; checked-data=&quot;checkedData&quot; on-checked=&quot;onChecked(checkedID)&quot; multi=&quot;1&quot; ng-model=&quot;checkedID&quot; space=&quot;6&quot; &gt;&lt;/div&gt;
+               &lt;/div&gt;
+           &lt;/div&gt;
+           &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+                &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Alarm Level  :&lt;/label&gt;
+                &lt;p class=&quot;input-group ui-datapicker pull-left&quot; style=&quot;width:200px; margin-bottom:10px&quot;&gt;
+                  &lt;input type=&quot;text&quot;  class=&quot;form-control ui-input&quot; datepicker-popup=&quot;yyyy-MM-dd hh:mm:ss&quot; close-on-date-selection=&quot;false&quot; datepicker-milliseconds
+                 ng-model=&quot;timeSelection&quot; is-open=&quot;opened1&quot; ng-click=&quot;opened1=1&quot; show-weeks=&quot;true&quot;/&gt;
+                  &lt;span class=&quot;input-group-btn&quot;&gt;
+                    &lt;button type=&quot;button&quot; class=&quot;btn  btn-default&quot; ng-click=&quot;$event.stopPropagation();opened1=1;&quot;&gt;&lt;i class=&quot;glyphicon glyphicon-calendar&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+                  &lt;/span&gt;
+                 &lt;/p&gt;
+           &lt;/div&gt;
+           &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+              &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Alarm Status :&lt;/label&gt;
+              &lt;p class=&quot; input-group ui-datapicker pull-left&quot; style=&quot;width:200px;margin-right:10px;margin-bottom:10px;&quot;&gt;
+                  &lt;input type=&quot;text&quot;  class=&quot;form-control ui-input&quot; datepicker-popup=&quot;yyyy-MM-dd&quot; datepicker-milliseconds
+                 ng-model=&quot;startDate&quot; is-open=&quot;opened2&quot; ng-click=&quot;opened2=1&quot; show-weeks=&quot;true&quot;/&gt;
+                  &lt;span class=&quot;input-group-btn&quot;&gt;
+                    &lt;button type=&quot;button&quot; class=&quot;btn  btn-default&quot; ng-click=&quot;$event.stopPropagation();opened2=1;&quot;&gt;&lt;i class=&quot;glyphicon glyphicon-calendar&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+                  &lt;/span&gt;
+              &lt;/p&gt;
+              &lt;label class=&quot;pull-left&quot;&gt;--&lt;/label&gt;
+              &lt;p class=&quot;input-group ui-datapicker pull-left&quot; style=&quot;width:200px;margin-left:10px;&quot;&gt;
+                   &lt;input type=&quot;text&quot;  class=&quot;form-control ui-input&quot; datepicker-popup=&quot;yyyy-MM-dd&quot; datepicker-milliseconds ng-model=&quot;endDate&quot; is-open=&quot;opened3&quot; ng-click=&quot;opened3=1&quot; show-weeks=&quot;true&quot;/&gt;
+                   &lt;span class=&quot;input-group-btn&quot;&gt;
+                      &lt;button type=&quot;button&quot; class=&quot;btn  btn-default&quot; ng-click=&quot;$event.stopPropagation();opened3=1;&quot;&gt;&lt;i class=&quot;glyphicon glyphicon-calendar&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+                   &lt;/span&gt;
+              &lt;/p&gt;
+           &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+             &lt;div class=&quot;col-xs-offset-2 col-xs-10&quot;&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-default pull-left ui-btn&quot; ng-click=&quot;search_alarm()&quot; style=&quot;margin-right:10px;&quot; ng-class=&quot;{'btn-default-submit':1}&quot;&gt;Search&lt;/button&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-default  pull-left ui-btn&quot; ng-click=&quot;btnCollapsedHandler(false)&quot; ng-show=&quot;!isCollapsed&quot;&gt;&lt;span class=&quot;caret&quot;&gt;&lt;/span&gt; &lt;span&gt;Advanced&lt;/span&gt;&lt;/button&gt;
+                &lt;button type=&quot;button&quot; class=&quot;btn btn-default ui-btn&quot; ng-show=&quot;isCollapsed&quot; ng-click=&quot;btnCollapsedHandler(true)&quot;&gt;&lt;span class=&quot;caret&quot;&gt;&lt;/span&gt; &lt;span&gt;Basic&lt;/span&gt;&lt;/button&gt;
+             &lt;/div&gt;
+        &lt;/div&gt;
+   &lt;/form&gt;</code>
+                        </pre>
+                    </div>
+                </div>
             </div>
-            <div class="form-group col-xs-12">
-              <div class="col-xs-offset-2 col-xs-10">
-                 <button type="button" class="btn btn-default pull-left ui-btn" ng-click="search_alarm()" style="margin-right:10px;" ng-class="{'btn-default-submit':1}">Search</button>
-                 <button type="button" class="btn btn-default  pull-left ui-btn" ng-click="btnCollapsedHandler(false)" ng-show="!isCollapsed"><span class="caret"></span> <span>Advanced</span></button>
-                 <button type="button" class="btn btn-default ui-btn" ng-show="isCollapsed" ng-click="btnCollapsedHandler(true)"><span class="caret"></span> <span>Basic</span></button>
-              </div>
-            </div>
-        </form>
-        <h3>form表单</h3>
-        <form class="form-horizontal clearfix">
-                       <div class="form-group col-xs-12">
+        </div>
+        <!--form表单-->
+        <div id="j-form" class="row">
+            <h2>form表单</h2>
+            <div class="col-xs-12">
+               <form class="form-horizontal clearfix">
+                     <div class="form-group col-xs-12">
                          <label class="col-xs-3 control-label">Alarm Name：</label>
                          <div class="col-xs-3 form-control-static">alarm.warnName</div>
                          <label class="col-xs-2 control-label">Alarm Object：</label>
@@ -175,17 +273,247 @@
                           <label class="col-xs-2 control-label">Alarm Onwer：</label>
                           <div class="col-xs-3 form-control-static">alarm.gmwt</div>
                       </div>
-                  </form>
-        <h3>表格操作栏</h3>           
-        <div class="am-state am-state-grid-search no-bb am-bt">
-          <button type="button" class="btn btn-default am-border-bb-none am-border-bl-none" ng-click="clean_alarm()">Clean</button>
-          <button type="button" class="btn btn-default am-border-bb-none" ng-click="merge_alarm()">Merge</button>
-          <button type="button" class="btn btn-default am-border-bb-none" ng-click="export_alarm()">Export</button>
+               </form>
+            </div>
+            <div class="col-xs-12">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code>
+  &lt;form class=&quot;form-horizontal clearfix&quot;&gt;
+       &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+         &lt;label class=&quot;col-xs-3 control-label&quot;&gt;Alarm Name：&lt;/label&gt;
+         &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.warnName&lt;/div&gt;
+         &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Alarm Object：&lt;/label&gt;
+         &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.warnObj&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+           &lt;label class=&quot;col-xs-3 control-label&quot;&gt;Alarm Type：&lt;/label&gt;
+           &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.classifyName&lt;/div&gt;
+           &lt;label class=&quot;col-xs-2 control-label&quot;&gt;First Time：&lt;/label&gt;
+           &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.recentTimeStr&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+         &lt;label class=&quot;col-xs-3 control-label&quot;&gt;Times：&lt;/label&gt;
+         &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.times&lt;/div&gt;
+         &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Last Time：&lt;/label&gt;
+         &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.lastTime&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;form-group col-xs-12&quot;&gt;
+          &lt;label class=&quot;col-xs-3 control-label&quot;&gt;Alarm Code： &lt;/label&gt;
+          &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.warnId&lt;/div&gt;
+          &lt;label class=&quot;col-xs-2 control-label&quot;&gt;Alarm Onwer：&lt;/label&gt;
+          &lt;div class=&quot;col-xs-3 form-control-static&quot;&gt;alarm.gmwt&lt;/div&gt;
+      &lt;/div&gt;
+   &lt;/form&gt;</code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
         </div>
-        <h3>表格</h3> 
+        <!--表格操作栏-->
+        <div id="j-actionBar" class="row">
+            <h2>表格操作栏</h2>
+            <div class="col-xs-12">
+                <div class="am-state am-state-grid-search br">
+                    <button type="button" class="btn btn-default am-border-bb-none am-border-bl-none" ng-click="clean_alarm()">Clean</button>
+                    <button type="button" class="btn btn-default am-border-bb-none" ng-click="merge_alarm()">Merge</button>
+                    <button type="button" class="btn btn-default am-border-bb-none" ng-click="export_alarm()">Export</button>
+                </div>
+            </div>
+            <div class="col-xs-12 mt10">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code>
+  &lt;div class=&quot;am-state am-state-grid-search br&quot;&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-default am-border-bb-none am-border-bl-none&quot; ng-click=&quot;clean_alarm()&quot;&gt;Clean&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-default am-border-bb-none&quot; ng-click=&quot;merge_alarm()&quot;&gt;Merge&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-default am-border-bb-none&quot; ng-click=&quot;export_alarm()&quot;&gt;Export&lt;/button&gt;
+  &lt;/div&gt;</code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--表格-->
-        <div class="col-xs-12" ng-controller="gridCtrl">
-                 <table class="ui-grid" 
+        <div id="j-grid" class="row">
+            <h2>表格</h2>
+            <div class="col-xs-12" ng-controller="gridCtrl">
+                  <h4>例子1</h4>
+                  <div class="col-xs-12">
+                        <table class="ui-grid"
+                               ui-grid
+                               items="gridData"
+                               selected-items="ngGridModel"
+                               total-items="total"
+                               page-items="pagingOptions.pageSize"
+                               current-page="pagingOptions.currentPage"
+                               on-data-required="onGridPager(currentPage,pageItems)"
+                               selection-mode="None">
+                            <thead>
+                            <tr>
+                                <th field-name="functionName" display-name="Funtion name"></th>
+                                <th field-name="algo" display-name="Algo"></th>
+                                <th field-name="dealNum" display-name="Deal Num"></th>
+                                <th field-name="errorNum" display-name="Error Num"></th>
+                                <th display-name="Operation"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td field-name="functionName">
+                                        <div>{{gridItem.functionName|cut:5}}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <a class="glyphicon glyphicon-trash"></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                  </div>
+                  <div class="col-xs-12">
+                     <div ui-tabset class="ui-tabset">
+                        <div ui-tab heading="Markup">
+                           <pre class="language-markup">
+<code>
+    &lt;table class=&quot;ui-grid&quot;
+             ui-grid
+             items=&quot;gridData&quot;
+             selected-items=&quot;ngGridModel&quot;
+             total-items=&quot;total&quot;
+             page-items=&quot;pagingOptions.pageSize&quot;
+             current-page=&quot;pagingOptions.currentPage&quot;
+             on-data-required=&quot;onGridPager(currentPage,pageItems)&quot;
+             selection-mode=&quot;None&quot;&gt;
+          &lt;thead&gt;
+          &lt;tr&gt;
+              &lt;th field-name=&quot;functionName&quot; display-name=&quot;Funtion name&quot;&gt;&lt;/th&gt;
+              &lt;th field-name=&quot;algo&quot; display-name=&quot;Algo&quot;&gt;&lt;/th&gt;
+              &lt;th field-name=&quot;dealNum&quot; display-name=&quot;Deal Num&quot;&gt;&lt;/th&gt;
+              &lt;th field-name=&quot;errorNum&quot; display-name=&quot;Error Num&quot;&gt;&lt;/th&gt;
+              &lt;th display-name=&quot;Operation&quot;&gt;&lt;/th&gt;
+          &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+              &lt;tr&gt;
+                  &lt;td field-name=&quot;functionName&quot;&gt;
+                      &lt;div&gt;{{gridItem.functionName|cut:5}}&lt;/div&gt;
+                  &lt;/td&gt;
+                  &lt;td&gt;
+                      &lt;div&gt;
+                          &lt;a class=&quot;glyphicon glyphicon-trash&quot;&gt;&lt;/a&gt;
+                      &lt;/div&gt;
+                  &lt;/td&gt;
+              &lt;/tr&gt;
+          &lt;/tbody&gt;
+      &lt;/table&gt;</code>
+                           </pre>
+                        </div>
+                     </div>
+                  </div>
+                  <h4 class="clearfix pt10">例子2</h4>
+                  <div class="col-xs-12">
+                        <table class="ui-grid"
+                               ui-grid
+                               items="gridData2"
+                               selected-items="gridSelectedItems"
+                               total-items="total2"
+                               page-items="pagingOptions2.pageSize"
+                               current-page="pagingOptions2.currentPage"
+                               on-data-required="onGridPager2(currentPage,pageItems)"
+                               selection-mode="None">
+                            <thead>
+                            <tr>
+                                <th display-align="center" style="width:30px">
+                                    <input type="checkbox" ng-model="areAllSelected"  ng-change="onGridSelected(areAllSelected)">
+                                </th>
+                                <th field-name="functionName" display-name="Funtion name"></th>
+                                <th field-name="algo" display-name="Algo"></th>
+                                <th field-name="dealNum" display-name="Deal Num"></th>
+                                <th field-name="errorNum" display-name="Error Num"></th>
+                                <th display-name="Operation"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" ng-model="isSelected" ng-checked="isSelected=onGridChecked(gridItem)"
+                                               ng-change="isSelected?gridSelectedItems.push(gridItem):gridSelectedItems.splice(onNgChange(gridItem),1)">
+                                    </td>
+                                    <td field-name="functionName">
+                                        <div>{{gridItem.functionName|cut:10}}</div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <a class="glyphicon glyphicon-trash"></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                  </div>
+                  <div class="col-xs-12">
+                      <div ui-tabset class="ui-tabset">
+                         <div ui-tab heading="Markup">
+                           <pre class="language-markup">
+<code>
+    &lt;table class=&quot;ui-grid&quot;
+           ui-grid
+           items=&quot;gridData2&quot;
+           selected-items=&quot;gridSelectedItems&quot;
+           total-items=&quot;total2&quot;
+           page-items=&quot;pagingOptions2.pageSize&quot;
+           current-page=&quot;pagingOptions2.currentPage&quot;
+           on-data-required=&quot;onGridPager2(currentPage,pageItems)&quot;
+           selection-mode=&quot;None&quot;&gt;
+        &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th display-align=&quot;center&quot; style=&quot;width:30px&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; ng-model=&quot;areAllSelected&quot;  ng-change=&quot;onGridSelected(areAllSelected)&quot;&gt;
+            &lt;/th&gt;
+            &lt;th field-name=&quot;functionName&quot; display-name=&quot;Funtion name&quot;&gt;&lt;/th&gt;
+            &lt;th field-name=&quot;algo&quot; display-name=&quot;Algo&quot;&gt;&lt;/th&gt;
+            &lt;th field-name=&quot;dealNum&quot; display-name=&quot;Deal Num&quot;&gt;&lt;/th&gt;
+            &lt;th field-name=&quot;errorNum&quot; display-name=&quot;Error Num&quot;&gt;&lt;/th&gt;
+            &lt;th display-name=&quot;Operation&quot;&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;input type=&quot;checkbox&quot; ng-model=&quot;isSelected&quot; ng-checked=&quot;isSelected=onGridChecked(gridItem)&quot;
+                           ng-change=&quot;isSelected?gridSelectedItems.push(gridItem):gridSelectedItems.splice(onNgChange(gridItem),1)&quot;&gt;
+                &lt;/td&gt;
+                &lt;td field-name=&quot;functionName&quot;&gt;
+                    &lt;div&gt;{{gridItem.functionName|cut:10}}&lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td&gt;
+                    &lt;div&gt;
+                        &lt;a class=&quot;glyphicon glyphicon-trash&quot;&gt;&lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;</code>
+                           </pre>
+                         </div>
+                      </div>
+                  </div>
+            </div>
+        </div>
+         <!--表格（操作栏）-->
+        <div id="j-grid" class="row">
+            <h2>表格（操作栏）</h2>
+            <div class="col-xs-12" ng-controller="gridCtrl">
+                  <div class="am-state am-state-grid-search no-bb br">
+                     <button type="button" class="btn btn-default am-border-bb-none am-border-bl-none" ng-click="clean_alarm()">Clean</button>
+                     <button type="button" class="btn btn-default am-border-bb-none" ng-click="merge_alarm()">Merge</button>
+                     <button type="button" class="btn btn-default am-border-bb-none" ng-click="export_alarm()">Export</button>
+                  </div>
+                  <table class="ui-grid" 
                       ui-grid
                       items="gridData"
                       selected-items="ngGridModel"
@@ -206,37 +534,271 @@
                       <tbody>
                       </tbody>
                  </table>
+            </div>
+            <div class="col-xs-12">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code>
+   &lt;div class=&quot;am-state am-state-grid-search no-bb br&quot;&gt;
+       &lt;button type=&quot;button&quot; class=&quot;btn btn-default am-border-bb-none am-border-bl-none&quot; ng-click=&quot;clean_alarm()&quot;&gt;Clean&lt;/button&gt;
+       &lt;button type=&quot;button&quot; class=&quot;btn btn-default am-border-bb-none&quot; ng-click=&quot;merge_alarm()&quot;&gt;Merge&lt;/button&gt;
+       &lt;button type=&quot;button&quot; class=&quot;btn btn-default am-border-bb-none&quot; ng-click=&quot;export_alarm()&quot;&gt;Export&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;table class=&quot;ui-grid&quot; 
+        ui-grid
+        items=&quot;gridData&quot;
+        selected-items=&quot;ngGridModel&quot;
+        total-items=&quot;total&quot;
+        page-items=&quot;pagingOptions.pageSize&quot;
+        dragable=&quot;true&quot;
+        current-page=&quot;pagingOptions.currentPage&quot;
+        on-data-required=&quot;onGridPager(currentPage,pageItems)&quot;
+        selection-mode=&quot;None&quot;&gt;
+        &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th field-name=&quot;functionName&quot; dragable=&quot;1&quot; display-name=&quot;Funtion name&quot;&gt;&lt;/th&gt;
+          &lt;th field-name=&quot;algo&quot; display-name=&quot;Algo&quot; dragable=&quot;1&quot;&gt;&lt;/th&gt;
+          &lt;th field-name=&quot;dealNum&quot; display-name=&quot;Deal Num&quot; dragable=&quot;1&quot;&gt;&lt;/th&gt;
+          &lt;th field-name=&quot;errorNum&quot; display-name=&quot;Error Num&quot; dragable=&quot;1&quot;&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+  </code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
         </div>
-         <h3>表格（操作栏）</h3>           
-        <div class="am-state am-state-grid-search no-bb am-bt">
-          <button type="button" class="btn btn-default am-border-bb-none am-border-bl-none" ng-click="clean_alarm()">Clean</button>
-          <button type="button" class="btn btn-default am-border-bb-none" ng-click="merge_alarm()">Merge</button>
-          <button type="button" class="btn btn-default am-border-bb-none" ng-click="export_alarm()">Export</button>
+         <!--侧边栏搜索-->
+        <div id="j-sidebar-search" class="row">
+            <h2>侧边栏搜索</h2>
+            <div class="col-xs-12" ng-controller="sidebarSearchCtrl">
+                 <div class="col-xs-3 l-sidebar">
+                    <div class="m-list-search">
+                        <input type="text" class="form-control" ng-model="name" placeholder="">
+                        <span class="input-group-btn glyphicon glyphicon-search" ng-click="searchFun()"></span>
+                    </div>
+                    <div class="m-panel m-panel-list" ui-scrollbar wheel-propagation="true" wheel-speed="50" >
+                       <div class="bb bl br">
+                         <ul class="list">
+                              <li ng-repeat="i in functype| filter:name" ng-class="{true:'no-bb'}[$index == functype.length-1]" ng-click=""><span>{{i.name}}</span></li>
+                         </ul>
+                       </div>
+                    </div>
+                 </div> 
+            </div>   
+            <div class="col-xs-12 pt10">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code>
+    &lt;div class=&quot;col-xs-3 l-sidebar&quot;&gt;
+        &lt;div class=&quot;m-list-search&quot;&gt;
+           &lt;input type=&quot;text&quot; class=&quot;form-control&quot; ng-model=&quot;name&quot; placeholder=&quot;&quot;&gt;
+            &lt;span class=&quot;input-group-btn glyphicon glyphicon-search&quot; ng-click=&quot;searchFun()&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;m-panel m-panel-list&quot; ui-scrollbar wheel-propagation=&quot;true&quot; wheel-speed=&quot;50&quot; &gt;
+           &lt;div class=&quot;bb bl br&quot;&gt;
+             &lt;ul class=&quot;list&quot;&gt;
+                  &lt;li ng-repeat=&quot;i in functype track by $index&quot; ng-class=&quot;{true:'no-bb'}[$index == functype.length-1]&quot; ng-click=&quot;&quot;&gt;&lt;span&gt;{{i.name}}&lt;/span&gt;&lt;/li&gt;
+             &lt;/ul&gt;
+           &lt;/div&gt;
+        &lt;/div&gt;
+     &lt;/div&gt; </code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-xs-12" ng-controller="gridCtrl">
-                 <table class="ui-grid" 
-                      ui-grid
-                      items="gridData"
-                      selected-items="ngGridModel"
-                      total-items="total"
-                      page-items="pagingOptions.pageSize"
-                      dragable="true"
-                      current-page="pagingOptions.currentPage"
-                      on-data-required="onGridPager(currentPage,pageItems)"
-                      selection-mode="None">
-                      <thead>
-                      <tr>
-                        <th field-name="functionName" dragable="1" display-name="Funtion name"></th>
-                        <th field-name="algo" display-name="Algo" dragable="1"></th>
-                        <th field-name="dealNum" display-name="Deal Num" dragable="1"></th>
-                        <th field-name="errorNum" display-name="Error Num" dragable="1"></th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                 </table>
+         <!--状态栏按钮-->
+        <div id="j-state-btn" class="row">
+            <h2>状态栏按钮</h2>
+            <div class="col-xs-12 bb bt br">
+                <div class="col-xs-3">
+                  <div class="m-play-btn clearfix">
+                    <button ng-click=" " type="button" class="btn btn-primary" title="start" ng-disabled=" "><span class="glyphicon glyphicon-play"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" titel="pause" ng-disabled=" "><span class="glyphicon glyphicon-pause"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="stop" ng-disabled=" "><span class="glyphicon glyphicon-stop"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="recover" ng-disabled=" "><span class="glyphicon glyphicon-step-backward"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="configParam"ng-disabled=" "><span class="glyphicon glyphicon-cog"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="refresh" ng-disabled=" "><span class="glyphicon glyphicon-refresh"></span></button>
+                  </div>
+                </div>
+            </div>   
+            <div class="col-xs-12 pt10">
+               <div ui-tabset class="ui-tabset">
+                  <div ui-tab heading="Markup">
+                    <pre class="language-markup">
+<code>
+    &lt;div class=&quot;col-xs-3&quot;&gt;
+      &lt;div class=&quot;m-play-btn clearfix&quot;&gt;
+        &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;start&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-play&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+        &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; titel=&quot;pause&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-pause&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+        &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;stop&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-stop&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+        &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;recover&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-step-backward&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+        &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;configParam&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-cog&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+        &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;refresh&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-refresh&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;</code>
+                    </pre>
+                  </div>
+               </div>
+            </div>
         </div>
-    </div>
+         <!--状态栏图例-->
+        <div id="j-state-figure" class="row">
+            <h2>状态栏图例</h2>
+            <div class="col-xs-12 bt br bl">
+                  <div class="m-state m-state-alarm">
+                        <span class="state state-a">Running</span>
+                        <span class="state state-b">Error</span>
+                        <span class="state state-c">To-do</span>
+                        <span class="state state-d">stoped</span>
+                        <span class="state state-e">Completed</span>
+                        <span class="state state-f">interim</span>
+                        <span class="state state-g">Paused</span>
+                        <span class="state state-h">Alarm</span>    
+                  </div>
+            </div>   
+            <div class="col-xs-12 pt10">
+               <div ui-tabset class="ui-tabset">
+                  <div ui-tab heading="Markup">
+                    <pre class="language-markup">
+<code>
+    &lt;div class=&quot;m-state m-state-alarm&quot;&gt;
+          &lt;span class=&quot;state state-a&quot;&gt;Running&lt;/span&gt;
+          &lt;span class=&quot;state state-b&quot;&gt;Error&lt;/span&gt;
+          &lt;span class=&quot;state state-c&quot;&gt;To-do&lt;/span&gt;
+          &lt;span class=&quot;state state-d&quot;&gt;stoped&lt;/span&gt;
+          &lt;span class=&quot;state state-e&quot;&gt;Completed&lt;/span&gt;
+          &lt;span class=&quot;state state-f&quot;&gt;interim&lt;/span&gt;
+          &lt;span class=&quot;state state-g&quot;&gt;Paused&lt;/span&gt;
+          &lt;span class=&quot;state state-h&quot;&gt;Alarm&lt;/span&gt;    
+    &lt;/div&gt;</code>
+                    </pre>
+                  </div>
+               </div>
+            </div>
+        </div>
+          <!--状态栏-->
+        <div id="j-state" class="row">
+            <h2>状态栏</h2>
+            <div class="col-xs-12 m-play bb bt br">
+                <div class="col-xs-3">
+                  <div class="m-play-btn clearfix">
+                    <button ng-click=" " type="button" class="btn btn-primary" title="start" ng-disabled=" "><span class="glyphicon glyphicon-play"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" titel="pause" ng-disabled=" "><span class="glyphicon glyphicon-pause"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="stop" ng-disabled=" "><span class="glyphicon glyphicon-stop"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="recover" ng-disabled=" "><span class="glyphicon glyphicon-step-backward"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="configParam"ng-disabled=" "><span class="glyphicon glyphicon-cog"></span></button>
+                    <button ng-click=" " type="button" class="btn btn-primary" title="refresh" ng-disabled=" "><span class="glyphicon glyphicon-refresh"></span></button>
+                  </div>
+                </div>
+                <div class="col-xs-9">
+                   <div class="m-state m-state-alarm">
+                        <span class="state state-a">Running</span>
+                        <span class="state state-b">Error</span>
+                        <span class="state state-c">To-do</span>
+                        <span class="state state-d">stoped</span>
+                        <span class="state state-e">Completed</span>
+                        <span class="state state-f">interim</span>
+                        <span class="state state-g">Paused</span>
+                        <span class="state state-h">Alarm</span>    
+                   </div>
+                </div>
+            </div>   
+            <div class="col-xs-12 pt10">
+               <div ui-tabset class="ui-tabset">
+                  <div ui-tab heading="Markup">
+                    <pre class="language-markup">
+<code>
+    &lt;div class=&quot;col-xs-12 m-play bb bt br&quot; ng-controller=&quot;sidebarSearchCtrl&quot;&gt;
+        &lt;div class=&quot;col-xs-3&quot;&gt;
+          &lt;div class=&quot;m-play-btn clearfix&quot;&gt;
+            &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;start&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-play&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+            &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; titel=&quot;pause&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-pause&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+            &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;stop&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-stop&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+            &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;recover&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-step-backward&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+            &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;configParam&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-cog&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+            &lt;button ng-click=&quot; &quot; type=&quot;button&quot; class=&quot;btn btn-primary&quot; title=&quot;refresh&quot; ng-disabled=&quot; &quot;&gt;&lt;span class=&quot;glyphicon glyphicon-refresh&quot;&gt;&lt;/span&gt;&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-xs-9&quot;&gt;
+           &lt;div class=&quot;m-state m-state-alarm&quot;&gt;
+                &lt;span class=&quot;state state-a&quot;&gt;Running&lt;/span&gt;
+                &lt;span class=&quot;state state-b&quot;&gt;Error&lt;/span&gt;
+                &lt;span class=&quot;state state-c&quot;&gt;To-do&lt;/span&gt;
+                &lt;span class=&quot;state state-d&quot;&gt;stoped&lt;/span&gt;
+                &lt;span class=&quot;state state-e&quot;&gt;Completed&lt;/span&gt;
+                &lt;span class=&quot;state state-f&quot;&gt;interim&lt;/span&gt;
+                &lt;span class=&quot;state state-g&quot;&gt;Paused&lt;/span&gt;
+                &lt;span class=&quot;state state-h&quot;&gt;Alarm&lt;/span&gt;    
+           &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;</code>
+                    </pre>
+                  </div>
+               </div>
+            </div>
+        </div>
+            <!--侧边栏切换-->
+        <div id="j-side-tab" class="row">
+            <h2>侧边栏切换</h2>
+            <div class="col-xs-12" ng-controller="sideTabCtrl">
+                <div class="col-xs-2">
+                  <div class="m-siderbar">
+                      <div class="nav ui-tab-group ui-side-tab">
+                          <div class="nav-tabs clearfix">
+                            <div class="btn-group" >
+                              <label class="col-xs-12 btn" ng-model="p.tab" btn-radio="{{$index}}" ng-repeat="item in tabsData track by $index">{{::item.title}}</label>
+                            </div>
+                          </div>
+                      </div> 
+                  </div>
+                </div> 
+                <div class="col-xs-10">
+                     <div ng-if="p.tab==0">
+                       Billrun
+                     </div>
+                     <div ng-if="p.tab==1">
+                       Billredo
+                     </div>
+                     <div ng-if="p.tab==2">
+                       BIllsamplling
+                     </div>
+                     <div ng-if="p.tab==3">
+                       Billcondition
+                     </div>
+                </div> 
+            </div>   
+            <div class="col-xs-12 pt10">
+               <div ui-tabset class="ui-tabset">
+                  <div ui-tab heading="Markup">
+                    <pre class="language-markup">
+<code>
+  &lt;div class=&quot;col-xs-2&quot;&gt;
+    &lt;div class=&quot;m-siderbar&quot;&gt;
+        &lt;div class=&quot;nav ui-tab-group ui-side-tab&quot;&gt;
+            &lt;div class=&quot;nav-tabs clearfix&quot;&gt;
+              &lt;div class=&quot;btn-group&quot; &gt;
+                &lt;label class=&quot;col-xs-12 btn&quot; ng-model=&quot;p.tab&quot; btn-radio=&quot;{{$index}}&quot; ng-repeat=&quot;item in tabsData track by $index&quot;&gt;{{::item.title}}&lt;/label&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt; 
+    &lt;/div&gt;
+  &lt;/div&gt; </code>
+                    </pre>
+                  </div>
+               </div>
+            </div>
+        </div>
+
+
+
+        </div>
 </body>
 </html>
 

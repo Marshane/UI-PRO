@@ -75,7 +75,7 @@ angular.module('ui.tree', [])
                 $scope.options = $scope.options || {};
                 ensureDefault($scope.options, "multiSelection", false);
                 ensureDefault($scope.options, "nodeChildren", "children");
-                ensureDefault($scope.options, "dirSelectable", "true");
+                ensureDefault($scope.options, "dirSelectable",true);
                 ensureDefault($scope.options, "injectClasses", {});
                 ensureDefault($scope.options.injectClasses, "ul", "");
                 ensureDefault($scope.options.injectClasses, "li", "");
@@ -331,3 +331,4 @@ angular.module('ui.tree', [])
             }
         }
     });
+//https://github.com/wix/angular-tree-control

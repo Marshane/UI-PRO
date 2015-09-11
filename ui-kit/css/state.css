@@ -26,7 +26,7 @@
 
 /*按钮*/
 .btn:focus,.btn:active:focus,.btn.active:focus,.btn.focus,.btn:active.focus,.btn.active.focus {outline: thin dotted;outline: 5px auto -webkit-focus-ring-color;outline-offset: -2px;}
-.btn:hover,.btn:focus,.btn.focus {color: #333333;text-decoration: none;}
+.btn:hover,.btn:focus,.btn.focus {color: #ffffff;text-decoration: none;}
 .btn:active,.btn.active {outline: 0;background-image: none;-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);}
 .btn.disabled,.btn[disabled],fieldset[disabled] .btn {cursor: not-allowed;pointer-events: none;opacity: 0.65;filter: alpha(opacity=65);-webkit-box-shadow: none;box-shadow: none;}
 .btn-primary {color: #ffffff;background-color: #337ab7;border-color: #2e6da4;}
@@ -65,3 +65,22 @@ button.close {padding: 0;cursor: pointer;background: transparent;border: 0;-webk
 .am-state-grid-search a:link,
 .am-state-grid-search a:active,
 .am-state-grid-search a:visited {text-decoration:none;}
+
+/*状态表示*/
+/*A:运行中---runing*/
+.m-state-alarm .state-a:before {background-color: #1c7d5c;}
+/*B:错误---error,stopfailed,startfailed*/
+.m-state-alarm .state-b:before {background-color: #76282c;}
+/*C:待运行To Do---to_be_run,unstarted*/
+.m-state-alarm .state-c:before {background-color: #7E7E7E;}
+/*D:已停止---stoped*/
+.m-state-alarm .state-d:before {background-color: #580e91;}
+/*E:已完成---completed*/
+.m-state-alarm .state-e:before {background-color: #0a77aa;}
+.state-bkgclr-e {background-color: #0a77aa !important;}
+/*F:过程中Interim---starting,stoping,forcestopping tbstopting*/
+.m-state-alarm .state-f:before {background-color: #90c14c;}
+/*G:已暂停---paused*/
+.m-state-alarm .state-g:before {background-color: #cbb612;}
+/*H:告警---alarm*/
+.m-state-alarm .state-h:before {background-color: #bd7819;}

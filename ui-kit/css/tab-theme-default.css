@@ -1,4 +1,4 @@
-.ui-tab-group {background-color: #f7f9fa;}
+.ui-tab-group {background-color:#163d5c;}
 .ui-tab-group .btn.active,.ui-tab-group .btn:active{box-shadow:none;}
-.ui-tab-group .btn {border-left-color:#ddd!important;border-right-color:#ddd!important;}
-.ui-tab-group .active {background-color: #fff!important;}
+.ui-tab-group .btn {border-left-color:#104d6a!important;border-right-color:#104d6a!important;}
+.ui-tab-group .active {background-color: #195f9d!important;color:#ffffff;}
