@@ -9,5 +9,5 @@
 
 .ui-checkbox-single i{border-radius:6px;}
 .ui-checkbox-single i.checked:before{content:'';}
-.ui-checkbox-single i s{text-decoration: none; width:8px; height:8px; position: relative; top:-2px; left:2px;
+.ui-checkbox-single i s{text-decoration: none; width:8px; height:8px; position: absolute; top:2px; left:2px;
     border-radius: 8px; display: inline-block;}
