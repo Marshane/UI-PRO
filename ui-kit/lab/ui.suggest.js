@@ -306,13 +306,12 @@
                         }
                     });
                     scope.$watchCollection('data',function(a){
-                        if(a&&a.length)scope.suggest.op.data=a;
-                    });
-                    var wa=scope.$watch('ngModel',function(a){
-                        if(_.isUndefined(a) || a==='' || _.isNull(a)){
-                            element.val('');
-                            return
+                        if(a&&a.length){
+                            scope.suggest.op.data=a;
+                            render(scope.ngModel);
                         }
+                    });
+                    var render=function(){
                         var obj=_.filter(scope.data,function(it){
                             if(asValue && it[asValue]==a){
                                 return it
@@ -329,6 +328,13 @@
                         }else{
                             element.val('');
                         }
+                    };
+                    var wa=scope.$watch('ngModel',function(a){
+                        if(_.isUndefined(a) || a==='' || _.isNull(a)){
+                            element.val('');
+                            return
+                        }
+                        render(a);
                     });
                     scope.$on('$destroy',function (){
                         wa();
