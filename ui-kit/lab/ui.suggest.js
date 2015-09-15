@@ -311,7 +311,7 @@
                             render(scope.ngModel);
                         }
                     });
-                    var render=function(){
+                    var render=function(a){
                         var obj=_.filter(scope.data,function(it){
                             if(asValue && it[asValue]==a){
                                 return it
