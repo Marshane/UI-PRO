@@ -357,13 +357,14 @@ angular.module('demo',['ui'])
             }
             else
                 return [];
-        }
+        }scope.data=createSubTree(1,300,'');
+        scope.suggestSelect2='id20';
         $timeout(function(){
-            scope.data=createSubTree(1,300,'');
-            scope.fixedData={label:'default',id:'0'};
-            scope.suggestSelect2='0';
+            var obj={ "label" : "node20","id" : "id30"};
+//            scope.fixedData={label:'default',id:'0'};
+            scope.suggestSelect2=obj['label'];
 
-        },2000);
+        },4000);
         scope.onSelect2=function(self){
             console.log(self);
         };

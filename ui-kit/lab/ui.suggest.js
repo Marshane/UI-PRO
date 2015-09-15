@@ -315,7 +315,9 @@
                         }
                         var obj=_.filter(scope.data,function(it){
                             if(asValue && it[asValue]==a){
-                                return it;
+                                return it
+                            }else if(!asValue && it[key]==a){
+                                return it
                             }
                             return it[key]==a;
                         });
@@ -324,6 +326,8 @@
                         }
                         if(obj.length){
                             element.val(obj[0][key]);
+                        }else{
+                            element.val('');
                         }
                     });
                     scope.$on('$destroy',function (){
