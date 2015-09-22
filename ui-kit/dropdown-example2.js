@@ -1,5 +1,5 @@
 angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll','ui.upload'
-    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','ui.dialogs','ui.tabs','ui.suggest','ui.utils','ui.inputTree','ui.pager',
+    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','ui.dialogs','ui.tabs','ui.suggest','ui.utils','ui.inputTree',
     ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
 //angular.module('ui',['ui.checkbox','ui.dropdown','ui.buttons','pascalprecht.translate','ui.modal','dialogs.main','ui.bindHtml']);
 angular.module('demo',['ui'])
@@ -40,9 +40,6 @@ angular.module('demo',['ui'])
         $scope.data=queryBillData.data;
         $scope.onSelect=function(node){
             console.log(node);
-            $timeout(function(){
-                $scope.id='';
-            },2000);
         };
         $timeout(function(){
             $scope.id=831002;
@@ -360,14 +357,13 @@ angular.module('demo',['ui'])
             }
             else
                 return [];
-        }scope.data=createSubTree(1,300,'');
-        scope.suggestSelect2='id20';
+        }
         $timeout(function(){
-            var obj={ "label" : "node20","id" : "id30"};
-//            scope.fixedData={label:'default',id:'0'};
-            scope.suggestSelect2=obj['label'];
+            scope.data=createSubTree(1,300,'');
+            scope.fixedData={label:'default',id:'0'};
+            scope.suggestSelect2='0';
 
-        },4000);
+        },2000);
         scope.onSelect2=function(self){
             console.log(self);
         };
@@ -381,11 +377,6 @@ angular.module('demo',['ui'])
         scope.post=function(){
             alert(scope.suggestSelect2);
         }
-    }])
-    .controller('uiPagerCtrl',['$scope','$timeout',function(scope,$timeout){
-        $timeout(function(){
-           scope.total=20;
-        },1e3);
     }])
     .controller('inputSelectCtrl',['$scope','$timeout',function(scope,$timeout){
         scope.ngModelList=[{text:'aa',value:11},{text:'bb',value:22},{text:'csd',value:3432},{text:'asd',value:124634},
@@ -415,6 +406,9 @@ angular.module('demo',['ui'])
       tab:0
     };
     $scope.tabsData=[{value:0,title:'基本信息配置'},{value:1,title:'任务源'},{value:2,title:'服务调用'},{value:3,title:'个性化配置'}];
+    }])
+.controller('mPenelCtrl',['$scope','$log',function ($scope, $log) {
+       
     }])
 
 

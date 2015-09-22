@@ -85,6 +85,7 @@
 
     <script type="text/javascript" src="lab/ui.inputSelect.js"></script>
     <script type="text/javascript" src="lab/ui.inputTree.js"></script>
+    <script type="text/javascript" src="lab/ui.pager.js"></script>
 
     <script type="text/javascript" src="lab/ui.utils.js"></script>
     <script type="text/javascript" src="prism.js"></script>
@@ -515,6 +516,45 @@
                 $scope.status.isopen = !$scope.status.isopen;
             };
     }]);</code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--ui-pager-->
+        <div id="j-pager" class="row">
+            <h2>ui-pager <em>（ui.pager）</em></h2>
+            <div class="col-xs-12">
+                <div class="col-xs-7" ng-controller="uiPagerCtrl">
+                    <h4>例子</h4>
+                    <div class="col-xs-10">
+                        <p>model：{{currentPage}}</p>
+                        <div class="ui-pager"
+                             ui-pager
+                             ng-model="currentPage"
+                             on-pager="onPager(currentPage,self)"
+                             total="24">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <h4>设置</h4>
+                    <p>{Number} ng-model：当前页码 默认0</p>
+                    <p>{Number} total：总页数</p>
+                    <p>{Function} on-pager [可选]：分页回调 @return currentPage (当前页码) | self (实例上下文)</p>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code>
+    &lt;div class=&quot;ui-input-select&quot; ui-input-select ng-model=&quot;functionType&quot; data=&quot;ngModelList&quot;  key=&quot;text&quot; as-value=&quot;value&quot; space=&quot;6&quot;&gt;&lt;/div&gt;</code>
+                        </pre>
+                    </div>
+                    <div ui-tab heading="JavaScript">
+                        <pre class="language-javascript">
+<code></code>
                         </pre>
                     </div>
                 </div>

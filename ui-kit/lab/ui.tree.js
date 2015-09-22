@@ -210,7 +210,7 @@ angular.module('ui.tree', [])
                     '<i class="tree-leaf-head '+classIfDefined($scope.options.injectClasses.iLeaf, false)+'"></i>' +
                     '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ' +
                         'ng-click="selectNodeLabel(node)" tree-transclude></div>' +
-                    '<treeitem ng-if="nodeExpanded()"></treeitem>' +
+                    '<div treeitem ng-if="nodeExpanded()"></div>' +
                     '</li>' +
                     '</ul>';
 
@@ -277,7 +277,7 @@ angular.module('ui.tree', [])
     }])
     .directive("treeitem", function() {
         return {
-            restrict: 'E',
+            restrict: 'EA',
             require: "^uiTree",
             link: function( scope, element, attrs, treemodelCntr) {
                 // Rendering template for the current node

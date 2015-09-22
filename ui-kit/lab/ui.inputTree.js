@@ -17,7 +17,7 @@ angular.module('ui.inputTree', [])
                     var self=this;
                     if (!scope.tpl){
                         scope.tpl=self.compile(['<div class="ui-input-tree-popup" ng-show="isOpen"><span class="ui-input-close" ng-click="onClose()">×</span>'
-                            ,self.templateCache.get('templates/input-select-popup.html'),'</div>'].join(''))(self.scope);
+                            ,self.templateCache.get('templates/input-tree-popup.html'),'</div>'].join(''))(self.scope);
                         if(scope.width){
                             scope.tpl.css({width:parseInt(scope.width,10)+'px'});
                         }
@@ -133,6 +133,7 @@ angular.module('ui.inputTree', [])
                             ui.evt(evt).prevent();
                         };
                         scope._onSelect=function(node){
+                            scope.isEm=1;
                             if(node[op.nodeChildren] && node[op.nodeChildren].length){
                                 scope.selectNode={};//清空选中数据
                                 return;
@@ -146,18 +147,19 @@ angular.module('ui.inputTree', [])
                         };
                         var wa=scope.$watch('ngModel',function(a){
                             if(!_.isUndefined(a) && a!==''){
-                                if(scope.asValue){
+                                if(scope.asValue && !scope.isEm){
                                     scope.selectNode=function(){
                                         var d=angular.copy(scope.data);
                                         var obj={};
                                         var emu=function(d){
                                             for(var i in d){
-                                                if(d[i]==a){
-                                                    obj=d;
-                                                    return
-                                                }else{
-                                                    if(_.isObject(d[i])){
-                                                        emu(d[i]);
+                                                if(d.hasOwnProperty(i)){
+                                                    if(d[i]==a){
+                                                        obj=d;
+                                                    }else{
+                                                        if(_.isObject(d[i])){
+                                                            emu(d[i]);
+                                                        }
                                                     }
                                                 }
                                             }
@@ -166,8 +168,11 @@ angular.module('ui.inputTree', [])
                                         return obj
                                     }();
                                     scope._ngModel=scope.selectNode[scope.key];
-                                    wa();
+                                    scope.isEm=1
                                 }
+                            }else{
+                                scope._ngModel='';
+                                scope.selectNode={};
                             }
                         },true);
                     }
@@ -181,7 +186,7 @@ angular.module('ui.inputTree', [])
              <span class="glyphicon glyphicon-search" ng-if="!_ngModel"></span>\
              <span class="glyphicon glyphicon-remove" ng-if="_ngModel" ng-click="del($event)"></span>\
             ');
-        $templateCache.put("templates/input-select-popup.html",
+        $templateCache.put("templates/input-tree-popup.html",
             '<div  ui-tree class="ui-tree tree-classic" options="options"  tree-model="data" selected-node="selectNode" on-selection="_onSelect(node)">\
                 {{node[key]}}\
             </div>');

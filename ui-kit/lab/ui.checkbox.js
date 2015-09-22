@@ -15,7 +15,7 @@ angular.module('ui.checkbox', ['ui.buttons'])
                 return attrs.multi==='0'?'ui-checkbox-single.html':'ui-checkbox.html'
             },
             link:function(scope,elem,attrs){
-                var attrArr=['key','asValue','multi','space','modelSplit'];
+                var attrArr=['key','asValue','multi','space','modelSplit','additionClass'];
                 var tmp=[];
                 _.each(attrArr,function(it){
                     scope[it]=attrs[it];
@@ -101,6 +101,7 @@ angular.module('ui.checkbox', ['ui.buttons'])
                 scope.data=scope.data||[];
                 scope.checkedData=scope.checkedData||[];
 
+
                 if(scope.multi){
                     scope.ngModel=(scope.ngModel===0?[scope.ngModel]:scope.ngModel)||[];
                 }
@@ -174,11 +175,11 @@ angular.module('ui.checkbox', ['ui.buttons'])
             '<div class="btn-group ui-checkbox">\
                 <label ng-repeat="it in data | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" \
                 ng-class="{active:it.__checked}" ng-model="it.__checked" btn-checkbox>\
-                <i ng-class="{checked:it.__checked}"></i>{{it[key]}}</label>\
+                <i ng-class="{checked:it.__checked}" class="{{it[additionClass]||\'\'}}"></i>{{it[key]}}</label>\
             </div>');
         $templateCache.put("ui-checkbox-single.html",
             '<div class="btn-group ui-checkbox">\
                 <label ng-repeat="it in data  | filter:filterText track by $index" class="btn col-xs-{{space?12/space:\'\'}}" ng-class="{active:it.__checked}" \
-                 ng-model="_model.ngModel" btn-radio="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class=""><s ng-if="it.__checked"></s></i>{{it[key]}}</label>\
+                 ng-model="_model.ngModel" btn-radio="{{it[asValue]}}"><i ng-class="{checked:it.__checked}" class="{{it[additionClass]||\'\'}}"><s ng-if="it.__checked"></s></i>{{it[key]}}</label>\
             </div>');
     }]);
