@@ -245,7 +245,7 @@ angular.module('demo',['ui'])
             console.log('on-scroll-bottom');
         };
     }])
-    .controller('treeCtrl',['$scope','$log',function ($scope, $log) {
+    .controller('treeCtrl',['$scope',function ($scope) {
 
         $scope.openAll=function(){
             var ar=[];
@@ -256,9 +256,9 @@ angular.module('demo',['ui'])
                         arguments.callee(d[i].children);
                     }
                 }
+                return ar
             };
-            op($scope.treedata1);
-            $scope.expandedData=ar;
+            $scope.expandedData=op($scope.treedata1);
         };
         $scope.closeAll=function(){
             $scope.expandedData.length=0;
@@ -284,58 +284,6 @@ angular.module('demo',['ui'])
             { "name" : "Ron", "age" : "29", "children" : [] }
         ];
 
-        function createSubTree(level, width, prefix) {
-            if (level > 0) {
-                var res = [];
-                for (var i=1; i <= width; i++)
-                    res.push({ "label" : "Node " + prefix + i, "id" : "id"+prefix + i, "i": i,
-                        "children": createSubTree(level-1, width, prefix + i +".") });
-                return res;
-            }
-            else
-                return [];
-        }
-
-        $scope.treedata=createSubTree(3,4,'');
-        $scope.opts = {
-            equality: function(node1, node2) {
-                return node1 === node2;
-            }
-        };
-
-        $scope.lastClicked = null;
-        $scope.buttonClick = function($event, node) {
-            $scope.lastClicked = node;
-            $event.stopPropagation();
-        }
-        $scope.showSelected = function(node) {
-            $scope.selectedNode = node;
-        };
-        $scope.addRoot = function() {
-            $scope.treedata.push({label: "New Root", id:"11", children: []})
-        };
-        $scope.addChildToSecondRoot = function() {
-            $scope.treedata[1].children.push({label: "I am a add Child", id:"1.4", children: []})
-        };
-
-        $scope.selected = $scope.treedata[2];
-        $scope.selectNode = function(num) {
-            $scope.selected = $scope.treedata[num];
-        };
-        $scope.clearSelected = function() {
-            $scope.selected = undefined;
-        }
-
-        $scope.expandedNodes = [$scope.treedata[1],
-            $scope.treedata[3],
-            $scope.treedata[3].children[2],
-            $scope.treedata[3].children[2].children[1]];
-        $scope.setExpanded = function() {
-            $scope.expandedNodes = [$scope.treedata[1],
-                $scope.treedata[2],
-                $scope.treedata[2].children[2]
-            ];
-        };
 
 
     }])

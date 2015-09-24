@@ -120,6 +120,7 @@
                 <li ui-scroll-to="#j-scrollbar"><a href="#">ui-scrollbar</a></li>
                 <li ui-scroll-to="#j-grid"><a href="#">ui-grid</a></li>
                 <li ui-scroll-to="#j-scroll"><a href="#">ui-scroll</a></li>
+                <li ui-scroll-to="#j-tree"><a href="#">ui-tree</a></li>
             </ul>
         </div>
     </div>
@@ -1662,6 +1663,42 @@
                         <pre class="language-markup">
 <code>
     &lt;button class=&quot;btn  ui-btn ui-btn-primary&quot; ui-scroll-to=&quot;#demo&quot;&gt;回到顶部&lt;/button&gt;</code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--ui.tree-->
+        <div id="j-tree" class="row">
+            <h2>ui-tree<em>（ui.tree）</em></h2>
+            <div class="col-xs-12" ng-controller="treeCtrl">
+                <div class="col-xs-7">
+                    <h4>例子</h4>
+                    <div class="col-xs-10">
+                        <button class="btn  ui-btn ui-btn-primary" ng-click="openAll()">展开</button>
+                        <button class="btn  ui-btn ui-btn-primary" ng-click="closeAll()">折叠</button>
+                        <p>selectedNode:{{selectedNode}}</p>
+                        <div  ui-tree class="ui-tree" tree-model="treedata1" selected-node="selectedNode" expanded-nodes="expandedData" >
+                            {{node.name}}[<span ui-editable-text="node.age">{{node.age}}</span>]
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <h4>设置</h4>
+                    <p>{String} tree-model：数据</p>
+                    <p>{Object} selected-node：选中数据</p>
+                    <p>{Object} expanded-nodes：折叠数据 用于控制折叠</p>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code>
+    &lt;div  ui-tree class=&quot;ui-tree&quot; tree-model=&quot;treedata1&quot; selected-node=&quot;selectedNode&quot; expanded-nodes=&quot;expandedData&quot; &gt;
+    {{node.name}}[&lt;span ui-editable-text=&quot;node.age&quot;&gt;{{node.age}}&lt;/span&gt;]
+    &lt;/div&gt;</code>
                         </pre>
                     </div>
                 </div>

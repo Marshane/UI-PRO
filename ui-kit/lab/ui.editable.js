@@ -462,7 +462,8 @@ angular.module('xeditable').factory('editableController',
                 };
 
                 // cancel
-                self.cancel = function() {
+                self.cancel = function(evt) {
+                    ui.evt(evt).stop();
                     // oncancel
                     self.oncancel();
                     // don't call hide() here as it called in form's code
@@ -1247,8 +1248,9 @@ angular.module('xeditable').directive('editableForm',
                                     };
                                 }
 
-                                elem.bind('submit', function(event) {
-                                    event.preventDefault();
+                                elem.bind('submit', function(evt) {
+                                    evt.preventDefault();
+                                    evt.stopPropagation();
                                     scope.$apply(function() {
                                         eForm.$submit();
                                     });
@@ -1262,6 +1264,7 @@ angular.module('xeditable').directive('editableForm',
                                 if (e.which && e.which !== 1) {
                                     return;
                                 }
+                                e.stopPropagation();
 
                                 if (eForm.$visible) {
                                     eForm._clicked = true;
@@ -1494,8 +1497,8 @@ angular.module('xeditable').factory('editableThemes', function() {
             inputTpl:     '',
             errorTpl:     '<div class="editable-error" ng-show="$error" ng-bind="$error"></div>',
             buttonsTpl:   '<span class="editable-buttons"></span>',
-            submitTpl:    '<button type="submit" class="btn  ui-btn ui-btn-primary">save</button>',
-            cancelTpl:    '<button type="button" class="btn  ui-btn ui-btn-primary" ng-click="$form.$cancel()">cancel</button>'
+            submitTpl:    '<button type="submit" class="btn  ui-btn ui-btn-primary">{{\'save\'|translate}}</button>',
+            cancelTpl:    '<button type="button" class="btn  ui-btn ui-btn-primary" ng-click="$form.$cancel($event)">{{\'cancel\'|translate}}</button>'
         },
 
         //bs2
@@ -1507,7 +1510,7 @@ angular.module('xeditable').factory('editableThemes', function() {
             errorTpl:    '<div class="editable-error help-block" ng-show="$error" ng-bind="$error"></div>',
             buttonsTpl:  '<span class="editable-buttons"></span>',
             submitTpl:   '<button type="submit" class="btn  ui-btn ui-btn-primary"><span></span></button>',
-            cancelTpl:   '<button type="button" class="btn  ui-btn ui-btn-primary" ng-click="$form.$cancel()">'+
+            cancelTpl:   '<button type="button" class="btn  ui-btn ui-btn-primary" ng-click="$form.$cancel($event)">'+
                 '<span></span>'+
                 '</button>'
 
@@ -1522,7 +1525,7 @@ angular.module('xeditable').factory('editableThemes', function() {
             errorTpl:    '<div class="editable-error help-block" ng-show="$error" ng-bind="$error"></div>',
             buttonsTpl:  '<span class="editable-buttons"></span>',
             submitTpl:   '<button type="submit" class="btn  ui-btn ui-btn-primary"><span></span></button>',
-            cancelTpl:   '<button type="button" class="btn  ui-btn ui-btn-primary" ng-click="$form.$cancel()">'+
+            cancelTpl:   '<button type="button" class="btn  ui-btn ui-btn-primary" ng-click="$form.$cancel($event)">'+
                 '<span></span>'+
                 '</button>',
 
