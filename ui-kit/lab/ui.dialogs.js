@@ -89,8 +89,8 @@ ctrlrs.controller('errorDialogCtrl',['$scope','$modalInstance','$translate','dat
 
 	// $scope.header = (angular.isDefined(data.header)) ? data.header : $translate.instant('DIALOGS_ERROR');
 	// $scope.msg = (angular.isDefined(data.msg)) ? data.msg : $translate.instant('DIALOGS_ERROR_MSG');
-    $scope.header = (angular.isDefined(data.header)) ? data.header :'提示';
-	$scope.msg = (angular.isDefined(data.msg)) ? data.msg :'出错了~';
+    $scope.header = (angular.isDefined(data.header)) ? $translate.instant(data.header) :'提示';
+	$scope.msg = (angular.isDefined(data.msg)) ? $translate.instant(data.msg) :'出错了~';
 	//-- Methods -----//
 	
 	$scope.close = function(){
@@ -105,8 +105,8 @@ ctrlrs.controller('errorDialogCtrl',['$scope','$modalInstance','$translate','dat
 ctrlrs.controller('waitDialogCtrl',['$scope','$modalInstance','$translate','$timeout','data',function($scope,$modalInstance,$translate,$timeout,data){
 	//-- Variables -----//
 
-	$scope.header = (angular.isDefined(data.header)) ? data.header : $translate.instant('DIALOGS_PLEASE_WAIT_ELIPS');
-	$scope.msg = (angular.isDefined(data.msg)) ? data.msg : $translate.instant('DIALOGS_PLEASE_WAIT_MSG');
+	$scope.header = (angular.isDefined(data.header)) ? $translate.instant(data.header) : $translate.instant('DIALOGS_PLEASE_WAIT_ELIPS');
+	$scope.msg = (angular.isDefined(data.msg)) ? $translate.instant(data.msg) : $translate.instant('DIALOGS_PLEASE_WAIT_MSG');
 	$scope.progress = (angular.isDefined(data.progress)) ? data.progress : 100;
 
 	//-- Listeners -----//
@@ -142,8 +142,8 @@ ctrlrs.controller('waitDialogCtrl',['$scope','$modalInstance','$translate','$tim
 ctrlrs.controller('notifyDialogCtrl',['$scope','$modalInstance','$translate','data',function($scope,$modalInstance,$translate,data){
 	//-- Variables -----//
 
-	$scope.header = (angular.isDefined(data.header)) ? data.header : $translate.instant('DIALOGS_NOTIFICATION');
-	$scope.msg = (angular.isDefined(data.msg)) ? data.msg : $translate.instant('DIALOGS_NOTIFICATION_MSG');
+	$scope.header = (angular.isDefined(data.header)) ? $translate.instant(data.header) : $translate.instant('DIALOGS_NOTIFICATION');
+	$scope.msg = (angular.isDefined(data.msg)) ? $translate.instant(data.msg) : $translate.instant('DIALOGS_NOTIFICATION_MSG');
 
 	//-- Methods -----//
 	
@@ -159,8 +159,8 @@ ctrlrs.controller('notifyDialogCtrl',['$scope','$modalInstance','$translate','da
 ctrlrs.controller('confirmDialogCtrl',['$scope','$modalInstance','$translate','data',function($scope,$modalInstance,$translate,data){
 	//-- Variables -----//
 
-	$scope.header = (angular.isDefined(data.header)) ? data.header : $translate.instant('DIALOGS_CONFIRMATION');
-	$scope.msg = (angular.isDefined(data.msg)) ? data.msg : $translate.instant('DIALOGS_CONFIRMATION_MSG');
+	$scope.header = (angular.isDefined(data.header)) ? $translate.instant(data.header) : $translate.instant('DIALOGS_CONFIRMATION');
+	$scope.msg = (angular.isDefined(data.msg)) ? $translate.instant(data.msg) : $translate.instant('DIALOGS_CONFIRMATION_MSG');
 
 	//-- Methods -----//
 	

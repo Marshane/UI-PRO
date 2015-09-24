@@ -21,6 +21,9 @@ angular.module('ui.checkbox', ['ui.buttons'])
                     scope[it]=attrs[it];
                 });
                 scope.modelSplit=scope.modelSplit||',';
+                if(scope.additionClass){
+                    elem.addClass('ui-checkbox-color');
+                }
                 if(scope.multi==='0'){
                     scope.multi=0;
                     elem.addClass('ui-checkbox-single');
