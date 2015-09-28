@@ -40,6 +40,7 @@ angular.module('ui.tree', [])
             controller: ['$scope', function( $scope ) {
 
                 function defaultIsLeaf(node) {
+//                    if(!node)return 0
                     return !node[$scope.options.nodeChildren] || node[$scope.options.nodeChildren].length === 0;
                 }
 

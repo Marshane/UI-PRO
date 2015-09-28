@@ -1678,8 +1678,11 @@
                     <div class="col-xs-10">
                         <button class="btn  ui-btn ui-btn-primary" ng-click="openAll()">展开</button>
                         <button class="btn  ui-btn ui-btn-primary" ng-click="closeAll()">折叠</button>
+                        <button class="btn  ui-btn ui-btn-primary" ng-click="add()">新增</button>
+                        <button class="btn  ui-btn ui-btn-primary" ng-click="del()">删除</button>
                         <p>selectedNode:{{selectedNode}}</p>
-                        <div  ui-tree class="ui-tree" tree-model="treedata1" selected-node="selectedNode" expanded-nodes="expandedData" >
+                        <div  ui-tree class="ui-tree" tree-model="treedata1" on-selection="onSelection(node,selected)"
+                              selected-node="selectedNode" expanded-nodes="expandedData" >
                             {{node.name}}[<span ui-editable-text="node.age">{{node.age}}</span>]
                         </div>
                     </div>
@@ -1687,6 +1690,7 @@
                 <div class="col-xs-5">
                     <h4>设置</h4>
                     <p>{String} tree-model：数据</p>
+                    <p>{Function} on-selection：选中回调 @return node（选择节点数据） | selected (布尔值 是否选中)</p>
                     <p>{Object} selected-node：选中数据</p>
                     <p>{Object} expanded-nodes：折叠数据 用于控制折叠</p>
                 </div>
@@ -1699,6 +1703,86 @@
     &lt;div  ui-tree class=&quot;ui-tree&quot; tree-model=&quot;treedata1&quot; selected-node=&quot;selectedNode&quot; expanded-nodes=&quot;expandedData&quot; &gt;
     {{node.name}}[&lt;span ui-editable-text=&quot;node.age&quot;&gt;{{node.age}}&lt;/span&gt;]
     &lt;/div&gt;</code>
+                        </pre>
+                    </div>
+                    <div ui-tab heading="JavaScript1">
+                        <pre class="language-javascript">
+<code>
+    angular.module('ui',['ui.tree']);
+    angular.module('demo',['ui'])
+    .controller('treeCtrl',['$scope',function ($scope) {
+        //全部展开
+        $scope.openAll=function(){
+            var ar=[];
+            var op=function(d){
+                for(var i= 0,l=d.length; i < l; i++){
+                    if(d[i].children && d[i].children.length){
+                        ar.push(d[i]);
+                        arguments.callee(d[i].children);
+                    }
+                }
+                return ar
+            };
+            $scope.expandedData=op($scope.treedata1);
+        };
+        //全部关闭
+        $scope.closeAll=function(){
+            $scope.expandedData.length=0;
+        };
+        //添加节点
+        $scope.add=function(){
+            var data={ "name" : "mar"+Math.ceil(Math.random()*1E4), "age" : "29", "children" : [] };
+            if($scope.selected){
+                if($scope.selectedNode.children){
+                    $scope.selectedNode.children.push(data);
+                }else{
+                    $scope.selectedNode.children=[data];
+                }
+            }else{
+                $scope.treedata1.push(data);
+            }
+            $scope.expandedData.push($scope.selectedNode);//展开该节点
+        };
+        //数组枚举
+        var emuArr=function(d,obj,id,fun){
+            for(var i= 0,l= d.length;i < l;i++){
+                if(!d[i])continue;
+                if(d[i][id]===obj[id]){
+                    if(fun) fun(d,i);
+                    continue
+                }
+                if(d[i].children){
+                    arguments.callee(d[i].children,obj,id,fun);
+                }
+            }
+        };
+        //删除选中节点
+        $scope.del=function(){
+            if($scope.selected){
+                emuArr($scope.treedata1,$scope.selectedNode,'name',function(d,i){
+                    d.splice(i,1);
+                });
+            }
+        };
+        //选择节点回调
+        $scope.onSelection=function(node,selected){
+            $scope.selected=selected;
+        };
+        //模拟数据
+        $scope.treedata1=[
+            { "name" : "Joe", "age" : "21", "children" : [
+            { "name" : "Smith", "age" : "42", "children" : [] },
+            { "name" : "Je1", "age" : "33", "children" : [
+            { "name" : "Jenifer", "age" : "23", "children" : [
+            { "name" : "Dani", "age" : "32", "children" : [] },
+            { "name" : "Max", "age" : "34", "children" : [] }
+            ]}
+            ]}
+            ]},
+            { "name" : "Albert", "age" : "33", "children" : [] },
+            { "name" : "Ron", "age" : "29", "children" : [] }
+        ];
+    }]);</code>
                         </pre>
                     </div>
                 </div>

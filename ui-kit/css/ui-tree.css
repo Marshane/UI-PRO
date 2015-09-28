@@ -7,17 +7,17 @@
 .ui-tree li.tree-leaf i.tree-leaf-head {display:inline;}
 .ui-tree li i.tree-branch-head {cursor: pointer;}
 .ui-tree li .tree-label {cursor: pointer;display: inline;}
-.ui-tree li.tree-expanded i.tree-branch-head {padding: 1px 10px;}
-.ui-tree li.tree-collapsed i.tree-branch-head {padding: 1px 10px;}
-.ui-tree li.tree-leaf i.tree-leaf-head {padding: 1px 10px;}
+.ui-tree li.tree-expanded i.tree-branch-head {padding:0 10px;}
+.ui-tree li.tree-collapsed i.tree-branch-head {padding:0 10px;}
+.ui-tree li.tree-leaf i.tree-leaf-head {padding:0 10px;}
 .ui-tree li .tree-selected {font-weight: bold;}
-.ui-tree.tree-light li.tree-expanded i.tree-branch-head {padding: 1px 10px;}
-.ui-tree.tree-light li.tree-collapsed i.tree-branch-head {padding: 1px 10px;}
-.ui-tree.tree-light li.tree-leaf i.tree-leaf-head {padding: 1px 10px; width: 16px; height: 16px;}
+.ui-tree.tree-light li.tree-expanded i.tree-branch-head {padding:0 10px;}
+.ui-tree.tree-light li.tree-collapsed i.tree-branch-head {padding:0 10px;}
+.ui-tree.tree-light li.tree-leaf i.tree-leaf-head {padding:0 10px; width: 16px; height: 16px;}
 .ui-tree.tree-light li .tree-selected {font-weight: bold;}
-.ui-tree.tree-dark li.tree-expanded i.tree-branch-head {padding: 1px 10px;}
-.ui-tree.tree-dark li.tree-collapsed i.tree-branch-head {padding: 1px 10px;}
-.ui-tree.tree-dark li.tree-leaf i.tree-leaf-head {padding: 1px 10px;    width: 16px; height: 16px;}
+.ui-tree.tree-dark li.tree-expanded i.tree-branch-head {padding:0 10px;}
+.ui-tree.tree-dark li.tree-collapsed i.tree-branch-head {padding:0 10px;}
+.ui-tree.tree-dark li.tree-leaf i.tree-leaf-head {padding:0 10px;    width: 16px; height: 16px;}
 .ui-tree.tree-dark li .tree-selected {font-weight: bold;}
 
 .ui-tree .ui-input{padding:1px 6px; height: 24px;}

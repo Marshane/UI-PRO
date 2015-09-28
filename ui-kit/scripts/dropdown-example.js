@@ -245,8 +245,8 @@ angular.module('demo',['ui'])
             console.log('on-scroll-bottom');
         };
     }])
-    .controller('treeCtrl',['$scope',function ($scope) {
-
+    .controller('treeCtrl',['$scope','$timeout',function ($scope,$timeout) {
+        //全部展开
         $scope.openAll=function(){
             var ar=[];
             var op=function(d){
@@ -260,16 +260,50 @@ angular.module('demo',['ui'])
             };
             $scope.expandedData=op($scope.treedata1);
         };
+        //全部关闭
         $scope.closeAll=function(){
             $scope.expandedData.length=0;
         };
+        //添加节点
         $scope.add=function(){
-
+            var data={ "name" : "mar"+Math.ceil(Math.random()*1E4), "age" : "29"};
+            if($scope.selected){
+                if($scope.selectedNode.children){
+                    $scope.selectedNode.children.push(data);
+                }else{
+                    $scope.selectedNode.children=[data];
+                }
+            }else{
+                $scope.treedata1.push(data);
+            }
+            $scope.expandedData.push($scope.selectedNode);//展开该节点
         };
+        //数组枚举
+        var emuArr=function(d,obj,id,fun){
+            for(var i= 0,l= d.length;i<l;i++){
+                if(!d[i])continue;
+                if(d[i][id]===obj[id]){
+                    if(fun) fun(d,i);
+                    continue
+                }
+                if(d[i].children){
+                    arguments.callee(d[i].children,obj,id,fun);
+                }
+            }
+        };
+        //删除选中节点
         $scope.del=function(){
-
+            if($scope.selected){
+                emuArr($scope.treedata1,$scope.selectedNode,'name',function(d,i){
+                    d.splice(i,1);
+                });
+            }
         };
-
+        //选择节点回调
+        $scope.onSelection=function(node,selected){
+            $scope.selected=selected;
+        };
+        //模拟数据
         $scope.treedata1=[
             { "name" : "Joe", "age" : "21", "children" : [
                 { "name" : "Smith", "age" : "42", "children" : [] },
@@ -283,9 +317,6 @@ angular.module('demo',['ui'])
             { "name" : "Albert", "age" : "33", "children" : [] },
             { "name" : "Ron", "age" : "29", "children" : [] }
         ];
-
-
-
     }])
     .controller('collapseCtrl',['$scope','$log',function ($scope, $log) {
           $scope.isCollapsed = false;
