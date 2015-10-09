@@ -1,5 +1,5 @@
 angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll','ui.upload'
-    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','ui.dialogs','ui.tabs','ui.suggest','ui.utils','ui.inputTree','ui.pager',
+    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','ui.dialogs','ui.tabs','ui.suggest','ui.utils','ui.inputTree','ui.pager','ui.slider',
     ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
 //angular.module('ui',['ui.checkbox','ui.dropdown','ui.buttons','pascalprecht.translate','ui.modal','dialogs.main','ui.bindHtml']);
 angular.module('demo',['ui'])
@@ -29,6 +29,27 @@ angular.module('demo',['ui'])
     }])
     .controller('buttonCtrl',['$scope',function ($scope) {
 
+    }])
+    .controller('uploadCtrl',['$scope',function ($scope) {
+        $scope.uploadFinished=function(e,data){
+            console.log(data.originalFiles[0].name);//得到文件名
+        };
+    }])
+    .controller('sliderCtrl',['$scope',function ($scope) {
+        $scope.p0={
+            floor:0,
+            value:0,
+            ceil:1000
+        };
+        $scope.p1={
+            floor:0,
+            value:0,
+            max:300,
+            ceil:1000
+        };
+        $scope.translate=function(value){
+            return value.toFixed(2)
+        }
     }])
     .controller('inputTreeCtrl',['$scope','$timeout',function ($scope,$timeout) {
         var queryBillData={"data":[{"remark":"Ekstraordinær kreditering","children":[
@@ -93,7 +114,7 @@ angular.module('demo',['ui'])
         },4000);
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
-//        $scope.dateSelection22=+new Date;
+        $scope.dateSelection22=1440864000000;
     }])
     .controller('timepickerCtrl', ['$scope','$log',function ($scope, $log) {
 

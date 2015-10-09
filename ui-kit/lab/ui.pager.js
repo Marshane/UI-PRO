@@ -43,7 +43,7 @@
             // if(op.page<1)return;
             this._config(op.i18n);
             this._createHTML();
-            console.log(op.page);
+//            console.log(op.page);
             if(op.page) this._refreshPager();
         },
         _config:function(a){

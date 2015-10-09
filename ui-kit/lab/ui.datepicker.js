@@ -499,24 +499,24 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         scope.ss = format.indexOf('SS') >= 0;
                         // scope.ismeridian=true;
                     }
-                    var _dataFormat=function(v){
-                        var y = $translate.use();
-                        switch (y) {
-                            case 'en':
-                            {
-                                return 'MM/dd/yyyy ' + (v.split(' ')[1] || '');
-                                break;
-                            }
-                            default:
-                            {
-                                return v
-                                break;
-                            }
-                        }
-                    }
-                    dateFormat=_dataFormat(attrs.datepickerPopup);
+                    //                    var _dataFormat=function(v){
+                    //                        var y = $translate.use();
+                    //                        switch (y) {
+                    //                            case 'en':
+                    //                            {
+                    //                                return ('dd/MM/yyyy ' + (v.split(' ')[1] || '')).trim();
+                    //                                break;
+                    //                            }
+                    //                            default:
+                    //                            {
+                    //                                return v
+                    //                                break;
+                    //                            }
+                    //                        }
+                    //                    }
+                    dateFormat=attrs.datepickerPopup;
                     attrs.$observe('datepickerPopup', function (value) {
-                        dateFormat=_dataFormat(value) || datepickerPopupConfig.datepickerPopup;
+                        dateFormat=value || datepickerPopupConfig.datepickerPopup;
                         ngModel.$render();
                     });
                     scope._format=attrs.datepickerPopup;
@@ -599,11 +599,13 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     });
                     // Outter change
                     ngModel.$render = function (){
+//                        console.log(ngModel.$viewValue);
                         if(!+ngModel.$viewValue){
                             ngModel.$viewValue=new Date(ngModel.$viewValue).getTime();
                         }
+//                        console.log(dateFormat);
                         var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
-
+//                        console.log(date);
                         element.val(date);
                         scope.date = parseDate(ngModel.$modelValue);
                     };
