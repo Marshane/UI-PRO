@@ -9,6 +9,9 @@ fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td{ margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit;}
 body {line-height: 1;}
 ol, ul {list-style: none;}
+/*清除ie input clear button*/
+input[type=text]::-ms-clear {  display: none; width : 0; height: 0; }
+input[type=text]::-ms-reveal {  display: none; width : 0; height: 0; }
 
 html {font-family: sans-serif;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;}
 body {margin: 0;}

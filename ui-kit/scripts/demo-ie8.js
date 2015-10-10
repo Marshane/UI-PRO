@@ -1,7 +1,31 @@
-angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll','ui.upload'
-    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','ui.dialogs','ui.tabs','ui.suggest','ui.utils','ui.inputTree','ui.pager','ui.slider',
-    ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
-//angular.module('ui',['ui.checkbox','ui.dropdown','ui.buttons','pascalprecht.translate','ui.modal','dialogs.main','ui.bindHtml']);
+angular.module('ui',[
+    'ui.buttons',
+    'ui.dropdown',
+    'ui.select',
+    'ui.checkbox',
+    'ui.scroll',
+    'ui.collapse',
+    'ui.carousel',
+    'ui.datepicker',
+    'ui.timepicker',
+    'pascalprecht.translate',
+    'ui.carousel',
+    'ui.tooltip',
+    'ui.scrollbar',
+    'ui.utils',
+    'ui.pager',
+    'ui.slider',
+    'ui.inputSelect',
+    'ui.upload',
+    'ui.inputTree',
+    'ui.tree',
+    'ui.grid',
+    'ui.modal',
+    'ui.dialogs',
+    'ui.tabs',
+    'ui.bindHtml',
+    'xeditable']);
+
 angular.module('demo',['ui'])
     .directive('uiPrism',['$compile', function($compile) {
         return {
@@ -32,7 +56,7 @@ angular.module('demo',['ui'])
     }])
     .controller('uploadCtrl',['$scope',function ($scope) {
         $scope.uploadFinished=function(e,data){
-            console.log(data.originalFiles[0].name);//得到文件名
+            console.log('文件名：'+data.originalFiles[0].name);//得到文件名
         };
     }])
     .controller('sliderCtrl',['$scope',function ($scope) {
@@ -61,9 +85,6 @@ angular.module('demo',['ui'])
         $scope.data=queryBillData.data;
         $scope.onSelect=function(node){
             console.log(node);
-            $timeout(function(){
-                $scope.id='';
-            },2000);
         };
         $timeout(function(){
             $scope.id=831002;
@@ -197,7 +218,6 @@ angular.module('demo',['ui'])
     }]) // end controller(tabsCtrl)
     .controller('carouselCtrl',['$scope','$log',function ($scope, $log) {
          $scope.slides=[{},{},{}];
-
     }])
     .controller('tooltipCtrl', ['$scope','$log',function ($scope, $log) {
 
@@ -406,16 +426,16 @@ angular.module('demo',['ui'])
 ////            }
 //        });
 //    });
- .controller('sidebarSearchCtrl',['$scope','$timeout',function($scope,$timeout){
-          $scope.functype=[{name:'业务A'},{name:'业务B'},{name:'业务C'},{name:'业务D'},{name:'业务E'},{name:'业务F'}];
-    }])
- .controller('sideTabCtrl',['$scope','$timeout',function($scope,$timeout){
-         //参数实体集合
-    $scope.p={
-      tab:0
-    };
-    $scope.tabsData=[{value:0,title:'基本信息配置'},{value:1,title:'任务源'},{value:2,title:'服务调用'},{value:3,title:'个性化配置'}];
-    }])
+     .controller('sidebarSearchCtrl',['$scope','$timeout',function($scope,$timeout){
+              $scope.functype=[{name:'业务A'},{name:'业务B'},{name:'业务C'},{name:'业务D'},{name:'业务E'},{name:'业务F'}];
+     }])
+     .controller('sideTabCtrl',['$scope','$timeout',function($scope,$timeout){
+             //参数实体集合
+        $scope.p={
+          tab:0
+        };
+        $scope.tabsData=[{value:0,title:'基本信息配置'},{value:1,title:'任务源'},{value:2,title:'服务调用'},{value:3,title:'个性化配置'}];
+     }]);
 
 
 

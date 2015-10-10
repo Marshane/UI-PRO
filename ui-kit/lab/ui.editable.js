@@ -183,7 +183,7 @@ angular.module('xeditable').factory('editableController',
                 self.parent = {};
 
                 //will be undefined if icon_set is default and theme is default
-                self.icon_set = editableOptions.icon_set === 'default' ? editableIcons.default[editableOptions.theme] : editableIcons.external[editableOptions.icon_set];
+                self.icon_set = editableOptions.icon_set === 'default' ? editableIcons['default'][editableOptions.theme] : editableIcons.external[editableOptions.icon_set];
 
                 //to be overwritten by directive
                 self.inputTpl = '';
@@ -1458,7 +1458,7 @@ angular.module('xeditable').factory('editableIcons', function() {
 
     var icons = {
         //Icon-set to use, defaults to bootstrap icons
-        default: {
+        'default': {
             'bs2': {
                 ok: 'icon-ok icon-white',
                 cancel: 'icon-remove'

@@ -61,8 +61,7 @@
 
 
 
-    <!--<script type="text/javascript" src="lab/angular.js"></script>-->
-    <script type="text/javascript" src="lab/angular12.js"></script>
+    <script type="text/javascript" src="lab/angular-ie8.js"></script>
 
 
 
@@ -101,7 +100,7 @@
 
     <script type="text/javascript" src="lab/ui.utils.js"></script>
     <script type="text/javascript" src="prism.js"></script>
-    <script type="text/javascript" src="scripts/demo.js"></script>
+    <script type="text/javascript" src="scripts/demo-ie8.js"></script>
     <link href="prism.css" rel="stylesheet">
     <link href="new-index.css" rel="stylesheet">
 </head>
@@ -400,7 +399,7 @@
                 </div>
             </div>
         </div>
-        <!--ui-input-tree-->
+        ui-input-tree
         <div id="j-input-tree" class="row">
             <h2>ui-input-tree<em>（ui.inputTree）</em></h2>
             <div class="col-xs-12">
@@ -1246,8 +1245,8 @@
                 <div class="col-xs-7" ng-controller="carouselCtrl">
                     <h4>例子</h4>
                     <div class="col-xs-10">
-                        <carousel interval="myInterval">
-                            <slide ng-repeat="item in slides">
+                        <div carousel interval="myInterval">
+                            <div slide ng-repeat="item in slides">
                                 <form class="form-horizontal">
                                     <div class="form-group">
                                         <label class="col-xs-3 control-label">版本号:</label>
@@ -1270,8 +1269,8 @@
                                         </div>
                                     </div>
                                 </form>
-                            </slide>
-                        </carousel>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-5">
@@ -1323,7 +1322,7 @@
                     <h4>例子</h4>
                     <div class="col-xs-10">
                         <p style="padding-left:100px;">
-                            <a href="#" tooltip="{{dynamicTooltip}}"><!--{{dynamicTooltipText}}-->hover me</a>
+                            <a href="#" tooltip="{{dynamicTooltip}}">{{dynamicTooltipText}}hover me</a>
                         </p>
                         <form role="form" class="tooltip-form">
                             <div class="form-group">
@@ -1805,7 +1804,6 @@
                 </div>
             </div>
         </div>
-
         <!--ui.tree-->
         <div id="j-tree" class="row">
             <h2>ui-tree<em>（ui.tree）</em></h2>

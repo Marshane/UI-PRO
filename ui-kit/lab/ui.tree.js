@@ -54,7 +54,7 @@ angular.module('ui.tree', [])
                         dst = dst || {};
 
                         for (var key in src) {
-                            if (hasOwnProperty.call(src, key) && !(key.charAt(0) === '$' && key.charAt(1) === '$')) {
+                            if (src.hasOwnProperty(key) && !(key.charAt(0) === '$' && key.charAt(1) === '$')) {
                                 dst[key] = src[key];
                             }
                         }

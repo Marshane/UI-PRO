@@ -1462,7 +1462,8 @@ var uiGrid;
                 scope.pageCanGoBack = scope.isPaged && scope.gridOptions.currentPage > 0;
                 scope.pageCanGoForward = scope.isPaged && scope.gridOptions.currentPage < scope.lastPageIndex;
 
-                scope.pageIndexes = scope.pageIndexes || [];
+                //scope.pageIndexes = scope.pageIndexes || [];
+                scope.pageIndexes=[];
                 scope.pageIndexes.splice(0);
                 if (scope.isPaged) {
                     if (scope.lastPageIndex + 1 > uiGrid.defaultPagerMinifiedPageCountThreshold) {

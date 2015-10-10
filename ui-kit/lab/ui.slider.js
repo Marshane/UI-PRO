@@ -455,7 +455,7 @@
                     var positions = '';
                     for (var i = this.minValue; i <= this.maxValue; i += this.step) {
                         var selectedClass = this.isTickSelected(i) ? 'selected': false;
-                        positions += '<li class="tick '+ selectedClass +'">';
+                        positions += '<li  class="tick '+ selectedClass +'">';
                         if(this.showTicksValue)
                             positions += '<span class="tick-value">'+ this.getDisplayValue(i) +'</span>';
                         positions += '</li>';

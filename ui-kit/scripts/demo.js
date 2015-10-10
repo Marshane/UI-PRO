@@ -1,7 +1,31 @@
-angular.module('ui',['ui.dropdown','ui.select','pascalprecht.translate','ui.checkbox','ui.inputSelect','xeditable','ui.scroll','ui.upload'
-    ,'ui.buttons','ui.datepicker','ui.timepicker','ui.modal','ui.dialogs','ui.tabs','ui.suggest','ui.utils','ui.inputTree',
-    ,'ui.carousel','ui.grid','ui.bindHtml','ui.tooltip','ui.scrollbar','ui.tree','ui.collapse']);
-//angular.module('ui',['ui.checkbox','ui.dropdown','ui.buttons','pascalprecht.translate','ui.modal','dialogs.main','ui.bindHtml']);
+angular.module('ui',[
+    'ui.dropdown',
+    'ui.select',
+    'pascalprecht.translate',
+    'ui.checkbox',
+    'ui.inputSelect',
+    'xeditable',
+    'ui.scroll',
+    'ui.upload',
+    'ui.buttons',
+    'ui.datepicker',
+    'ui.timepicker',
+    'ui.modal',
+    'ui.dialogs',
+    'ui.tabs',
+    'ui.suggest',
+    'ui.utils',
+    'ui.inputTree',
+    'ui.pager',
+    'ui.slider',
+    'ui.carousel',
+    'ui.grid',
+    'ui.bindHtml',
+    'ui.tooltip',
+    'ui.scrollbar',
+    'ui.tree',
+    'ui.collapse']);
+
 angular.module('demo',['ui'])
     .directive('uiPrism',['$compile', function($compile) {
         return {
@@ -30,6 +54,27 @@ angular.module('demo',['ui'])
     .controller('buttonCtrl',['$scope',function ($scope) {
 
     }])
+    .controller('uploadCtrl',['$scope',function ($scope) {
+        $scope.uploadFinished=function(e,data){
+            console.log(data.originalFiles[0].name);//得到文件名
+        };
+    }])
+    .controller('sliderCtrl',['$scope',function ($scope) {
+        $scope.p0={
+            floor:0,
+            value:0,
+            ceil:1000
+        };
+        $scope.p1={
+            floor:0,
+            value:0,
+            max:300,
+            ceil:1000
+        };
+        $scope.translate=function(value){
+            return value.toFixed(2)
+        }
+    }])
     .controller('inputTreeCtrl',['$scope','$timeout',function ($scope,$timeout) {
         var queryBillData={"data":[{"remark":"Ekstraordinær kreditering","children":[
             {"leaf":true,"expanded":false,"codeId":831001,"codeName":"KØBEKS","taxInclude":0,"approvalFlag":0,"baseItemFlag":0,"adjustFlag":1,"parentId":- 1,
@@ -40,6 +85,9 @@ angular.module('demo',['ui'])
         $scope.data=queryBillData.data;
         $scope.onSelect=function(node){
             console.log(node);
+            $timeout(function(){
+                $scope.id='';
+            },2000);
         };
         $timeout(function(){
             $scope.id=831002;
@@ -90,7 +138,7 @@ angular.module('demo',['ui'])
         },4000);
     }])
     .controller('datepickerCtrl', ['$scope','$log',function ($scope, $log) {
-//        $scope.dateSelection22=+new Date;
+        $scope.dateSelection22=1440864000000;
     }])
     .controller('timepickerCtrl', ['$scope','$log',function ($scope, $log) {
 
@@ -242,8 +290,8 @@ angular.module('demo',['ui'])
             console.log('on-scroll-bottom');
         };
     }])
-    .controller('treeCtrl',['$scope','$log',function ($scope, $log) {
-
+    .controller('treeCtrl',['$scope','$timeout',function ($scope,$timeout) {
+        //全部展开
         $scope.openAll=function(){
             var ar=[];
             var op=function(d){
@@ -253,20 +301,54 @@ angular.module('demo',['ui'])
                         arguments.callee(d[i].children);
                     }
                 }
+                return ar
             };
-            op($scope.treedata1);
-            $scope.expandedData=ar;
+            $scope.expandedData=op($scope.treedata1);
         };
+        //全部关闭
         $scope.closeAll=function(){
             $scope.expandedData.length=0;
         };
+        //添加节点
         $scope.add=function(){
-
+            var data={ "name" : "mar"+Math.ceil(Math.random()*1E4), "age" : "29"};
+            if($scope.selected){
+                if($scope.selectedNode.children){
+                    $scope.selectedNode.children.push(data);
+                }else{
+                    $scope.selectedNode.children=[data];
+                }
+            }else{
+                $scope.treedata1.push(data);
+            }
+            $scope.expandedData.push($scope.selectedNode);//展开该节点
         };
+        //数组枚举
+        var emuArr=function(d,obj,id,fun){
+            for(var i= 0,l= d.length;i<l;i++){
+                if(!d[i])continue;
+                if(d[i][id]===obj[id]){
+                    if(fun) fun(d,i);
+                    continue
+                }
+                if(d[i].children){
+                    arguments.callee(d[i].children,obj,id,fun);
+                }
+            }
+        };
+        //删除选中节点
         $scope.del=function(){
-
+            if($scope.selected){
+                emuArr($scope.treedata1,$scope.selectedNode,'name',function(d,i){
+                    d.splice(i,1);
+                });
+            }
         };
-
+        //选择节点回调
+        $scope.onSelection=function(node,selected){
+            $scope.selected=selected;
+        };
+        //模拟数据
         $scope.treedata1=[
             { "name" : "Joe", "age" : "21", "children" : [
                 { "name" : "Smith", "age" : "42", "children" : [] },
@@ -280,61 +362,6 @@ angular.module('demo',['ui'])
             { "name" : "Albert", "age" : "33", "children" : [] },
             { "name" : "Ron", "age" : "29", "children" : [] }
         ];
-
-        function createSubTree(level, width, prefix) {
-            if (level > 0) {
-                var res = [];
-                for (var i=1; i <= width; i++)
-                    res.push({ "label" : "Node " + prefix + i, "id" : "id"+prefix + i, "i": i,
-                        "children": createSubTree(level-1, width, prefix + i +".") });
-                return res;
-            }
-            else
-                return [];
-        }
-
-        $scope.treedata=createSubTree(3,4,'');
-        $scope.opts = {
-            equality: function(node1, node2) {
-                return node1 === node2;
-            }
-        };
-
-        $scope.lastClicked = null;
-        $scope.buttonClick = function($event, node) {
-            $scope.lastClicked = node;
-            $event.stopPropagation();
-        }
-        $scope.showSelected = function(node) {
-            $scope.selectedNode = node;
-        };
-        $scope.addRoot = function() {
-            $scope.treedata.push({label: "New Root", id:"11", children: []})
-        };
-        $scope.addChildToSecondRoot = function() {
-            $scope.treedata[1].children.push({label: "I am a add Child", id:"1.4", children: []})
-        };
-
-        $scope.selected = $scope.treedata[2];
-        $scope.selectNode = function(num) {
-            $scope.selected = $scope.treedata[num];
-        };
-        $scope.clearSelected = function() {
-            $scope.selected = undefined;
-        }
-
-        $scope.expandedNodes = [$scope.treedata[1],
-            $scope.treedata[3],
-            $scope.treedata[3].children[2],
-            $scope.treedata[3].children[2].children[1]];
-        $scope.setExpanded = function() {
-            $scope.expandedNodes = [$scope.treedata[1],
-                $scope.treedata[2],
-                $scope.treedata[2].children[2]
-            ];
-        };
-
-
     }])
     .controller('collapseCtrl',['$scope','$log',function ($scope, $log) {
           $scope.isCollapsed = false;
@@ -357,13 +384,14 @@ angular.module('demo',['ui'])
             }
             else
                 return [];
-        }
+        }scope.data=createSubTree(1,300,'');
+        scope.suggestSelect2='id20';
         $timeout(function(){
-            scope.data=createSubTree(1,300,'');
-            scope.fixedData={label:'default',id:'0'};
-            scope.suggestSelect2='0';
+            var obj={ "label" : "node20","id" : "id30"};
+//            scope.fixedData={label:'default',id:'0'};
+            scope.suggestSelect2=obj['label'];
 
-        },2000);
+        },4000);
         scope.onSelect2=function(self){
             console.log(self);
         };
@@ -377,6 +405,11 @@ angular.module('demo',['ui'])
         scope.post=function(){
             alert(scope.suggestSelect2);
         }
+    }])
+    .controller('uiPagerCtrl',['$scope','$timeout',function(scope,$timeout){
+        $timeout(function(){
+           scope.total=20;
+        },1e3);
     }])
     .controller('inputSelectCtrl',['$scope','$timeout',function(scope,$timeout){
         scope.ngModelList=[{text:'aa',value:11},{text:'bb',value:22},{text:'csd',value:3432},{text:'asd',value:124634},
@@ -397,19 +430,16 @@ angular.module('demo',['ui'])
 ////            }
 //        });
 //    });
- .controller('sidebarSearchCtrl',['$scope','$timeout',function($scope,$timeout){
-          $scope.functype=[{name:'业务A'},{name:'业务B'},{name:'业务C'},{name:'业务D'},{name:'业务E'},{name:'业务F'}];
-    }])
- .controller('sideTabCtrl',['$scope','$timeout',function($scope,$timeout){
-         //参数实体集合
-    $scope.p={
-      tab:0
-    };
-    $scope.tabsData=[{value:0,title:'基本信息配置'},{value:1,title:'任务源'},{value:2,title:'服务调用'},{value:3,title:'个性化配置'}];
-    }])
-.controller('mPenelCtrl',['$scope','$log',function ($scope, $log) {
-       
-    }])
+     .controller('sidebarSearchCtrl',['$scope','$timeout',function($scope,$timeout){
+              $scope.functype=[{name:'业务A'},{name:'业务B'},{name:'业务C'},{name:'业务D'},{name:'业务E'},{name:'业务F'}];
+     }])
+     .controller('sideTabCtrl',['$scope','$timeout',function($scope,$timeout){
+             //参数实体集合
+        $scope.p={
+          tab:0
+        };
+        $scope.tabsData=[{value:0,title:'基本信息配置'},{value:1,title:'任务源'},{value:2,title:'服务调用'},{value:3,title:'个性化配置'}];
+     }]);
 
 
 

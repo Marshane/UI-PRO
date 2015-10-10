@@ -34,6 +34,13 @@ String.prototype.len = function () {
     var a = (this || "").match(/[^\x00-\x80]/g);
     return this.length + (a ? a.length : 0)
 };
+String.prototype.trim=function(){
+    return String(this).replace(/(^[\s\u3000]*)|([\s\u3000]*$)/g,"");
+};
+Array.prototype.indexOf=Array.prototype.indexOf || function(value){
+    if(_ && _.indexOf) return  _.indexOf(this,value);
+    return -1
+};
 /**
  * 字符串截取..
  * @param k
