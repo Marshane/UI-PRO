@@ -91,13 +91,13 @@
 }
 
 .ui-slider span.ui-slider-pointer.ui-slider-active:after {
-    background-color: #451aff;
+    background-color: #fff;
 }
 
 .ui-slider span.ui-slider-bubble {
     top: -32px;
     padding: 1px 3px;
-    color: #55637d;
+    color: #fff;
     cursor: default;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .ui-slider span.ui-slider-bubble.ui-slider-limit {
-    color: #55637d;
+    color: #fff;
 }
 
 .ui-slider .ui-slider-ticks {
