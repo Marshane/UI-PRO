@@ -68,8 +68,8 @@ angular.module('demo',['ui'])
         $scope.p1={
             floor:0,
             value:0,
-            max:300,
-            ceil:1000
+            max:30,
+            ceil:100
         };
         $scope.translate=function(value){
             return value.toFixed(2)

@@ -453,14 +453,25 @@
                     if(!this.step) return; //if step is 0, the following loop will be endless.
 
                     var positions = '';
+                    var arr=[];
+                    var k=0;
+                    var wid=this.ticks.width();
                     for (var i = this.minValue; i <= this.maxValue; i += this.step) {
-                        var selectedClass = this.isTickSelected(i) ? 'selected': false;
-                        positions += '<li  class="tick '+ selectedClass +'">';
+                        k++;
+                        arr.push(i);
+                    }
+                    for (var i=0; i < k; i++) {
+                        var selectedClass = this.isTickSelected(arr[i]) ? 'selected': false;
+                        positions += '<li class="tick '+ selectedClass +'">';
                         if(this.showTicksValue)
-                            positions += '<span class="tick-value">'+ this.getDisplayValue(i) +'</span>';
+                            positions += '<span class="tick-value">'+ this.getDisplayValue(arr[i]) +'</span>';
                         positions += '</li>';
                     }
                     this.ticks.html(positions);
+                    var li=this.ticks.children();
+                    if(!li.length)return;
+                    li.css('margin-right',(wid-li.length*li.eq(0).width())/(li.length-1)+'px');
+                    li.eq(li.length-1).css('margin-right',0);
                 },
                 isTickSelected: function(value) {
                     var tickLeft = this.valueToOffset(value);
