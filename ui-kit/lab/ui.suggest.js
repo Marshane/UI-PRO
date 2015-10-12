@@ -325,8 +325,6 @@
                         }
                         if(obj.length){
                             element.val(obj[0][key]);
-                        }else{
-                            element.val('');
                         }
                     };
                     var wa=scope.$watch('ngModel',function(a){

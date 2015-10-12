@@ -384,12 +384,13 @@ angular.module('demo',['ui'])
             }
             else
                 return [];
-        }scope.data=createSubTree(1,300,'');
+        }
+        scope.data=createSubTree(1,300,'');
         scope.suggestSelect2='id20';
         $timeout(function(){
             var obj={ "label" : "node20","id" : "id30"};
 //            scope.fixedData={label:'default',id:'0'};
-            scope.suggestSelect2=obj['label'];
+            scope.suggestSelect2=obj['id'];
 
         },4000);
         scope.onSelect2=function(self){
