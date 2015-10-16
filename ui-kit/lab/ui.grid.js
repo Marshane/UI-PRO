@@ -421,7 +421,10 @@ var uiGrid;
         };
         GridController.prototype.clearSelected = function () {
             this.gridOptions.selectedItems.length=0;
-            this.headerElement.find('input').scope().areAllSelected=false;
+            var input = this.headerElement.find('input');
+            if(input.length){
+                input.scope().areAllSelected=false;
+            }
         };
         GridController.prototype.setColumnOptions = function (columnIndex, columnOptions) {
             var originalOptions = this.gridOptions.gridColumnDefs[columnIndex];

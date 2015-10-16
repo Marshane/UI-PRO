@@ -52,7 +52,10 @@ angular.module('demo',['ui'])
         };
     }])
     .controller('buttonCtrl',['$scope',function ($scope) {
-
+        $scope.arr=[{text:'aa'},{text:'bb'}];
+        $scope.onCh=function(it){
+            console.log(it);
+        }
     }])
     .controller('uploadCtrl',['$scope',function ($scope) {
         $scope.uploadFinished=function(e,data){

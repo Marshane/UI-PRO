@@ -697,7 +697,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 var ngModelController = ctrls[0];
                 var reValid=function(){
                     $timeout(function(){
-                        ngModelController.$validate();
+                        ngModelController.$validate&&ngModelController.$validate();
                     })
                 };
                 var valid=function (viewValue) {
