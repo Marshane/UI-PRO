@@ -116,15 +116,19 @@ angular.module('demo',['ui'])
             $scope.status.isopen = !$scope.status.isopen;
         };
     }])
-    .controller('selectCtrl', ['$scope','$log',function ($scope, $log) {
+    .controller('selectCtrl', ['$scope','$timeout',function ($scope, $timeout) {
 
         $scope.selectData=[{text:'a',value:1},{text:'b',value:2},
             {text:'c',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
-        $scope.selectData2=[{text:'a',value:1},{text:'b',value:2},
-            {text:'c',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6},
-            {text:'g',value:7},{text:'h',value:8},
-            {text:'i',value:9},{text:'j',value:10},{text:'k',value:11},{text:'l',value:12}];
 
+
+        $timeout(function(){
+            $scope.selectData3=[{text:'a',value:1},{text:'b',value:2},
+                {text:'c',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6},
+                {text:'g',value:7},{text:'h',value:8},
+                {text:'i',value:9},{text:'j',value:10},{text:'k',value:11},{text:'l',value:12}];
+            $scope.selectDataId2='';
+        },2000);
     }])
     .controller('checkboxCtrl', ['$scope','$log','$timeout',function ($scope, $log,$timeout) {
 

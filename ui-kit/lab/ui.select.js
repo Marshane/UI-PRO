@@ -75,6 +75,7 @@ angular.module('ui.select',[])
 
                         var setValue = function (obj) {
                             if (scope.multi) {
+                                scope.ngModel=scope.ngModel||[];
                                 if (_.where(scope.ngModel, obj).length) {
                                     scope.ngModel = _.filter(scope.ngModel, function (it) {
                                         return it[scope.key] != obj[scope.key]
@@ -196,10 +197,10 @@ angular.module('ui.select',[])
                         }, true);
                         var dw1=scope.$watch('options', function (a, b) {
                             if (a != b) {
+                                scope.setMenuStyle();
                                 if (!a || a.length === 0){
                                     scope.ngModel='';
                                     scope._obj[attrs.ngModel]='';
-                                    scope.setMenuStyle();
                                     return;//(attrs.all?(scope.options[0][scope.asValue || 'value']!=attrs.all):scope.options[0][scope.asValue || 'value']))
                                 }
                                 var opV=scope.options[0][scope.asValue || 'value'];
