@@ -34,7 +34,7 @@ angular.module('ui.select',[])
                         scope.width = attrs.width;
                         scope.max = +attrs.max || 10;
                         scope.multi = +attrs.multi || 0;
-                        scope.lineHeight = +attrs.lineHeight || 24.3;
+                        scope.lineHeight = +attrs.lineHeight || 32;
                         scope.isDropdown = +attrs.isDropdown || 0;
                         scope.position = function () {
                             var pos = attrs.position, sp;
@@ -159,7 +159,7 @@ angular.module('ui.select',[])
                         scope.setMenuStyle = function (len) {
                             scope.max=len||scope.max;
                             if (scope.options && scope.max && scope.options.length > scope.max) {
-                                scope.menuStyle = {'height': scope.lineHeight * scope.max - scope.max + 1, 'overflow-y': 'auto'}
+                                scope.menuStyle = {'height': scope.lineHeight * scope.max - scope.max, 'overflow-y': 'auto'}
                             }
                         };
                         if(_.isUndefined(scope.ngModel) || _.isNull(scope.ngModel)){

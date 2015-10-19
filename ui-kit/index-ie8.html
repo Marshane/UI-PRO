@@ -887,10 +887,19 @@
                         <p>model：{{selectDataId}}</p>
                         <div ui-select
                             ng-model="selectDataId"
-                            options="selectData"
+                            options="selectData2"
                             key="text"
                             as-value="value"
                             ></div>
+                    </div>
+                    <div class="col-xs-10">
+                        <p>多选：model：{{selectDataId2}}</p>
+                        <div ui-select
+                             ng-model="selectDataId2"
+                             options="selectData"
+                             key="text"
+                             multi="1"
+                             as-value="value"></div>
                     </div>
                 </div>
                 <div class="col-xs-5">
