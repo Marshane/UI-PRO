@@ -24,6 +24,7 @@ angular.module('ui',[
     'ui.dialogs',
     'ui.tabs',
     'ui.bindHtml',
+    'ui.charts',
     'xeditable']);
 
 angular.module('demo',['ui'])
@@ -445,7 +446,27 @@ angular.module('demo',['ui'])
           tab:0
         };
         $scope.tabsData=[{value:0,title:'基本信息配置'},{value:1,title:'任务源'},{value:2,title:'服务调用'},{value:3,title:'个性化配置'}];
-     }]);
+     }])
+    .controller('chartOldCtrl',['$scope','$timeout',function(scope,$timeout){
+        scope.barOptions={
+            data: {
+                data: [],
+                xkey: ['x'],
+                ykey: ['y0']
+            }
+        };
+        scope.lineOptions={
+            data: {
+                data: [],
+                xkey: ['x'],
+                ykey: ['y0']
+            }
+        };
+        scope.barData=[[{x:'a',y0:[20,30]},{x:'b',y0:[30,10]},{x:'c',y0:[20,30]},{x:'d',y0:[30,10]}],
+            [{x:'a',y0:[20,30]},{x:'b',y0:[30,10]},{x:'c',y0:[20,30]},{x:'d',y0:[30,10]}]];
+
+        scope.lineData=[{x:+new Date,y0:100},{x:+new Date+2e4,y0:400}];
+    }]);
 
 
 

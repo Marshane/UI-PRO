@@ -13,7 +13,7 @@
     <link href="css/state.css" rel="stylesheet">
     <link href="css/theme.css" rel="stylesheet">
 
-
+    <link href="css/ui-chart-old.css" rel="stylesheet">
     <link href="css/ui-button.css" rel="stylesheet">
     <link href="css/ui-checkbox.css" rel="stylesheet">
     <link href="css/ui-input.css" rel="stylesheet">
@@ -57,7 +57,8 @@
     <script type="text/javascript" src="lab/jquery.fileupload.js"></script>
     <script type="text/javascript" src="lab/lodash.min.js"></script>
 
-
+    <script type="text/javascript" src="lab/raphael.js"></script>
+    <script type="text/javascript" src="lab/mix.charts.js"></script>
 
 
 
@@ -99,6 +100,10 @@
     <script type="text/javascript" src="lab/ui.slider.js"></script>
 
     <script type="text/javascript" src="lab/ui.utils.js"></script>
+
+    <script type="text/javascript" src="lab/ui.charts.js"></script>
+
+
     <script type="text/javascript" src="prism.js"></script>
     <script type="text/javascript" src="scripts/demo-ie8.js"></script>
     <link href="prism.css" rel="stylesheet">
@@ -1932,6 +1937,35 @@
             { "name" : "Ron", "age" : "29", "children" : [] }
         ];
     }]);</code>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--ui.scroll-->
+        <div id="j-chart-old" class="row">
+            <h2>ui-chart<em>（ui.scroll）</em></h2>
+            <div class="col-xs-12" ng-controller="chartOldCtrl">
+                <div class="col-xs-7">
+                    <h4>例子</h4>
+                    <div class="col-xs-6">
+                        <div bar-chart data="barData" option="barOptions" style="height:300px"></div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div line-chart data="lineData" option="lineOptions" style="height:300px"></div>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <h4>设置</h4>
+                    <p></p>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div ui-tabset class="ui-tabset">
+                    <div ui-tab heading="Markup">
+                        <pre class="language-markup">
+<code></code>
                         </pre>
                     </div>
                 </div>

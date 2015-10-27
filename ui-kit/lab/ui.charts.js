@@ -1,7 +1,6 @@
 angular.module('ui.charts', [])
     // 柱状图
     .directive('barChart', [function () {
-
         return {
             scope: {
                 data: '=',
@@ -112,7 +111,7 @@ angular.module('ui.charts', [])
                 option: '='
             },
             link: function ($scope, element, attrs) {
-                var chart, tpl = ['<div class="amchart-line-label">{0}</div>', '<div class="amchart-line-point">{0}</div>'];
+                var chart, tpl = ['<div class="ui-chart-line-label">{0}</div>', '<div class="ui-chart-line-point">{0}</div>'];
                 var ew;
                 var eh = element.height();
                 var format = ui.format;
@@ -142,7 +141,7 @@ angular.module('ui.charts', [])
                     element: element[0],
                     charts: ['line'],
                     tipFormat: function (data) {
-                        return new Date(data[opt.data.xkey[0]]).Format('yyyy-MM-dd hh:mm:ss');
+                        return new Date(data[opt.data.xkey[0]]).dateFormat('yyyy-MM-dd hh:mm:ss');
                     },
                     tip: function (el, data, x, y) {
                         var _tpl = [], ykey = opt.data.ykey;
@@ -168,7 +167,7 @@ angular.module('ui.charts', [])
                         },
                         label: {
                             xLabelFormat: function (a) {
-                                return new Date(a).Format('hh:mm');
+                                return new Date(a).dateFormat('hh:mm');
                             },
                             yLabelFormat: function (a) {
                                 return a >= 1e4 ? (a / 1E4 + 'w') : a;

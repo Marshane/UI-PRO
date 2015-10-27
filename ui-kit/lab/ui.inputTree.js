@@ -37,7 +37,7 @@ angular.module('ui.inputTree', [])
                     var elem=this.elem[0];
                     c = c || window.event;
                     for (var d = c.target || c.srcElement; d && d.nodeType === 1;) {
-                        if ((d===elem)|| d.className.hasString('ui-input-tree-popup')){
+                        if ((d===elem)|| String(d.className).hasString('ui-input-tree-popup')){
                             ui.evt(c).stop();
                             return
                         }

@@ -37,7 +37,7 @@ angular.module('ui.inputSelect', [])
                     var elem=this.elem[0];
                     c = c || window.event;
                     for (var d = c.target || c.srcElement; d && d.nodeType === 1;) {
-                        if ((d===elem)|| d.className.hasString('ui-input-select-popup')){
+                        if ((d===elem)|| String(d.className).hasString('ui-input-select-popup')){
                             ui.evt(c).stop();
                             return
                         }
