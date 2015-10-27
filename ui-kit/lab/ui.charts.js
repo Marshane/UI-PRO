@@ -81,12 +81,29 @@ angular.module('ui.charts', [])
                 };
 
                 function onWatch() {
+                    var d,_w,_h;
                     if (chart instanceof Mix.Graph) {
                         chart.update(scope.data);
                     } else {
                         opts = $.extend(opts, scope.option || {});
-                        chart = new Mix.Graph(opts);
-                        chart.update(scope.data);
+                        if(opts.width<=0 || opts.height<=0){
+                            d=element[0];
+                            while(d.nodeType === 1) {
+                                _w=d.offsetWidth;
+                                _h=d.offsetHeight;
+                                if (_w>0  && _h>0){
+                                    opts.width=_w;
+                                    opts.height=_h;
+                                    chart = new Mix.Graph(opts);
+                                    chart.update(scope.data);
+                                    return
+                                }
+                                d = d.parentNode
+                            }
+                        }else{
+                            chart = new Mix.Graph(opts);
+                            chart.update(scope.data);
+                        }
                     }
                 }
 

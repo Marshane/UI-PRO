@@ -235,21 +235,20 @@ angular.module('demo',['ui'])
         $scope.dynamicTooltip = 'Hello,I am a example!';
 //        $scope.dynamicTooltipText = 'dynamic';
     }])
-    .controller('gridCtrl',['$scope','$log',function ($scope, $log) {
+    .controller('gridCtrl',['$scope','$log','$timeout',function ($scope, $log,$timeout) {
 
           (function(){
-              $scope.gridData=[
-                                {functionName:22434322243,algo:2,dealNum:3,errorNum:8},
-                                {functionName:2343432,algo:2,dealNum:3,errorNum:8}
-                              ];
+
               $scope.pagingOptions = {
                   pageSize: 1,
                   currentPage: 0
               };
-              $scope.data=[
-                  {functionName:22434322243,algo:2,dealNum:3,errorNum:8},
-                  {functionName:2343432,algo:2,dealNum:3,errorNum:8}
-              ];
+              $scope.onGridPager=function(){
+                  $scope.gridData=[
+                      {functionName:22434322243,algo:2,dealNum:3,errorNum:8},
+                      {functionName:2343432,algo:2,dealNum:3,errorNum:8}
+                  ];
+              }
           })();
           (function(){
               //表格分页配置
@@ -258,7 +257,7 @@ angular.module('demo',['ui'])
                   currentPage: 0
               };
               //table 请求回调  页面载入或 分页时 自动调用
-              $scope.onGridPager=function(start,limit){
+              $scope.onGridPager2=function(start,limit){
                   $scope.gridData2=[
                                     {interfaceId:1,functionName:22434322243,algo:2,dealNum:3,errorNum:8},
                                     {interfaceId:2,functionName:2343432,algo:2,dealNum:3,errorNum:8},
