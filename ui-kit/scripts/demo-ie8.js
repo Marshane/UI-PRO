@@ -249,6 +249,7 @@ angular.module('demo',['ui'])
                       {functionName:2343432,algo:2,dealNum:3,errorNum:8}
                   ];
               }
+              $scope.ngGridModel=[];
           })();
           (function(){
               //表格分页配置

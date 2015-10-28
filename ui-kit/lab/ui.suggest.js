@@ -158,6 +158,7 @@
                     }else{
                         c=$.extend(c,a.params);
                     }
+                    console.log(c);
                     b.ajax=$.get(a.url,c,function(q){
                         if(q.success){
                             d[0].val=f;
@@ -326,7 +327,13 @@
                         if(obj.length){
                             element.val(obj[0][key]);
                         }
+                        // 默认ng-model为 对象数据
+                        if(_.isObject(a)){
+                            key && element.val(a[key]);
+                            asValue && ngModel.$setViewValue(a[asValue]);
+                        }
                     };
+
                     var wa=scope.$watch('ngModel',function(a){
                         if(_.isUndefined(a) || a==='' || _.isNull(a)){
                             element.val('');

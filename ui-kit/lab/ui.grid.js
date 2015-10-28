@@ -525,7 +525,10 @@ var uiGrid;
                     break;
                 case SelectionMode[1 /* SingleRow */]:
                     var itemIndex = this.gridOptions.selectedItems.indexOf(item);
-                    this.gridOptions.selectedItems.splice(0);
+                    console.log(itemIndex);
+                    // fix <=ie8   splice(0,length)
+                    this.gridOptions.selectedItems.splice(0,this.gridOptions.selectedItems.length);
+                    console.log(this.gridOptions.selectedItems);
                     if (itemIndex < 0) {
                         this.gridOptions.selectedItems.push(item);
                     }
