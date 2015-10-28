@@ -762,10 +762,11 @@
                                ui-suggest
                                ng-model="suggestSelect"
                                data="data"
-                               key="label"
-                               as-value="id"
+                               key="formatted_address"
+                               as-value="place_id"
+                               name="address"
+                               callback="callback(res)"
                                url="http://maps.googleapis.com/maps/api/geocode/json"
-                               obj-param="aa"
                                on-select="onSelect(self)"
                                class="form-control ui-input">
                     </div>

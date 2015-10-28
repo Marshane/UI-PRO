@@ -387,6 +387,14 @@ angular.module('demo',['ui'])
         }
         scope.data=createSubTree(1,300,'');
         scope.suggestSelect={ "label" : "node20","id" : "id30"};
+
+        scope.callback=function(res){
+            if(res.status==='OK'){
+                return res.results
+            }
+            return []
+        };
+
         scope.suggestSelect2='id20';
         $timeout(function(){
             var obj={ "label" : "node20","id" : "id30"};

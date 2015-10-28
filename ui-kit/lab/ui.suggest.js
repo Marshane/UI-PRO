@@ -158,16 +158,14 @@
                     }else{
                         c=$.extend(c,a.params);
                     }
-                    console.log(c);
-                    b.ajax=$.get(a.url,c,function(q){
-                        if(q.success){
-                            d[0].val=f;
-                            a.data=q.data;
-                            b._render(a.data);
-                        }
-                    });
+                    b.ajax=$.get(a.url,c, _.bind(b._ajaxCallback,b));
                 }
             },a.interval);
+        },
+        _ajaxCallback:function(q){
+            if(this.op.ajaxCallback){
+                this.op.ajaxCallback(q);
+            }
         },
         _setOn:function(index){
             this.list.removeClass(this.op.active);
@@ -262,6 +260,7 @@
                     ngModel:'=',
                     params:'=',
                     fixedData:'=?',
+                    callback:'&?',
                     data:'='
                 },
                 link:function(scope, element, attrs,ngModel) {
@@ -282,6 +281,11 @@
                                 scope.$apply(function(){
                                     scope.onBlur({self: self});
                                 });
+                            },
+                            ajaxCallback:function(q){
+                                var res=scope.callback({res:q});
+                                scope.suggest.data=res||[];
+                                scope.suggest._render(res||[]);
                             },
                             key:key,
                             selected:function(item,self){
