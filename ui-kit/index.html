@@ -814,10 +814,12 @@
         &lt;p&gt;model：{{suggestSelect}}&lt;/p&gt;
         &lt;input type=&quot;text&quot;
                 ui-suggest
-                ng-model=&quot;suggestSelect&quot;
-                data=&quot;data&quot;
-                key=&quot;label&quot;
-                asValue=&quot;id&quot;
+                data="data"
+                key="formatted_address"
+                as-value="place_id"
+                name="address"
+                callback="callback(res)"
+                url="http://maps.googleapis.com/maps/api/geocode/json"
                 on-select=&quot;onSelect(self)&quot;
                 class=&quot;form-control ui-input&quot;&gt;
     &lt;/div&gt;
@@ -862,6 +864,15 @@
                     return [];
             }
             scope.data=createSubTree(1,300,'');
+            scope.suggestSelect={ "label" : "node20","id" : "id30"};
+
+            scope.callback=function(res){
+                if(res.status==='OK'){
+                    return res.results
+                }
+                return []
+            };
+
             scope.onSelect2=function(self){
                 console.log(self);
             };
