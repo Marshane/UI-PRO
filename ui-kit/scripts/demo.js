@@ -386,21 +386,21 @@ angular.module('demo',['ui'])
                 return [];
         }
         scope.data=createSubTree(1,300,'');
-        scope.suggestSelect={ "label" : "node20","id" : "id30"};
+        scope.suggestSelect={
+            "formatted_address" : "德国奥格斯堡",
+            "place_id" : "ChIJKSshOsWinkcRoOeL161IHgQ"
+        };
 
         scope.callback=function(res){
             if(res.status==='OK'){
-                return res.results
+                return res.results  //满足条件 返回响应数据
             }
-            return []
         };
 
         scope.suggestSelect2='id20';
         $timeout(function(){
             var obj={ "label" : "node20","id" : "id30"};
-//            scope.fixedData={label:'default',id:'0'};
             scope.suggestSelect2=obj['id'];
-
         },4000);
         scope.onSelect2=function(self){
             console.log(self);

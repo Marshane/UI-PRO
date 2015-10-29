@@ -78,7 +78,9 @@
             }
         },
         _render:function(a){
-            var b=[],c=this.op,f,
+            var b=[],
+                c=this.op,
+                f,
                 g=function(k,d){
                     if(!k)return d;
                     var con=[];
@@ -100,8 +102,6 @@
                     this._hide();
                     return;
                 }
-                var cov=[];
-                var temp=[];
                 if(c.match){
                     if(c.fixedData && c.fixedData[c.key]===d){
                         d='';
@@ -113,21 +113,19 @@
                         return it.indexOf(d)>=0
                     });
                 }
-                var len=Math.min(c.max,a.length);
+                var len=Math.min(c.max,a.length);//列表数据 最大显示条数
                 if(c.fixedData){
                     a.unshift(c.fixedData);
                     ++len;
                 }
                 for(var i=0;i<len;i++){
-                    cov.push(g(c.key,a[i]));
-                    b.push(ui.format(c.tpl,cov[i]));
-                    temp.push(a[i]);
-                    if(d===cov[i]){
+                    this.cov.push(g(c.key,a[i]));
+                    b.push(ui.format(c.tpl,this.cov[i]));
+                    this.temp.push(a[i]);
+                    if(d===this.cov[i]){
                         f=i;
                     }
                 }
-                this.cov=cov;
-                this.temp=temp;
             }
             this.ul[0].innerHTML=b.join('');
             this.list=this.ul.find('li');
@@ -146,7 +144,7 @@
                     b._render(a.data);
                     return;
                 }
-                if(a.data&&d[0].val===f&&!a.realtime){//避免重复值出发请求
+                if(a.data&&d[0].val===f && !a.realtime){//避免重复值出发请求
                     b._render(a.data);
                 }else{
                     c[b.id[0].name]=b.id[0].value;
@@ -249,7 +247,7 @@
         }
     });
     angular.module('ui.suggest',[])
-        .directive('uiSuggest',['$timeout',function($timeout){
+        .directive('uiSuggest',['$timeout','$http',function($timeout,$http){
             return {
                 restrict: 'A',
                 require:'?ngModel',
@@ -277,28 +275,29 @@
                             active:attrs.active,
                             match:attrs.match,//静态数据 实时匹配
                             max:10,
+                            http:$http,
                             onblur:function(self){
                                 scope.$apply(function(){
                                     scope.onBlur({self: self});
                                 });
                             },
                             ajaxCallback:function(q){
-                                var res=scope.callback({res:q});
-                                scope.suggest.data=res||[];
-                                scope.suggest._render(res||[]);
+                                var res=scope.callback({res:q})||[];
+                                scope.suggest.data=res;
+                                scope.suggest._render(res);
                             },
                             key:key,
                             selected:function(item,self){
                                 scope.item=item;
                                 if(scope.onSelect){
-                                    $timeout(function(){
+                                    $timeout(function(){//fix ie8 9  ngModel
                                         if(asValue){
                                             ngModel.$setViewValue(item[asValue]);
                                         }else{
                                             ngModel.$setViewValue(item);
                                         }
                                         scope.onSelect({self:self});
-                                    });
+                                    },10);
                                 }
                             }
                         });

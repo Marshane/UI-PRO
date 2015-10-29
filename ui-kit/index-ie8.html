@@ -762,18 +762,23 @@
                 <div class="col-xs-7" ng-controller="suggestCtrl">
                     <h4>例子</h4>
                     <div class="col-xs-10">
+                        <p>异步数据</p>
                         <p>model：{{suggestSelect}}</p>
                         <input type="text"
                                ui-suggest
                                ng-model="suggestSelect"
                                data="data"
-                               key="label"
-                               as-value="id"
+                               key="formatted_address"
+                               as-value="place_id"
+                               name="address"
+                               callback="callback(res)"
+                               url="http://maps.googleapis.com/maps/api/geocode/json"
                                on-select="onSelect(self)"
                                class="form-control ui-input">
                     </div>
 
                     <div class="col-xs-10"><br/>
+                        <p>静态数据，带查询过滤选择功能</p>
                         <p>model：{{suggestSelect2}}</p>
                         <form name="form" ng-submit="post()">
                             <div class="ui-suggest-select">
@@ -800,6 +805,9 @@
                     <h4>设置</h4>
                     <p>{Object} ng-model：实体数据</p>
                     <p>{Object - Collection} data：数据</p>
+                    <p>{String} name [可选]：异步查询时作为查询条件中的key值</p>
+                    <p>{String} url [可选]：异步查询地址</p>
+                    <p>{Function} callback [可选]：异步查询回调方法 @return 返回相应数据</p>
                     <p>{Function} on-select [可选]：选择回调 @return 组件实例</p>
                     <p>{Function} on-blur [可选]：失去焦点回调</p>
                     <p>{String} key [可选]：对应数据中要在列表中显示的文本</p>
@@ -816,10 +824,12 @@
         &lt;p&gt;model：{{suggestSelect}}&lt;/p&gt;
         &lt;input type=&quot;text&quot;
                 ui-suggest
-                ng-model=&quot;suggestSelect&quot;
-                data=&quot;data&quot;
-                key=&quot;label&quot;
-                asValue=&quot;id&quot;
+                data="data"
+                key="formatted_address"
+                as-value="place_id"
+                name="address"
+                callback="callback(res)"
+                url="http://maps.googleapis.com/maps/api/geocode/json"
                 on-select=&quot;onSelect(self)&quot;
                 class=&quot;form-control ui-input&quot;&gt;
     &lt;/div&gt;
@@ -864,6 +874,15 @@
                     return [];
             }
             scope.data=createSubTree(1,300,'');
+
+            scope.suggestSelect={ "label" : "node20","id" : "id30"};
+
+            scope.callback=function(res){
+                if(res.status==='OK'){
+                    return res.results //满足条件 返回响应数据
+                }
+            };
+
             scope.onSelect2=function(self){
                 console.log(self);
             };

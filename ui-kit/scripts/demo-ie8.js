@@ -20,6 +20,7 @@ angular.module('ui',[
     'ui.inputTree',
     'ui.tree',
     'ui.grid',
+    'ui.suggest',
     'ui.modal',
     'ui.dialogs',
     'ui.tabs',
@@ -391,13 +392,27 @@ angular.module('demo',['ui'])
             }
             else
                 return [];
-        }scope.data=createSubTree(1,300,'');
+        }
+        scope.data=createSubTree(1,300,'');
+        scope.suggestSelect={
+            "formatted_address" : "德国奥格斯堡",
+            "place_id" : "ChIJKSshOsWinkcRoOeL161IHgQ"
+        };
+
+        scope.callback=function(res){
+            if(res.status==='OK'){
+                return res.results  //满足条件 返回响应数据
+            }
+        };
+
+        scope.onSelect=function(self){
+            console.log('selected');
+        };
+
         scope.suggestSelect2='id20';
         $timeout(function(){
             var obj={ "label" : "node20","id" : "id30"};
-//            scope.fixedData={label:'default',id:'0'};
-            scope.suggestSelect2=obj['label'];
-
+            scope.suggestSelect2=obj['id'];
         },4000);
         scope.onSelect2=function(self){
             console.log(self);
@@ -408,7 +423,7 @@ angular.module('demo',['ui'])
             }else{
                 scope.ctrl._ngModel.$setValidity('valid',false)
             }
-        }
+        };
         scope.post=function(){
             alert(scope.suggestSelect2);
         }
