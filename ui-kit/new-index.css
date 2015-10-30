@@ -6,7 +6,7 @@ body{background-color: #163041; color:#fff;}
 
 .main{padding:80px 30px;}
 .main h2{border-bottom: 1px solid #666; padding-bottom:15px; margin-bottom:15px;}
-.main h4{margin-bottom:20px;}
+.main h4{margin-bottom:20px;clear:both;}
 h2 em{font-size:18px;}
 
 .row .col-xs-12{margin-bottom:20px;}
