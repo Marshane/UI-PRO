@@ -463,17 +463,25 @@ angular.module('demo',['ui'])
             ]
         };
         scope.config_line = {
-//            title: 'Line Chart',
-//            subtitle: 'Line Chart Subtitle',
             debug: true,
             showXAxis: true,
             showYAxis: true,
             showLegend: true,
             stack: false
         };
+        scope.config_line2 = {
+            debug: true,
+            showXAxis: true,
+            showYAxis: true,
+            showLegend: true,
+            stack: false,
+            dataZoom: {
+                show: true,
+                start : 0,
+                end:70
+            }
+        };
         scope.config_bar = {
-//            title: 'Bar Chart',
-//            subtitle: 'Bar Chart Subtitle',
             debug: true,
             stack: true
         };

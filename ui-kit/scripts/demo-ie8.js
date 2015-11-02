@@ -26,6 +26,7 @@ angular.module('ui',[
     'ui.tabs',
     'ui.bindHtml',
     'ui.charts',
+    'ui.echarts',
     'xeditable']);
 
 angular.module('demo',['ui'])
@@ -481,6 +482,80 @@ angular.module('demo',['ui'])
             [{x:'a',y0:[20,30]},{x:'b',y0:[30,10]},{x:'c',y0:[20,30]},{x:'d',y0:[30,10]}]];
 
         scope.lineData=[{x:+new Date,y0:100},{x:+new Date+2e4,y0:400}];
+    }])
+    .controller('echartsCtrl',['$scope','$interval',function(scope,$interval){
+        var pageload = {
+            name: 'page.load',
+            datapoints: [
+                { x: 2001, y: 1012 },
+                { x: 2002, y: 1023 },
+                { x: 2003, y: 1045 },
+                { x: 2004, y: 1062 },
+                { x: 2005, y: 1032 },
+                { x: 2006, y: 1040 },
+                { x: 2007, y: 1023 },
+                { x: 2008, y: 1090 },
+                { x: 2009, y: 1012 },
+                { x: 2010, y: 1012 }
+            ]
+        };
+
+        var firstPaint = {
+            name: 'page.firstPaint',
+            datapoints: [
+                { x: 2001, y: 22 },
+                { x: 2002, y: 13 },
+                { x: 2003, y: 35 },
+                { x: 2004, y: 52 },
+                { x: 2005, y: 32 },
+                { x: 2006, y: 40 },
+                { x: 2007, y: 63 },
+                { x: 2008, y: 80 },
+                { x: 2009, y: 20 },
+                { x: 2010, y: 25 }
+            ]
+        };
+        scope.config_line = {
+            debug: true,
+            showXAxis: true,
+            showYAxis: true,
+            showLegend: true,
+            stack: false
+        };
+        scope.config_line2 = {
+            debug: true,
+            showXAxis: true,
+            showYAxis: true,
+            showLegend: true,
+            stack: false,
+            dataZoom: {
+                show: true,
+                start : 0,
+                end:70
+            }
+        };
+        scope.config_bar = {
+            debug: true,
+            stack: true
+        };
+
+        function updateData($interval) {
+            $interval(function () {
+                pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
+                firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 100) });
+                pageload.datapoints.shift();
+                firstPaint.datapoints.shift();
+            }, 3000);
+        }
+        scope.data = [ pageload ];
+        scope.multiple = [pageload, firstPaint ];
+
+        // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
+        updateData($interval);
+
+
+
+
     }]);
 
 
