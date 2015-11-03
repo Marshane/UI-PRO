@@ -1,7 +1,7 @@
 table.ui-grid.table-bordered > thead > tr > th,.table-bordered > tbody > tr > td ,.table-bordered > tfoot > tr > td{border: 1px solid;}
 table.ui-grid tbody td {padding: 2px 8px;}
 .ui-grid tbody tr td .ui-grid-cell{font-size: 12px;padding: 6px 0px;line-height: 20px;}
-.ui-grid thead tr th{padding:0; border-right: 1px solid; position: relative;}
+.ui-grid thead tr th{padding:0; border-right: 1px solid;}
 .ui-grid thead tr th input.ui-input{padding:12px 10px; position: absolute; left:0;top:0; height: 100%}
 .ui-grid .ui-grid-column-header .ui-grid-title{padding:13px 8px;}
 /*Additional media blocks for IE*/

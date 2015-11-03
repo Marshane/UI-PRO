@@ -668,6 +668,7 @@ var uiGrid;
             templatedBodyRowElement.attr("ng-init", "gridItem=gridDisplayItem.$$_gridItem");
             // templatedBodyRowElement.attr("ng-class", "{'" + uiGrid.rowSelectedCssClass + "':gridOptions.selectedItems.indexOf(gridItem)>=0}");
             templatedBodyRowElement.attr("ng-class", "{'" + uiGrid.rowSelectedCssClass + "':dataCheck(gridOptions.selectedItems,gridItem)}");
+            templatedBodyRowElement.attr("ng-class-even","'ui-grid-tr-even'");
             this.headerElement=headerElement.replaceWith(this.$compile(headerElement)(scope));
             footerElement.replaceWith(this.$compile(footerElement)(scope));
             bodyElement.replaceWith(this.$compile(bodyElement)(scope));
