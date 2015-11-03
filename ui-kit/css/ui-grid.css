@@ -5,7 +5,8 @@ table.ui-grid tbody td {padding: 2px 8px;}
 .ui-grid thead tr th input.ui-input{padding:12px 10px; position: absolute; left:0;top:0; height: 100%}
 .ui-grid .ui-grid-column-header .ui-grid-title{padding:13px 8px;}
 /*Additional media blocks for IE*/
-/* http://keithclark.co.uk/articles/moving-ie-specific-css-into-media-blocks/media-tests/ */.ui-grid-startdrag,.ui-grid .ui-grid-startdrag .ui-grid-sort{cursor:col-resize}
+/* http://keithclark.co.uk/articles/moving-ie-specific-css-into-media-blocks/media-tests/ */
+.ui-grid-startdrag,.ui-grid .ui-grid-startdrag .ui-grid-sort{cursor:col-resize}
 /*分页*/
 table.ui-grid tfoot td {padding: 0px;}
 .ui-grid-pager-main li{float:left;list-style:none;}
@@ -20,3 +21,5 @@ table.ui-grid tfoot td {padding: 0px;}
 .ui-grid-pager-main .pre-pager-btn {border-right: 1px solid;}
 .ui-grid-pager-main .pre-pager-btn { border-left: 1px solid;}
 .ui-grid-pager-main .pager-btn {border-left: 1px solid;}
+
+
