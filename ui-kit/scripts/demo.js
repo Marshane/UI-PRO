@@ -434,10 +434,6 @@ angular.module('demo',['ui'])
         var pageload = {
             name: 'page.load',
             datapoints: [
-                { x: 2001, y: 1012 },
-                { x: 2002, y: 1023 },
-                { x: 2003, y: 1045 },
-                { x: 2004, y: 1062 },
                 { x: 2005, y: 1032 },
                 { x: 2006, y: 1040 },
                 { x: 2007, y: 1023 },
@@ -450,10 +446,6 @@ angular.module('demo',['ui'])
         var firstPaint = {
             name: 'page.firstPaint',
             datapoints: [
-                { x: 2001, y: 22 },
-                { x: 2002, y: 13 },
-                { x: 2003, y: 35 },
-                { x: 2004, y: 52 },
                 { x: 2005, y: 32 },
                 { x: 2006, y: 40 },
                 { x: 2007, y: 63 },
@@ -466,7 +458,7 @@ angular.module('demo',['ui'])
             debug: true,
             showXAxis: true,
             showYAxis: true,
-            showLegend: true,
+            showLegend: false,
             stack: false
         };
         scope.config_line2 = {
@@ -482,6 +474,26 @@ angular.module('demo',['ui'])
             }
         };
         scope.config_bar = {
+            debug: true,
+            stack: true,
+            itemStyle: {
+                normal: {
+                    label : {
+                        show: true,
+                        position: 'top'
+                    },
+                    color: function (params) {
+                        var colorList = [
+                            '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                            '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                            '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                        ];
+                        return colorList[params.dataIndex]
+                    }
+                }
+            }
+        };
+        scope.config_bar2 = {
             debug: true,
             stack: true
         };

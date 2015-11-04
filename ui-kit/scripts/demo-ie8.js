@@ -1,3 +1,75 @@
+(function(){
+
+    TaskQe = function(){
+        this._arrayFn = [];   //事件集合
+        this._callback = {};  //最终回调
+        this._backdata = [];  // 返回数据集合
+        this._isParallel = false;  // 是否并行，默认否
+    };
+
+    // 加入队列
+    TaskQe.prototype.add = function(fn){
+        this._arrayFn.push(fn);
+        return this;
+    };
+
+    // 队列数目
+    TaskQe.prototype.size = function(){
+        return this._arrayFn.length;
+    };
+
+    // 获取返回数据集合
+    TaskQe.prototype.getCallBack = function(){
+        return this._backdata;
+    }
+
+    // 依次运行队列
+    TaskQe.prototype.next = function(data){
+
+        var fn = this.getNext();
+
+        // 并行 or 串行
+        (this._isParallel)?((fn)&&fn()):((fn)&&((data)?fn(data):fn()));
+
+        // 集合返回数据
+        (data)?this._backdata.push(data):this._backdata.push(false);
+
+        // 返回总回调
+        if(!this.size() && !fn) {
+            if(typeof this._callback === "function") {
+                (data)?this._callback(data):this._callback();
+            }
+        };
+
+        return this;
+    };
+
+    // 队列执行
+    TaskQe.prototype.getNext = function(){
+        if(this.size()){
+            return this._arrayFn.shift();
+        }
+        return false;
+    }
+
+    // 初始化，完成后执行,第一个参数是否并行，第二个参数返回
+    TaskQe.prototype.run = function(){
+        if(arguments.length === 1 ){
+            this._callback = (typeof arguments[0] === "function")?arguments[0]:{};
+            this._isParallel = (typeof arguments[0] === "boolean")?arguments[0]:false;
+        }
+        if(arguments.length === 2 ){
+            this._callback = (typeof arguments[1] === "function")?arguments[1]:{};
+            this._isParallel = (typeof arguments[0] === "boolean")?arguments[0]:false;
+        }
+        var firstFn = this.getNext();
+        firstFn();
+
+        return this;
+    };
+
+    return TaskQe;
+})();
 angular.module('ui',[
     'ui.buttons',
     'ui.dropdown',
@@ -179,7 +251,6 @@ angular.module('demo',['ui'])
     }])
     .controller('dialogsCtrl',['$scope','$rootScope','$timeout','dialogs',function($scope,$rootScope,$timeout,dialogs){
 
-
         $scope.error=function() {
             dialogs.error().result.then(function(){
                 console.log('fff');
@@ -197,11 +268,21 @@ angular.module('demo',['ui'])
         }
 
         $scope.custom=function() {
-            dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:1},{width:200})
-            .result.then(function(data){
-                    $scope.data = data;
-                console.log(data);//{a:1}
-            });
+            var taskQe = new TaskQe();
+            var qu=function(){
+                dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:arguments[0]},{width:300})
+                    .result.then(function(data){
+                        taskQe.next(data);
+                    });
+            };
+            for(var i=0;i<3;i++){
+                taskQe.add((function(i){
+                    return function(){
+                        qu(i)
+                    }
+                }(i)));
+            }
+            taskQe.run();
         }
 
     }])
@@ -210,7 +291,7 @@ angular.module('demo',['ui'])
         $scope.no = function(){
             $modalInstance.close();
         };
-        $scope.confirm=function() {
+        $scope.confirm=function(){
             $modalInstance.close(data);
         }
 
@@ -487,10 +568,6 @@ angular.module('demo',['ui'])
         var pageload = {
             name: 'page.load',
             datapoints: [
-                { x: 2001, y: 1012 },
-                { x: 2002, y: 1023 },
-                { x: 2003, y: 1045 },
-                { x: 2004, y: 1062 },
                 { x: 2005, y: 1032 },
                 { x: 2006, y: 1040 },
                 { x: 2007, y: 1023 },
@@ -503,10 +580,6 @@ angular.module('demo',['ui'])
         var firstPaint = {
             name: 'page.firstPaint',
             datapoints: [
-                { x: 2001, y: 22 },
-                { x: 2002, y: 13 },
-                { x: 2003, y: 35 },
-                { x: 2004, y: 52 },
                 { x: 2005, y: 32 },
                 { x: 2006, y: 40 },
                 { x: 2007, y: 63 },
@@ -519,7 +592,7 @@ angular.module('demo',['ui'])
             debug: true,
             showXAxis: true,
             showYAxis: true,
-            showLegend: true,
+            showLegend: false,
             stack: false
         };
         scope.config_line2 = {
@@ -535,6 +608,26 @@ angular.module('demo',['ui'])
             }
         };
         scope.config_bar = {
+            debug: true,
+            stack: true,
+            itemStyle: {
+                normal: {
+                    label : {
+                        show: true,
+                        position: 'top'
+                    },
+                    color: function (params) {
+                        var colorList = [
+                            '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+                            '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+                            '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+                        ];
+                        return colorList[params.dataIndex]
+                    }
+                }
+            }
+        };
+        scope.config_bar2 = {
             debug: true,
             stack: true
         };

@@ -59,6 +59,7 @@
                     yAxis: [ yAxis ],
                     series: util.getSeries(data, config, type)
                 };
+//                console.log(options);
 
                 if (!config.showXAxis) {
                     angular.forEach(options.xAxis, function (axis) {
@@ -240,6 +241,9 @@ angular.module('ui.echarts.util',[])
                     name: serie.name,
                     data: datapoints
                 };
+                if(config.itemStyle){
+                    conf.itemStyle=config.itemStyle;
+                }
                 // area chart is actually line chart with special itemStyle
                 if (type === 'area') {
                     conf.type = 'line';
