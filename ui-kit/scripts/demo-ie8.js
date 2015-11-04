@@ -270,7 +270,7 @@ angular.module('demo',['ui'])
         $scope.custom=function() {
             var taskQe = new TaskQe();
             var qu=function(){
-                dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:arguments[0]},{width:300})
+                dialogs.create('tpl/dialogs/custom.html','customDialogCtrl',{a:arguments[0],url:'http://www.baidu.com'},{width:300})
                     .result.then(function(data){
                         taskQe.next(data);
                     });
@@ -286,8 +286,11 @@ angular.module('demo',['ui'])
         }
 
     }])
-    .controller('customDialogCtrl',['$scope','$modalInstance','data',function($scope,$modalInstance,data){
+    .controller('customDialogCtrl',['$scope','$modalInstance','data','$sce',function($scope,$modalInstance,data,$sce){
         console.log(data);//{a:1}
+        $scope.trustSrc = function() {
+            return $sce.trustAsResourceUrl(data.url);
+        }
         $scope.no = function(){
             $modalInstance.close();
         };
