@@ -1,5 +1,5 @@
 angular.module('ui.select',[])
-    .directive('uiSelect', ['$filter','$timeout','$translate','$compile','$templateCache', function ($filter, $timeout,$translate,$compile,$templateCache) {
+    .directive('uiSelect', ['$filter','$window','$timeout','$translate','$compile','$templateCache', function ($filter,$window, $timeout,$translate,$compile,$templateCache) {
         return{
             restrict:'A',
             require:'^ngModel',
@@ -34,7 +34,7 @@ angular.module('ui.select',[])
                         scope.width = attrs.width;
                         scope.max = +attrs.max || 10;
                         scope.multi = +attrs.multi || 0;
-                        scope.lineHeight = +attrs.lineHeight || 24.3;
+                        scope.lineHeight = +attrs.lineHeight || 32;
                         scope.isDropdown = +attrs.isDropdown || 0;
                         scope.position = function () {
                             var pos = attrs.position, sp;
@@ -75,6 +75,7 @@ angular.module('ui.select',[])
 
                         var setValue = function (obj) {
                             if (scope.multi) {
+                                scope.ngModel=scope.ngModel||[];
                                 if (_.where(scope.ngModel, obj).length) {
                                     scope.ngModel = _.filter(scope.ngModel, function (it) {
                                         return it[scope.key] != obj[scope.key]
@@ -159,7 +160,7 @@ angular.module('ui.select',[])
                         scope.setMenuStyle = function (len) {
                             scope.max=len||scope.max;
                             if (scope.options && scope.max && scope.options.length > scope.max) {
-                                scope.menuStyle = {'height': scope.lineHeight * scope.max - scope.max + 1, 'overflow-y': 'auto'}
+                                scope.menuStyle = {'height': scope.lineHeight * scope.max - scope.max, 'overflow-y': 'auto'}
                             }
                         };
                         if(_.isUndefined(scope.ngModel) || _.isNull(scope.ngModel)){
@@ -196,10 +197,10 @@ angular.module('ui.select',[])
                         }, true);
                         var dw1=scope.$watch('options', function (a, b) {
                             if (a != b) {
+                                scope.setMenuStyle();
                                 if (!a || a.length === 0){
                                     scope.ngModel='';
                                     scope._obj[attrs.ngModel]='';
-                                    scope.setMenuStyle();
                                     return;//(attrs.all?(scope.options[0][scope.asValue || 'value']!=attrs.all):scope.options[0][scope.asValue || 'value']))
                                 }
                                 var opV=scope.options[0][scope.asValue || 'value'];
@@ -230,7 +231,12 @@ angular.module('ui.select',[])
                         });
                         scope.onOpen=function(){
                             var os=element.offset();
-                            scope.menu.css({'left':(-element.width()+10)+'px','top':(os.top+element.height()-3)+'px','width':element.width()+'px'});
+                            scope.menu.css({'left':(-element.width()+10)+'px','top':function(){
+                                if(os.top+element.height()+scope.menu.height()-5 > $window.scrollY+$window.innerHeight){
+                                    return (os.top-scope.menu.height()-2)+'px'
+                                }
+                                return (os.top+element.height()-1)+'px'
+                            }(),'width':element.width()+'px'});
                             $timeout(function(){
                                 os=element.offset();
                                 scope.menu.css({'left':os.left+'px'});

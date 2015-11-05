@@ -37,7 +37,7 @@ angular.module('ui.inputSelect', [])
                     var elem=this.elem[0];
                     c = c || window.event;
                     for (var d = c.target || c.srcElement; d && d.nodeType === 1;) {
-                        if ((d===elem)|| d.className.hasString('ui-input-select-popup')){
+                        if ((d===elem)|| String(d.className).hasString('ui-input-select-popup')){
                             ui.evt(c).stop();
                             return
                         }
@@ -123,6 +123,8 @@ angular.module('ui.inputSelect', [])
                             //回车控制
                             if (evt.keyCode === 13) {
                                 scope.onTextFilter();
+                                //防止回车触发document click事件 导致浮动框关闭
+                                ui.evt(evt).prevent();
                             }
                             //删除控制
                             if (evt.keyCode === 8 && _.trim(scope.filterText)==='') {
@@ -136,7 +138,6 @@ angular.module('ui.inputSelect', [])
                                 if(n[scope.key]===key){
                                     n.__checked=true;
                                     scope.filterText='';
-                                    return
                                 }
                             });
                         };

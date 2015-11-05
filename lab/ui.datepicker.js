@@ -16,7 +16,8 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
         minDate: null,
         maxDate: null
     })
-    .controller('DatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$timeout', '$log', 'dateFilter', 'datepickerConfig', function ($scope, $attrs, $parse, $interpolate, $timeout, $log, dateFilter, datepickerConfig) {
+    .controller('DatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$timeout', '$log', 'dateFilter', 'datepickerConfig',
+        function ($scope, $attrs, $parse, $interpolate, $timeout, $log, dateFilter, datepickerConfig) {
         var self = this,
             ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl;
         // Modes chain
@@ -144,7 +145,12 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 ngModelCtrl.$render();
             } else {
                 self.activeDate = date;
-                $scope.datepickerMode = self.modes[ self.modes.indexOf($scope.datepickerMode) - 1 ];
+                if($scope.$parent.$parent.datepickerMode===$scope.datepickerMode){
+                    ngModelCtrl.$setViewValue(date);
+                    ngModelCtrl.$render();
+                }else{
+                    $scope.datepickerMode = self.modes[ self.modes.indexOf($scope.datepickerMode) - 1 ];
+                }
             }
             if (bool) {
                 if ($scope.asynRemind)
@@ -484,7 +490,8 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     scope.getText = function (key) {
                         return scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
                     };
-//                            console.log(scope);
+
+
                     if (format) {
                         format = format.toUpperCase();
                         scope.HH = format.indexOf('HH') >= 0;
@@ -492,26 +499,27 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         scope.ss = format.indexOf('SS') >= 0;
                         // scope.ismeridian=true;
                     }
-                    var _dataFormat=function(v){
-                        var y = $translate.use();
-                        switch (y) {
-                            case 'en':
-                            {
-                                return 'MM/dd/yyyy ' + (v.split(' ')[1] || '');
-                                break;
-                            }
-                            default:
-                            {
-                                return v
-                                break;
-                            }
-                        }
-                    }
-                    dateFormat=_dataFormat(attrs.datepickerPopup);
+                    //                    var _dataFormat=function(v){
+                    //                        var y = $translate.use();
+                    //                        switch (y) {
+                    //                            case 'en':
+                    //                            {
+                    //                                return ('dd/MM/yyyy ' + (v.split(' ')[1] || '')).trim();
+                    //                                break;
+                    //                            }
+                    //                            default:
+                    //                            {
+                    //                                return v
+                    //                                break;
+                    //                            }
+                    //                        }
+                    //                    }
+                    dateFormat=attrs.datepickerPopup;
                     attrs.$observe('datepickerPopup', function (value) {
-                        dateFormat=_dataFormat(value) || datepickerPopupConfig.datepickerPopup;
+                        dateFormat=value || datepickerPopupConfig.datepickerPopup;
                         ngModel.$render();
                     });
+                    scope._format=attrs.datepickerPopup;
 
                     // popup element used to display calendar
                     var popupEl = angular.element('<div datepicker-popup-wrap><div datepicker on-select="onselect()"></div></div>');
@@ -556,6 +564,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                             ngModel.$setValidity('date', true);
                             return viewValue;
                         } else if (angular.isString(viewValue)) {
+                            viewValue=viewValue.replace(/\-/g,'/');
                             var date = dateParser.parse(viewValue, dateFormat) || new Date(viewValue);
                             if (isNaN(date)) {
                                 ngModel.$setValidity('date', false);
@@ -577,6 +586,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         }
                         ngModel.$setViewValue(scope.date);
                         ngModel.$render();
+
                         if (closeOnDateSelection) {
                             scope.isOpen = false;
                             element[0].focus();
@@ -589,10 +599,13 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     });
                     // Outter change
                     ngModel.$render = function (){
+//                        console.log(ngModel.$viewValue);
                         if(!+ngModel.$viewValue){
                             ngModel.$viewValue=new Date(ngModel.$viewValue).getTime();
                         }
+//                        console.log(dateFormat);
                         var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
+//                        console.log(date);
                         element.val(date);
                         scope.date = parseDate(ngModel.$modelValue);
                     };
@@ -684,7 +697,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 var ngModelController = ctrls[0];
                 var reValid=function(){
                     $timeout(function(){
-                        ngModelController.$validate();
+                        ngModelController.$validate&&ngModelController.$validate();
                     })
                 };
                 var valid=function (viewValue) {
@@ -706,22 +719,11 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         viewValue.setHours(0);
                         viewValue.setMinutes(0);
                         viewValue.setSeconds(0);
-                        ft=ft[0].split('-');
-                        if(ft.length===2){
-                            viewValue.setDate(0);
-                        }
-                        if(ft.length===1){
-                            viewValue.setMonth(0);
-                        }
                     }
                     reValid();
                     return viewValue.getTime()
                 };
-                // ngModelController.$formatters.push(valid);
                 ngModelController.$parsers.push(valid);
-                // ngModelController.$parsers.push(function(){
-                //     ngModelController.$render();
-                // });
             }
         };
     }])
@@ -773,7 +775,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 "  <tbody>\n" +
                 "    <tr ng-repeat=\"row in rows track by $index\">\n" +
                 "      <td ng-repeat=\"dt in row track by dt.date\" class=\"text-center\" role=\"gridcell\" id=\"{{dt.uid}}\" aria-disabled=\"{{!!dt.disabled}}\">\n" +
-                "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" ng-click=\"select(dt.date,1)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-info': dt.current}\">{{dt.label}}</span></button>\n" +
+                "        <button type=\"button\" style=\"width:100%;\" class=\"btn btn-default\" ng-class=\"{'btn-info': dt.selected, active: isActive(dt)}\" dt=\"{{dt.date}}\" ng-click=\"select(dt.date,1)\" ng-disabled=\"dt.disabled\" tabindex=\"-1\"><span ng-class=\"{'text-info': dt.current}\">{{dt.label}}</span></button>\n" +
                 "      </td>\n" +
                 "    </tr>\n" +
                 "  </tbody>\n" +

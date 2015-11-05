@@ -103,8 +103,8 @@ var uiGrid;
         return retChildren;
     };
     /**
-    * Combines two sets of cell infos. The first set will take precedence in the checks but the combined items will contain items from the second set if they match.
-    */
+     * Combines two sets of cell infos. The first set will take precedence in the checks but the combined items will contain items from the second set if they match.
+     */
     var combineGridCellInfos = function (firstSet, secondSet, addExtraFieldItemsSecondSet, addExtraNonFieldItemsSecondSet) {
         var combinedSet = [];
         var secondTempSet = secondSet.slice(0);
@@ -307,6 +307,7 @@ var uiGrid;
                 orderByReverse: false,
                 pageItems: null,
                 currentPage:$isolatedScope["currentPage"],
+                hidePager:$isolatedScope["hidePager"],
                 trackBy:$isolatedScope["trackBy"],
                 totalItems: null,
                 dragable:this.$parse($isolatedScope.dragable)($isolatedScope),
@@ -333,7 +334,7 @@ var uiGrid;
                 var retrieveDataCallback = function () {
                     _this.dataRequestPromise = null;
                     _this.gridOptions.immediateDataRetrieval = false;
-                    
+
                     _this.gridOptions.onDataRequired(_this.gridOptions);
                     //调整表格宽度
                     _this.gridOptions.dragable&&_this.$timeout(function(){
@@ -353,7 +354,7 @@ var uiGrid;
                             retrieveDataCallback();
                         }, _this.gridOptions.onDataRequiredDelay, true);
                     }
-                }; 
+                };
                 // gridScope.$watch("gridOptions.currentPage", function (newValue, oldValue) {
                 //     var pageChanged = newValue !== oldValue;
                 //     if (!angular.equals(newValue, oldValue) && !pageChanged) {
@@ -420,7 +421,10 @@ var uiGrid;
         };
         GridController.prototype.clearSelected = function () {
             this.gridOptions.selectedItems.length=0;
-            this.headerElement.find('input').scope().areAllSelected=false;
+            var input = this.headerElement.find('input');
+            if(input.length){
+                input.scope().areAllSelected=false;
+            }
         };
         GridController.prototype.setColumnOptions = function (columnIndex, columnOptions) {
             var originalOptions = this.gridOptions.gridColumnDefs[columnIndex];
@@ -521,7 +525,10 @@ var uiGrid;
                     break;
                 case SelectionMode[1 /* SingleRow */]:
                     var itemIndex = this.gridOptions.selectedItems.indexOf(item);
-                    this.gridOptions.selectedItems.splice(0);
+                    console.log(itemIndex);
+                    // fix <=ie8   splice(0,length)
+                    this.gridOptions.selectedItems.splice(0,this.gridOptions.selectedItems.length);
+                    console.log(this.gridOptions.selectedItems);
                     if (itemIndex < 0) {
                         this.gridOptions.selectedItems.push(item);
                     }
@@ -636,7 +643,8 @@ var uiGrid;
 
             this.gridOptions.gridColumnDefs = finalPartialGridColumnDefs;
             var headerElement = this.templatedHeader.configureSection(gridElement, finalPartialGridColumnDefs);
-            var footerElement = this.templatedFooter.configureSection(gridElement, templatedFooterPartialGridColumnDefs);
+            //var footerElement = this.templatedFooter.configureSection(gridElement, templatedFooterPartialGridColumnDefs);
+            var footerElement = !scope.hidePager&&this.templatedFooter.configureSection(gridElement, templatedFooterPartialGridColumnDefs);
             var bodyElement = this.templatedBody.configureSection(gridElement, finalPartialGridColumnDefs);
 
             var templatedBodyRowElement = this.templatedBody.getTemplatedRowElement(bodyElement);
@@ -647,11 +655,11 @@ var uiGrid;
 
             // when server-side get is active (scope.gridOptions.onDataRequired), the filtering through the standard filters should be disabled
             /*if (this.gridOptions.onDataRequired) {
-            templatedBodyRowElement.attr("ng-repeat", "gridItem in gridOptions.items");
-            }
-            else {
-            templatedBodyRowElement.attr("ng-repeat", "gridItem in gridOptions.items | filter:gridOptions.filterBy | filter:gridOptions.filterByFields | orderBy:gridOptions.orderBy:gridOptions.orderByReverse | " + dataPagingFilter + ":gridOptions");
-            }*/
+             templatedBodyRowElement.attr("ng-repeat", "gridItem in gridOptions.items");
+             }
+             else {
+             templatedBodyRowElement.attr("ng-repeat", "gridItem in gridOptions.items | filter:gridOptions.filterBy | filter:gridOptions.filterByFields | orderBy:gridOptions.orderBy:gridOptions.orderByReverse | " + dataPagingFilter + ":gridOptions");
+             }*/
             if(this.gridOptions.trackBy){
                 templatedBodyRowElement.attr("ng-repeat", "gridDisplayItem in filteredItems track by gridDisplayItem."+this.gridOptions.trackBy);
             }else{
@@ -660,8 +668,9 @@ var uiGrid;
             templatedBodyRowElement.attr("ng-init", "gridItem=gridDisplayItem.$$_gridItem");
             // templatedBodyRowElement.attr("ng-class", "{'" + uiGrid.rowSelectedCssClass + "':gridOptions.selectedItems.indexOf(gridItem)>=0}");
             templatedBodyRowElement.attr("ng-class", "{'" + uiGrid.rowSelectedCssClass + "':dataCheck(gridOptions.selectedItems,gridItem)}");
+            templatedBodyRowElement.attr("ng-class-even","'ui-grid-tr-even'");
             this.headerElement=headerElement.replaceWith(this.$compile(headerElement)(scope));
-            footerElement.replaceWith(this.$compile(footerElement)(scope));
+            footerElement&&footerElement.replaceWith(this.$compile(footerElement)(scope));
             bodyElement.replaceWith(this.$compile(bodyElement)(scope));
 
             if (oldScope) {
@@ -944,8 +953,11 @@ var uiGrid;
                     innerWidth-=_width;
                     t.attr('stable')||dragList.push(i);
                 }
+
                 dragLen=dragList.length;
-                dragAvg=Math.floor(innerWidth/dragLen);
+                //修复拖动 -1情况
+                dragAvg=Math.floor(innerWidth/dragLen)<0?0:Math.floor(innerWidth/dragLen);
+
                 for(i=0;i<dragLen;i++){
                     t=(Math.abs(innerWidth)>Math.abs(dragAvg))?dragAvg:innerWidth;
                     innerWidth-=t;
@@ -1091,6 +1103,7 @@ var uiGrid;
                 for(j=0;j<k;j++){
                     _dragIndex=dragIndexArr[j];
                     thWidth=thWidthArr[j];
+
                     avg=targetOffsetX*thWidth/thWidthTotal;
                     avg=targetOffsetXTemp>0?Math.ceil(avg):Math.floor(avg);
                     avg=Math.abs(avg)<Math.abs(targetOffsetXTemp)?avg:targetOffsetXTemp;
@@ -1175,7 +1188,7 @@ var uiGrid;
         GridController.prototype.showDragMark=function(left){
             var mark=this.getDragMark();
             //if(!this.top)//防止头部变化导致异常
-                this.top=this._thead.offset().top;
+            this.top=this._thead.offset().top;
             mark||(mark=this.createDragMark());
             mark.style.top=this.top+'px';
             mark.style.left=left+'px';
@@ -1221,6 +1234,7 @@ var uiGrid;
                     selectionMode: '@',//选择行模式 None | SingleRow | MultiRow | MultiRowWithKeyModifiers
                     locale: '@',//提供本地化功能
                     trackBy:'@?',
+                    hidePager:'@?',
                     pageItemsInput:'@',
                     dragable:'@?',
                     onDataRequired: '&',//调用服务端数据回调
@@ -1245,7 +1259,10 @@ var uiGrid;
                         post: function (isolatedScope, instanceElement, tAttrs, controller, transcludeFn) {
                             var gridScope = controller.setupScope(isolatedScope, instanceElement, tAttrs);
                             isolatedScope.scopeCtrl=controller;
-                            
+
+                            if(gridScope.gridOptions.hidePager==='true'){
+                                gridScope.hidePager=true;
+                            }
 
                             gridScope.speedUpAsyncDataRetrieval = function ($event) {
                                 return controller.speedUpAsyncDataRetrieval($event);
@@ -1255,16 +1272,15 @@ var uiGrid;
                             };
                             controller.configureTableStructure(gridScope, instanceElement);
                             controller.setupDisplayItemsArray(gridScope);
-                            // console.log(gridScope.gridOptions.enableSorting);
                         }
                     };
                 }
             };
         }])
-        .directive(cellHeaderDirective, [function () {
+        .directive(cellHeaderDirective, ['$translate','$rootScope',function ($translate,$rootScope) {
             var setupColumnTitle = function (scope) {
                 if (scope.columnOptions.displayName) {
-                    scope.columnTitle = scope.columnOptions.displayName;
+                    scope.columnTitle = $translate.instant(scope.columnOptions.displayName);
                 } else {
                     if (!scope.columnOptions.fieldName) {
                         scope.columnTitle = "[Invalid Field Name]";
@@ -1317,6 +1333,9 @@ var uiGrid;
                                 if (newValue !== oldValue) {
                                     controller.setFilter(columnOptions.fieldName, newValue);
                                 }
+                            });
+                            $rootScope.$on('$translateChangeSuccess', function () {
+                                setupColumnTitle(scope);
                             });
                         }
                     };
@@ -1425,18 +1444,18 @@ var uiGrid;
             var setupScope = function (scope, controller) {
                 scope.pageItemsInput=(controller.gridOptions.pageItemsInput==='true');
                 // do not set scope.gridOptions.totalItems, it might be set from the outside
-                scope.totalItemsCount = (typeof (scope.gridOptions.totalItems) != "undefined" && scope.gridOptions.totalItems != null) ? 
-                                        scope.gridOptions.totalItems : (scope.gridOptions.items ? scope.gridOptions.items.length : 0);
+                scope.totalItemsCount = (typeof (scope.gridOptions.totalItems) != "undefined" && scope.gridOptions.totalItems != null) ?
+                    scope.gridOptions.totalItems : (scope.gridOptions.items ? scope.gridOptions.items.length : 0);
 
                 scope.isPaged = (!!scope.gridOptions.pageItems) && (scope.gridOptions.pageItems < scope.totalItemsCount);
                 scope.extendedControlsActive = false;
                 scope.lastPageIndex = (!scope.totalItemsCount || !scope.isPaged) ? 0 : (Math.floor(scope.totalItemsCount / scope.gridOptions.pageItems) + ((scope.totalItemsCount % scope.gridOptions.pageItems) ? 0 : -1));
-                
+
 
                 // console.log(scope.gridOptions.currentPage +':::'+scope.lastPageIndex);
                 if (scope.gridOptions.currentPage > scope.lastPageIndex) {
                     // this will unfortunately trigger another query if in server side data query mode
-                        // scope.gridOptions.currentPage = scope.lastPageIndex; 解决默认跳到第n页, 注释该行 则需要默认 调用 scheduleDataRetrieval();
+                    // scope.gridOptions.currentPage = scope.lastPageIndex; 解决默认跳到第n页, 注释该行 则需要默认 调用 scheduleDataRetrieval();
                 }
                 scope.startItemIndex = scope.isPaged ? (scope.gridOptions.pageItems * scope.gridOptions.currentPage) : 0;
                 scope.endItemIndex = scope.isPaged ? (scope.startItemIndex + scope.gridOptions.pageItems - 1) : scope.totalItemsCount - 1;
@@ -1450,7 +1469,8 @@ var uiGrid;
                 scope.pageCanGoBack = scope.isPaged && scope.gridOptions.currentPage > 0;
                 scope.pageCanGoForward = scope.isPaged && scope.gridOptions.currentPage < scope.lastPageIndex;
 
-                scope.pageIndexes = scope.pageIndexes || [];
+                //scope.pageIndexes = scope.pageIndexes || [];
+                scope.pageIndexes=[];
                 scope.pageIndexes.splice(0);
                 if (scope.isPaged) {
                     if (scope.lastPageIndex + 1 > uiGrid.defaultPagerMinifiedPageCountThreshold) {
@@ -1504,7 +1524,7 @@ var uiGrid;
                     scope.speedUpAsyncDataRetrieval();
                     // console.log(scope.gridOptions.currentPage);
                     /*$event.preventDefault();
-                    $event.stopPropagation();*/
+                     $event.stopPropagation();*/
                 };
 
                 scope.switchPageSelection = function ($event, pageSelectionActive) {
@@ -1609,7 +1629,7 @@ var uiGrid;
                     startIndex = 0;
                 }
                 var endIndex = gridOptions.currentPage * gridOptions.pageItems + gridOptions.pageItems;
-                
+
                 return input.slice(startIndex, endIndex);
             };
         })
@@ -1671,59 +1691,59 @@ var uiGrid;
             uiGrid.defaultColumnOptions.displayAlign = 'left';
             uiGrid.defaultPagerMinifiedPageCountThreshold = 3;
         });
-        function configureTemplates($templateCache) {
-            if (!$templateCache.get(uiGrid.cellHeaderTemplateId)) {
-                $templateCache.put(uiGrid.cellHeaderTemplateId,
+    function configureTemplates($templateCache) {
+        if (!$templateCache.get(uiGrid.cellHeaderTemplateId)) {
+            $templateCache.put(uiGrid.cellHeaderTemplateId,
                     '<div class="' + uiGrid.headerCellCssClass + ' text-{{columnOptions.displayAlign}}"><div ng-if="isCustomized" ng-transclude=""></div><div ng-if="!isCustomized">' +
-                            '    <div class="' + uiGrid.columnTitleCssClass + '" title="{{columnTitle}}"><nobr>{{columnTitle}}</nobr>' +
-                            '       <div ng-if="gridOptions.enableSorting&&columnOptions.enableSorting"' + uiGrid.columnSortDirectiveAttribute + '=""></div></div>' +
-                            '    <div ' + uiGrid.columnFilterDirectiveAttribute + '=""></div></div></div>');
-            }
-            if (!$templateCache.get(uiGrid.cellBodyTemplateId)) {
-                $templateCache.put(uiGrid.cellBodyTemplateId,
-                        '<div class="' + uiGrid.bodyCellCssClass + ' text-{{columnOptions.displayAlign}}">' +
-                            '  <div ng-if="isCustomized" ng-transclude=""></div>' +
-                            '  <div ng-if="!isCustomized">{{gridDisplayItem[columnOptions.displayFieldName]}}</div></div>');
-            }
-            if (!$templateCache.get(uiGrid.columnFilterTemplateId)) {
-                $templateCache.put(uiGrid.columnFilterTemplateId,
-                        '<div ng-if="(gridOptions.enableFiltering&&columnOptions.enableFiltering!==false)||columnOptions.enableFiltering" class="' +
-                        uiGrid.columnFilterCssClass + '">' + ' <div class="' + uiGrid.columnFilterInputWrapperCssClass + '">' +
-                            '   <input class="form-control input-sm" type="text" ng-model="columnOptions.filter" ng-keypress="speedUpAsyncDataRetrieval($event)"/>' +
-                            ' </div>' + '</div>');
-            }
-            // (gridOptions.enableSorting&&columnOptions.enableSorting!==false)||columnOptions.enableSorting
-            if (!$templateCache.get(uiGrid.columnSortTemplateId)) {
-                $templateCache.put(uiGrid.columnSortTemplateId, '<div ng-click="toggleSorting(columnOptions.fieldName)"' + ' class="' + uiGrid.columnSortCssClass + '" ></div>');
-            }
-            if (!$templateCache.put(uiGrid.cellFooterTemplateId)) {
-                $templateCache.put(uiGrid.cellFooterTemplateId, '<div class="' + uiGrid.footerCssClass + '">' +
-                    '  <div ng-if="isCustomized" ng-transclude=""></div><div ng-if="!isCustomized">' +
-                    '    <span ' + uiGrid.globalFilterDirectiveAttribute + '=""></span>' +
-                    '    <span ' + uiGrid.pagerDirectiveAttribute + '=""></span></div></div>');
-            }
-            if (!$templateCache.get(uiGrid.footerGlobalFilterTemplateId)) {
-                $templateCache.put(uiGrid.footerGlobalFilterTemplateId,
-                        '<span ng-show="gridOptions.enableFiltering" class="pull-left form-group">' +
-                        '  <input class="form-control" type="text" ng-model="gridOptions.filterBy" ng-keypress="speedUpAsyncDataRetrieval($event)" ' +
-                            'ng-attr-placeholder="{{\'Search\'|' + uiGrid.translateFilter + ':gridOptions.locale}}"></input>' + '</span>');
-            }
-            if (!$templateCache.get(uiGrid.footerPagerTemplateId)) {
-                $templateCache.put(uiGrid.footerPagerTemplateId, '<div class="ui-grid-pager"><div class="ui-grid-pager-add pull-left">' +
-                    '     <span class="pull-left" ng-hide="totalItemsCount">暂无数据</span>' +
-                    '     <span class="pull-left" ng-show="totalItemsCount">当前{{startItemIndex+1}}-{{endItemIndex+1}}<span>, 共{{totalItemsCount}} 条</span></span >'+
-                        '<div class="ui-grid-pager-num" ng-if="pageItemsInput">每页显示 <input type="text"/> 条<button class="btn btn-default">确定</button></div></div>' +
-                    '<ul class="ui-grid-pager-main pull-right">' +
-                    '   <li ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(0)"><span>第一页</span></a></li>' + 
-                        '<li class="pre-pager-btn pager-btn" ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(gridOptions.currentPage - 1)"><span>上一页</span></a></li>' +
-                    '   <li ng-if="pageSelectionActive" ng-repeat="pageIndex in pageIndexes track by $index" ' +
-                    'ng-class="{disabled:pageIndex===null, active:pageIndex===gridOptions.currentPage}">' +
-                    '      <strong ng-if="pageIndex===null">• • •</strong> <a href="" ng-click="navigateToPage(pageIndex)" ng-if="pageIndex!==null">{{pageIndex+1}}</a></li>' +
-                    '   <li class="pager-btn" ng-class="{disabled:!pageCanGoForward}" ng-if="extendedControlsActive">' +
-                    '     <a href="" ng-click="pageCanGoForward&&navigateToPage(gridOptions.currentPage + 1)"><span>下一页</span></a></li>' +
-                    '   <li class="pager-btn" ng-class="{disabled:!pageCanGoForward}" ng-if="extendedControlsActive">' +
-                    '     <a href="" ng-click="pageCanGoForward&&navigateToPage(lastPageIndex)"><span>最后页</span></a></li>' +
-                    '</ul></div>');
-            }
+                    '    <div class="' + uiGrid.columnTitleCssClass + '" title="{{columnTitle}}"><nobr>{{columnTitle}}</nobr>' +
+                    '       <div ng-if="gridOptions.enableSorting&&columnOptions.enableSorting"' + uiGrid.columnSortDirectiveAttribute + '=""></div></div>' +
+                    '    <div ' + uiGrid.columnFilterDirectiveAttribute + '=""></div></div></div>');
         }
+        if (!$templateCache.get(uiGrid.cellBodyTemplateId)) {
+            $templateCache.put(uiGrid.cellBodyTemplateId,
+                    '<div class="' + uiGrid.bodyCellCssClass + ' text-{{columnOptions.displayAlign}}">' +
+                    '  <div ng-if="isCustomized" ng-transclude=""></div>' +
+                    '  <div ng-if="!isCustomized">{{gridDisplayItem[columnOptions.displayFieldName]}}</div></div>');
+        }
+        if (!$templateCache.get(uiGrid.columnFilterTemplateId)) {
+            $templateCache.put(uiGrid.columnFilterTemplateId,
+                    '<div ng-if="(gridOptions.enableFiltering&&columnOptions.enableFiltering!==false)||columnOptions.enableFiltering" class="' +
+                    uiGrid.columnFilterCssClass + '">' + ' <div class="' + uiGrid.columnFilterInputWrapperCssClass + '">' +
+                    '   <input class="form-control input-sm" type="text" ng-model="columnOptions.filter" ng-keypress="speedUpAsyncDataRetrieval($event)"/>' +
+                    ' </div>' + '</div>');
+        }
+        // (gridOptions.enableSorting&&columnOptions.enableSorting!==false)||columnOptions.enableSorting
+        if (!$templateCache.get(uiGrid.columnSortTemplateId)) {
+            $templateCache.put(uiGrid.columnSortTemplateId, '<div ng-click="toggleSorting(columnOptions.fieldName)"' + ' class="' + uiGrid.columnSortCssClass + '" ></div>');
+        }
+        if (!$templateCache.put(uiGrid.cellFooterTemplateId)) {
+            $templateCache.put(uiGrid.cellFooterTemplateId, '<div class="' + uiGrid.footerCssClass + '">' +
+                '  <div ng-if="isCustomized" ng-transclude=""></div><div ng-if="!isCustomized">' +
+                '    <span ' + uiGrid.globalFilterDirectiveAttribute + '=""></span>' +
+                '    <span ' + uiGrid.pagerDirectiveAttribute + '=""></span></div></div>');
+        }
+        if (!$templateCache.get(uiGrid.footerGlobalFilterTemplateId)) {
+            $templateCache.put(uiGrid.footerGlobalFilterTemplateId,
+                    '<span ng-show="gridOptions.enableFiltering" class="pull-left form-group">' +
+                    '  <input class="form-control" type="text" ng-model="gridOptions.filterBy" ng-keypress="speedUpAsyncDataRetrieval($event)" ' +
+                    'ng-attr-placeholder="{{\'Search\'|' + uiGrid.translateFilter + ':gridOptions.locale}}"></input>' + '</span>');
+        }
+        if (!$templateCache.get(uiGrid.footerPagerTemplateId)) {
+            $templateCache.put(uiGrid.footerPagerTemplateId, '<div class="ui-grid-pager"><div class="ui-grid-pager-add pull-left">' +
+                '     <span class="pull-left" ng-hide="totalItemsCount">{{"NODATA"|translate}}</span>' +
+                '     <span class="pull-left" ng-show="totalItemsCount">{{startItemIndex+1}}-{{endItemIndex+1}}<span>&nbsp; {{"OF"|translate}} &nbsp;&nbsp;{{totalItemsCount}} &nbsp;{{"RECORDS"|translate}}</span></span >'+
+                '<div class="ui-grid-pager-num" ng-if="pageItemsInput">每页显示 <input type="text"/> 条<button class="btn btn-default">确定</button></div></div>' +
+                '<ul class="ui-grid-pager-main pull-right">' +
+                '   <li ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(0)"><span>{{"FIRST"|translate}}</span></a></li>' +
+                '<li class="pre-pager-btn pager-btn" ng-class="{disabled:!pageCanGoBack}" ng-if="extendedControlsActive"><a href="" ng-click="pageCanGoBack&&navigateToPage(gridOptions.currentPage - 1)"><span>{{"PREV"|translate}}</span></a></li>' +
+                '   <li ng-if="pageSelectionActive" ng-repeat="pageIndex in pageIndexes track by $index" ' +
+                'ng-class="{disabled:pageIndex===null, active:pageIndex===gridOptions.currentPage}">' +
+                '      <strong ng-if="pageIndex===null">• • •</strong> <a href="" ng-click="navigateToPage(pageIndex)" ng-if="pageIndex!==null">{{pageIndex+1}}</a></li>' +
+                '   <li class="pager-btn" ng-class="{disabled:!pageCanGoForward}" ng-if="extendedControlsActive">' +
+                '     <a href="" ng-click="pageCanGoForward&&navigateToPage(gridOptions.currentPage + 1)"><span>{{"NEXT"|translate}}</span></a></li>' +
+                '   <li class="pager-btn" ng-class="{disabled:!pageCanGoForward}" ng-if="extendedControlsActive">' +
+                '     <a href="" ng-click="pageCanGoForward&&navigateToPage(lastPageIndex)"><span>{{"LAST"|translate}}</span></a></li>' +
+                '</ul></div>');
+        }
+    }
 })(uiGrid || (uiGrid = {}));

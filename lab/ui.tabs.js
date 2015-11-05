@@ -41,7 +41,7 @@ angular.module('ui.tabs', [])
     }])
     .directive('uiTabset', function () {
         return {
-            restrict: 'EAC',
+            restrict: 'A',
             transclude: true,
             replace: true,
             scope: {
@@ -63,7 +63,7 @@ angular.module('ui.tabs', [])
     .directive('uiTab', ['$parse', function ($parse) {
         return {
             require: '^uiTabset',
-            restrict: 'EA',
+            restrict: 'A',
             replace: true,
             templateUrl: 'templates/tabs/tab.html',
             transclude: true,
@@ -148,4 +148,10 @@ angular.module('ui.tabs', [])
                 node.tagName.toLowerCase() === 'data-tab-heading'
                 );
         }
-    });
+    })
+    .run(["$templateCache", function($templateCache) {
+
+        $templateCache.put("templates/tabs/tab.html", "<li ng-class=\"{active: active, disabled: disabled}\">\n" + "  <a href ng-click=\"select()\" tab-heading-transclude>{{heading}}</a>\n" + "</li>\n" + "");
+
+        $templateCache.put("templates/tabs/tabset.html", "<div>\n" + "  <ul class=\"nav nav-{{type || 'tabs'}}\" ng-class=\"{'nav-stacked': vertical, 'nav-justified': justified}\" ng-transclude></ul>\n" + "  <div class=\"tab-content\">\n" + "    <div class=\"tab-pane\" \n" + "         ng-repeat=\"tab in tabs\" \n" + "         ng-class=\"{active: tab.active}\"\n" + "         tab-content-transclude=\"tab\">\n" + "    </div>\n" + "  </div>\n" + "</div>\n" + "");
+    }]);

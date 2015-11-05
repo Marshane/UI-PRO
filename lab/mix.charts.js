@@ -1816,7 +1816,7 @@
                   dot.animate(Raphael.animation({r: 8}, 25, 'linear'));
         //                  dot.toFront();
                 if(!me.tipElem){
-                  me.tipElem=$('<div class="amchart-line-hover"><div>');
+                  me.tipElem=$('<div class="ui-chart-line-hover"><div>');
                   g.el.append(me.tipElem);
                 }
                 gOpts.tip(me.tipElem, dd,dot.attr('cx'),dot.attr('cy'));
@@ -2003,7 +2003,7 @@
 	      	bar.hover(function(barData) {
 	      		return function(event) {
 		      		if(!me.tipElem) {
-			      		me.tipElem = $('<div class="amchart-line-hover"><div>');
+			      		me.tipElem = $('<div class="ui-chart-line-hover"><div>');
 			      		g.el.append(me.tipElem);
 		      		}
 			      	gOpts.tip(me.tipElem, barData, event.offsetX, event.offsetY);

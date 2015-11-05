@@ -571,24 +571,20 @@ angular.module('demo',['ui'])
         var pageload = {
             name: 'page.load',
             datapoints: [
-                { x: 2005, y: 1032 },
-                { x: 2006, y: 1040 },
-                { x: 2007, y: 1023 },
-                { x: 2008, y: 1090 },
-                { x: 2009, y: 1012 },
-                { x: 2010, y: 1012 }
+                { x: '试试', y: 1023 },
+                { x: '啊啊', y: 1090 },
+                { x: '版本', y: 1012 },
+                { x: '传出', y: 1012 }
             ]
         };
 
         var firstPaint = {
             name: 'page.firstPaint',
             datapoints: [
-                { x: 2005, y: 32 },
-                { x: 2006, y: 40 },
-                { x: 2007, y: 63 },
-                { x: 2008, y: 80 },
-                { x: 2009, y: 20 },
-                { x: 2010, y: 25 }
+                { x: '试试', y: 63 },
+                { x: '啊啊', y: 80 },
+                { x: '版本', y: 20 },
+                { x: '传出', y: 25 }
             ]
         };
         scope.config_line = {
@@ -647,7 +643,7 @@ angular.module('demo',['ui'])
         scope.multiple = [pageload, firstPaint ];
 
         // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
-        updateData($interval);
+        //updateData($interval);
 
 
 

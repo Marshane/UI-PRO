@@ -185,7 +185,7 @@
                 if (onScrollBottom === scrollbarYHeight - scrollbarYTop && scrollbarYTop !== 0) {
 
                     if (settings.onScrollBottom) {
-                        settings.onScrollBottom({self: $this});
+                        settings.onScrollBottom($this);
                     }
                 }
                 onScrollBottom = scrollbarYHeight - scrollbarYTop;
@@ -342,6 +342,10 @@ angular.module('ui.scrollbar',[])
             transclude: true,
             template: '<div><div class="ui-scrollbar-inner" ng-transclude></div></div>',
             replace: true,
+            scope:{
+                onScroll:'&',
+                onScrollBottom:'&'
+            },
             link: function (scope, elem, attr) {
                 var options = {};
                 for (var i = 0, l = _options.length; i < l; i++) {
@@ -350,12 +354,17 @@ angular.module('ui.scrollbar',[])
                         options[opt] = $parse(attr[opt])();
                     }
                 }
+                scope.elem=elem;// 挂载到scope供 onScroll 和 onScrollBottom 传递到外部
                 $timeout(function () {
                     if (scope.onScroll) {
-                        options.onScroll = scope.onScroll;
+                        options.onScroll =function(){
+                            scope.onScroll({self:scope});
+                        };
                     }
                     if (scope.onScrollBottom) {
-                        options.onScrollBottom = scope.onScrollBottom;
+                        options.onScrollBottom = function(){
+                            scope.onScrollBottom({self:scope});
+                        };
                     }
                     elem.uiScrollbar(options);
                 });

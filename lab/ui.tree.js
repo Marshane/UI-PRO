@@ -54,7 +54,7 @@ angular.module('ui.tree', [])
                         dst = dst || {};
 
                         for (var key in src) {
-                            if (hasOwnProperty.call(src, key) && !(key.charAt(0) === '$' && key.charAt(1) === '$')) {
+                            if (src.hasOwnProperty(key) && !(key.charAt(0) === '$' && key.charAt(1) === '$')) {
                                 dst[key] = src[key];
                             }
                         }
@@ -75,7 +75,7 @@ angular.module('ui.tree', [])
                 $scope.options = $scope.options || {};
                 ensureDefault($scope.options, "multiSelection", false);
                 ensureDefault($scope.options, "nodeChildren", "children");
-                ensureDefault($scope.options, "dirSelectable", "true");
+                ensureDefault($scope.options, "dirSelectable",true);
                 ensureDefault($scope.options, "injectClasses", {});
                 ensureDefault($scope.options.injectClasses, "ul", "");
                 ensureDefault($scope.options.injectClasses, "li", "");
@@ -136,11 +136,11 @@ angular.module('ui.tree', [])
 
                 $scope.selectNodeHead = function() {
                     var expanding = $scope.expandedNodesMap[this.$id] === undefined;
+
                     $scope.expandedNodesMap[this.$id] = (expanding ? this.node : undefined);
                     if (expanding) {
                         $scope.expandedNodes.push(this.node);
-                    }
-                    else {
+                    }else {
                         var index;
                         for (var i=0; (i < $scope.expandedNodes.length) && !index; i++) {
                             if ($scope.options.equality($scope.expandedNodes[i], this.node)) {
@@ -152,6 +152,9 @@ angular.module('ui.tree', [])
                     }
                     if ($scope.onNodeToggle)
                         $scope.onNodeToggle({node: this.node, expanded: expanding});
+//                    console.log(this);
+//                    console.log($scope.expandedNodes);
+//                    console.log($scope.expandedNodesMap);
                 };
 
                 $scope.selectNodeLabel = function( selectedNode ){
@@ -205,8 +208,9 @@ angular.module('ui.tree', [])
                     '<li ng-repeat="node in node.' + $scope.options.nodeChildren + ' | filter:filterExpression:filterComparator ' + orderBy + '" ng-class="headClass(node)" '+classIfDefined($scope.options.injectClasses.li, true)+'>' +
                     '<i class="tree-branch-head" ng-class="iBranchClass()" ng-click="selectNodeHead(node)"></i>' +
                     '<i class="tree-leaf-head '+classIfDefined($scope.options.injectClasses.iLeaf, false)+'"></i>' +
-                    '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ng-click="selectNodeLabel(node)" tree-transclude></div>' +
-                    '<treeitem ng-if="nodeExpanded()"></treeitem>' +
+                    '<div class="tree-label '+classIfDefined($scope.options.injectClasses.label, false)+'" ng-class="selectedClass()" ' +
+                        'ng-click="selectNodeLabel(node)" tree-transclude></div>' +
+                    '<div treeitem ng-if="nodeExpanded()"></div>' +
                     '</li>' +
                     '</ul>';
 
@@ -259,10 +263,6 @@ angular.module('ui.tree', [])
                         scope.expandedNodesMap = newExpandedNodesMap;
                     });
 
-//                        scope.$watch('expandedNodesMap', function(newValue) {
-//
-//                        });
-
                     //Rendering template for a root node
                     treemodelCntr.template( scope, function(clone) {
                         element.html('').append( clone );
@@ -277,7 +277,7 @@ angular.module('ui.tree', [])
     }])
     .directive("treeitem", function() {
         return {
-            restrict: 'E',
+            restrict: 'EA',
             require: "^uiTree",
             link: function( scope, element, attrs, treemodelCntr) {
                 // Rendering template for the current node
@@ -331,3 +331,4 @@ angular.module('ui.tree', [])
             }
         }
     });
+//https://github.com/wix/angular-tree-control
