@@ -117,11 +117,22 @@ angular.module('demo',['ui'])
             $scope.status.isopen = !$scope.status.isopen;
         };
     }])
-    .controller('selectCtrl', ['$scope','$log',function ($scope, $log) {
+    .controller('selectCtrl', ['$scope','$timeout',function ($scope, $timeout) {
 
         $scope.selectData=[{text:'a',value:1},{text:'b',value:2},
             {text:'c',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
 
+        $timeout(function(){
+            $scope.selectData=[{text:'cc',value:1},{text:'b',value:2},
+                {text:'c',value:3}];
+        },3000);
+        $timeout(function(){
+            $scope.selectData=[{text:'a',value:1},{text:'b',value:2},
+                {text:'c',value:3},{text:'d',value:4},{text:'e',value:5},{text:'f',value:6}];
+        },9000);
+        $scope.onSelectChange=function(a){
+            console.log(a);
+        };
 
     }])
     .controller('checkboxCtrl', ['$scope','$log','$timeout',function ($scope, $log,$timeout) {

@@ -106,7 +106,6 @@ angular.module('ui.select',[])
                                 evt.preventDefault();
                             evt.stopPropagation();
                             ngModelTemp = scope.ngModel;
-
                             if (attrs.onBeforeChange) {
                                 scope.ngModel = obj;
                                 $timeout(function () {
@@ -135,9 +134,20 @@ angular.module('ui.select',[])
                                     if(item[scope.asValue]!=='')
                                         return item[scope.asValue] == scope.ngModel
                                 });
-                                return f.length ? f : (attrs.all?[attrs.all]:['']);
+                                if(f.length){
+                                    return f
+                                }else{//
+                                    if(scope.default){
+                                        if(attrs.all){
+                                            return [attrs.all]
+                                        }
+                                        return ['']
+                                    }else{
+                                        return [scope.options[0]]
+                                    }
+                                }
                             }
-                            return attrs.all?[attrs.all]:[''];
+                            return attrs.all?[attrs.all]:['']
                         };
                         scope.getNgModel = function () {
                             var a = scope._ngModel[0][scope.asValue],
@@ -192,16 +202,15 @@ angular.module('ui.select',[])
                                 $timeout(function(){
                                     scope._ngModel = scope.asValueHandler();
                                 });
-                                scope._obj[attrs.ngModel]=a;
                             }
                         }, true);
                         var dw1=scope.$watch('options', function (a, b) {
                             if (a != b) {
-                                scope.setMenuStyle();
                                 if (!a || a.length === 0){
+                                    scope.setMenuStyle();
                                     scope.ngModel='';
                                     scope._obj[attrs.ngModel]='';
-                                    return;//(attrs.all?(scope.options[0][scope.asValue || 'value']!=attrs.all):scope.options[0][scope.asValue || 'value']))
+                                    return;
                                 }
                                 var opV=scope.options[0][scope.asValue || 'value'];
                                 if (!scope.multi && scope['default'] && (attrs.all?(opV!=attrs.all):opV)) {
@@ -231,15 +240,13 @@ angular.module('ui.select',[])
                         });
                         scope.onOpen=function(){
                             var os=element.offset();
-                            scope.menu.css({'left':(-element.width()+10)+'px','top':function(){
-                                if(os.top+element.height()+scope.menu.height()-5 > $window.scrollY+$window.innerHeight){
-                                    return (os.top-scope.menu.height()-2)+'px'
-                                }
-                                return (os.top+element.height()-1)+'px'
-                            }(),'width':element.width()+'px'});
                             $timeout(function(){
-                                os=element.offset();
-                                scope.menu.css({'left':os.left+'px'});
+                                scope.menu.css({'left':os.left+'px','top':function(){
+                                    if(os.top+element.height()+scope.menu.height()-5 > $window.scrollY+$window.innerHeight){
+                                        return (os.top-scope.menu.height()-2)+'px'
+                                    }
+                                    return (os.top+element.height()-1)+'px'
+                                }(),'width':element.width()+'px'});
                             });
                         };
                         scope.$on('$destroy',function (){
