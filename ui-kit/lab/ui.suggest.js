@@ -3,7 +3,7 @@
         init:function(op){
             var op=this.op=$.extend({
                 id:null,
-                tpl:['<li>{0}</li>'].join(''),
+                tpl:['<li><a>{0}</a></li>'].join(''),
                 data:null,
                 url:'',
                 params:{},

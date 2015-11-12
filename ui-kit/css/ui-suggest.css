@@ -1,5 +1,6 @@
 .ui-menu-list {margin-top: -1px;}
-.ui-menu-list li{padding: 0 13px; line-height: 29px; text-align: left;}
+.ui-menu-list li{padding: 0 13px; line-height: 29px; text-align: left; cursor: pointer;}
+.ui-menu-list li a{display: block; text-decoration: none;}
 .ui-suggest-select{position: relative;}
 .ui-suggest-select .caret{position: absolute; right:10px; top:13px;}
 
