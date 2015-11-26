@@ -441,7 +441,7 @@ angular.module('demo',['ui'])
     .controller('editableCtrl',['$scope','$timeout',function(scope,$timeout){
 
     }])
-    .controller('echartsCtrl',['$scope','$interval',function(scope,$interval){
+    .controller('echartsCtrl',['$scope','$interval','$timeout',function(scope,$interval,$timeout){
         var pageload = {
             name: 'page.load',
             datapoints: [
@@ -470,6 +470,7 @@ angular.module('demo',['ui'])
             showXAxis: true,
             showYAxis: true,
             showLegend: false,
+            forceClear:true,
             stack: false
         };
         scope.config_line2 = {
@@ -519,6 +520,11 @@ angular.module('demo',['ui'])
         }
         scope.data = [ pageload ];
         scope.multiple = [pageload, firstPaint ];
+
+        scope.data2=[ pageload ];
+        $timeout(function(){
+            scope.data2=[];
+        },4000);
 
         // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
         updateData($interval);

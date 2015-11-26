@@ -155,14 +155,19 @@
                     // if data is avaliable, render immediately
                 } else {
                     options = getOptions(scope.data, scope.config, type);
+
                     if (scope.config.forceClear) {
                         chart.clear();
                     }
+
+
+
                     if (options.series.length) {
                         chart.setOption(options);
                         chart.resize();
+//                        chart.hideLoading();
                     } else {
-                        chart.showLoading({ text: scope.config.errorMsg || '没有数据', textStyle: textStyle });
+                        //chart.showLoading({ text: scope.config.errorMsg || 'NO DATA', textStyle: textStyle });
                     }
                 }
             }

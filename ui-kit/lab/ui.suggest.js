@@ -210,12 +210,12 @@
                         self.selectTxt(self.id[0],0,self.id.val().length);
                         ui.evt(e).stop();
                     })
-                   .bind('blur',function(){
-                        setTimeout(function(){
-                            self._hide();
-                            self.op.onblur(self);
-                        },100);
-                    })
+        //                   .bind('blur',function(){
+        //                        setTimeout(function(){
+        //                            self._hide();
+        //                            self.op.onblur(self);
+        //                        },100);
+        //                    })
                    .bind('keyup',function(e){
                         key=ui.evt(e).key;
                         if(key==32||key==8 || (key>47 && key<112)){
