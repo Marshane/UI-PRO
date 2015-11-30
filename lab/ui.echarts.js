@@ -155,14 +155,19 @@
                     // if data is avaliable, render immediately
                 } else {
                     options = getOptions(scope.data, scope.config, type);
+
                     if (scope.config.forceClear) {
                         chart.clear();
                     }
+
+
+
                     if (options.series.length) {
                         chart.setOption(options);
                         chart.resize();
+//                        chart.hideLoading();
                     } else {
-                        chart.showLoading({ text: scope.config.errorMsg || '没有数据', textStyle: textStyle });
+                        //chart.showLoading({ text: scope.config.errorMsg || 'NO DATA', textStyle: textStyle });
                     }
                 }
             }
@@ -495,7 +500,7 @@ angular.module('ui.echarts.theme',[])
             },
             // 提示框
             tooltip: {
-                backgroundColor: 'rgba(250,250,250,0.4)',     // 提示背景颜色，默认为透明度为0.7的黑色
+                backgroundColor: 'rgba(0,0,0,0.4)',     // 提示背景颜色，默认为透明度为0.7的黑色
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'line',         // 默认为直线，可选为：'line' | 'shadow'
                     lineStyle: {          // 直线指示器样式设置

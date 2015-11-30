@@ -2,57 +2,34 @@
     ui.Pager=ui.Class.create({
         init:function(option){
             this.tpl={
-                pager_item:'<a class="pager_item pagerNum" data="{0}" href="javascript:void(0)">{0}</a>',
-                pager_cur:'<strong class="pagerNow" data="{0}">{0}</strong>',
-                pager_dis:'<strong class="pager{0} pagerDis">{1}</strong>',
-                pager_text:'<a class="pager_item pager{0}" data="{1}" href="javascript:void(0)">{2}</a>',
-                pager_omiss:'<strong class="pageOmiss">&bull; &bull; &bull;</strong>',
+                pager_item:'<a class="ui-pager-item ui-pager-num" data="{0}" href="javascript:void(0)">{0}</a>',
+                pager_cur:'<strong class="ui-pager-now" data="{0}">{0}</strong>',
+                pager_dis:'<strong class="ui-pager-{0} ui-pager-dis">{1}</strong>',
+                pager_text:'<a class="ui-pager-item ui-pager-{0}" data="{1}" href="javascript:void(0)">{2}</a>',
+                pager_omiss:'<strong class="ui-page-omiss">&bull; &bull; &bull;</strong>',
                 pager_num:''
             };
-            this.i18n={
-                'zh_CN':{
-                    first:'\u7b2c\u4e00\u9875',
-                    prev:'\u4e0a\u4e00\u9875',
-                    next:'\u4e0b\u4e00\u9875',
-                    last:'\u6700\u540e\u9875',
-                    total:'当前<span style="margin-right:10px;">{0}</span>  共 {1} 条'
-                },
-                'en':{
-                    first:'First',
-                    prev:'Pre',
-                    next:'Next',
-                    last:'Last',
-                    total:'<span>{0}</span> of {1} services'
-                }
-            };
-
             var op=this.option=$.extend({
                 el:null,
+                previousText:'上一页',
+                nextText:'下一页',
+                firstText:'第一页',
+                lastText:'最后页',
+                totalText:'当前<span>{0}</span>&nbsp;&nbsp;&nbsp;&nbsp;共 {1} 条',
                 current:1,//默认当前第1页
                 type:1,//显示样式 1 精简  2 通用版
-                i18n:'zh_CN',
                 angular:1,
                 showTotal:0,//是否显示总数
-                showNum:0,
+                showNum:5,//显示分页个数 超出显示...
+                showInputNum:0,//是否显示 输入页数框
                 page:null,//总页数
                 pageSize:null,//每页总条数
                 count:null,//总条数
                 onPager:null //点击回调
             },option||{});
             op.page=op.page||0;
-            // if(op.page<1)return;
-            this._config(op.i18n);
             this._createHTML();
-//            console.log(op.page);
             if(op.page) this._refreshPager();
-        },
-        _config:function(a){
-            this.config={
-                pager_text:this.i18n[a],
-                pager_total:this.i18n[a].total,
-                pager_selector:'a.pager_item',
-                show_num:5
-            };
         },
         _createHTML:function(){
             if(!this.el){
@@ -62,22 +39,24 @@
                     this.el.addClass('ui-pager-simple')
                 }
                 this.inner=this.el.children();
+
                 $(this.option.container||document.body).append(this.el);
                 this._initListener();
             }
         },
         _initListener:function(){
             var self=this;
-            var timeout,val;
-            if(this.option.angular) {
+            var val;
+            var op=this.option;
+            if(op.angular){
                 this.el.bind('click', ui.bind(function (e) {
                     var el = $(e.target);
-                    if (el[0].tagName == "A" && el.hasClass('pager_item')) {
+                    if (el[0].tagName == "A" && el.hasClass('ui-pager-item')) {
                         var data = el.attr('data');
-                        if (data) this._activePager(data >> 0);
+                        if (data) this._activePager(+data);
                     }
                 }, this));
-                if(this.option.showNum){
+                if(op.showInputNum){
                     var num=this.inner.eq(2).children();
                     num.eq(1).hide();
                     num.eq(0).keyup(function(e){
@@ -89,8 +68,8 @@
                         }
                     });
                     num.eq(1).click(function(){
-                        if(self.option.onNumChange){
-                            self.option.onNumChange(val,this);
+                        if(op.onNumChange){
+                            op.onNumChange(val,this);
                             self._activePager(1);
                         }
                         num.eq(0).val('');
@@ -129,8 +108,6 @@
                 op=this.option,
                 tpl=this.tpl,
                 totalPage=Math.ceil(op.count/op.pageSize)||0;
-            var txt=this.config.pager_text;
-            this._config(op.i18n);
             if(op.showTotal!==1){
                 if(op.showTotalType===1){
                     if(totalPage<2){
@@ -140,9 +117,9 @@
                     }
                 }else{
                     if(op.count<1){
-                        this.inner[0].innerHTML=['0 ',this.config.pager_total.split(/\s/).slice(-1)].join('');
+                        this.inner[0].innerHTML=['0 ',op.totalText.split(/\s/).slice(-1)].join('');
                     }else{
-                        this.inner[0].innerHTML=ui.format(this.config.pager_total,function(){
+                        this.inner[0].innerHTML=ui.format(op.totalText,function(){
                             var a=(op.current-1)*op.pageSize+1,
                                 b=function(){
                                     var _b=op.current*op.pageSize;
@@ -154,15 +131,15 @@
                 }
             }
             if(op.type>1){
-                if(txt.first&&op.current>1 && op.page>1){
-                    html.push(ui.format(tpl.pager_text,'First','1',txt.first));
+                if(op.firstText&&op.current>1 && op.page>1){
+                    html.push(ui.format(tpl.pager_text,'first','1',op.firstText));
                 }else {
-                    html.push(ui.format(tpl.pager_dis,'First',txt.first));
+                    html.push(ui.format(tpl.pager_dis,'first',op.firstText));
                 }
             }
-            if(txt.prev&&op.current>1 && op.page>1)
-                html.push(ui.format(tpl.pager_text,'Prev',op.current-1,txt.prev));
-            else html.push(ui.format(tpl.pager_dis,'Prev',txt.prev));
+            if(op.previousText&&op.current>1 && op.page>1)
+                html.push(ui.format(tpl.pager_text,'prev',op.current-1,op.previousText));
+            else html.push(ui.format(tpl.pager_dis,'prev',op.previousText));
             if(op.type===2){
                 var l=this._getListPage();
                 if(l.start>1)
@@ -176,14 +153,14 @@
                 }
                 if(l.end<op.page) html.push(tpl.pager_omiss);
             }
-            if(txt.next&&op.current<op.page)
-                html.push(ui.format(tpl.pager_text,'Next',op.current+1,txt.next));
-            else html.push(ui.format(tpl.pager_dis,'Next',txt.next));
+            if(op.nextText&&op.current<op.page)
+                html.push(ui.format(tpl.pager_text,'next',op.current+1,op.nextText));
+            else html.push(ui.format(tpl.pager_dis,'next',op.nextText));
             if(op.type>1){
-                if(txt.last&&op.current<op.page){
-                    html.push(ui.format(tpl.pager_text,'Last',op.page,txt.last));
+                if(op.lastText&&op.current<op.page){
+                    html.push(ui.format(tpl.pager_text,'last',op.page,op.lastText));
                 }else{
-                    html.push(ui.format(tpl.pager_dis,'Last',txt.last));
+                    html.push(ui.format(tpl.pager_dis,'last',op.lastText));
                 }
             }
             this.inner[1].innerHTML=op.page>1?html.join(''):'';
@@ -191,15 +168,14 @@
         _getListPage:function(){
             var start= 0,
                 end= 0,
-                op=this.option,
-                conf=this.config;
-            if(op.page<=conf.show_num){
+                op=this.option
+            if(op.page<=op.showNum){
                 start=1;
                 end=op.page;
             }else{
-                start=op.current-Math.floor(conf.show_num/2);
+                start=op.current-Math.floor(op.showNum/2);
                 if(start<1) start=1;
-                end=start+conf.show_num-1;
+                end=start+op.showNum-1;
                 if(end>op.page){
                     start-=end-op.page;
                     end=op.page;
@@ -213,7 +189,6 @@
         _activePager:function(num){
             var op=this.option;
             if(op.current==num &&!op.showNum)return;
-            console.log(op.showNum);
             op.current=num;
             this._refreshPager();
             if(op.onPager) op.onPager(num,this);
@@ -228,27 +203,49 @@
         .directive('uiPager',['$timeout',function($timeout){
             return {
                 restrict: 'A',
-//                replace:true,
                 scope:{
-                    onPager:'&',
+                    onPager:'&',//点击分页回调
                     ctrl:'=?',
-                    ngModel:'='
+                    totalItems:'=',//总页数
+                    pageSize:'=',//每页显示数
+                    ngModel:'='//当前页
                 },
                 link:function(scope, element, attrs){
-                    scope.pager = new ui.Pager({
+                    var op={
                         container:element[0],
-                        count:attrs.total||0,
+                        count:scope.totalItems||0,
+                        pageSize:scope.pageSize||10,
+                        type:+attrs.type||2,
+                        previousText:attrs.previousText||'上一页',
+                        nextText:attrs.nextText||'下一页',
+                        firstText:attrs.firstText||'第一页',
+                        lastText:attrs.lastText||'最后页',
                         onPager:function(num, _this){
-                            if(_.isFunction(scope.onPager)){
-                                scope.onPager({count:num,self:_this});
-                            }
-                            scope.ngModel=num;
+                            scope.$apply(function(){
+                                if(_.isFunction(scope.onPager)){
+                                    var obj={};obj[attrs.ngModel]=num;
+                                    obj.self=_this;
+                                    scope.onPager(obj);
+                                }
+                                scope.ngModel=num;
+                            });
                         }
-                    });
+                    };
+                    op.page=Math.ceil(op.count/op.pageSize);
+                    scope.pager = new ui.Pager(op);
                     if(angular.isDefined(attrs.ctrl))scope.ctrl=scope;
-                    attrs.$observe('total',function(a){
+                    scope.$watch('totalItems',function(a){
                         scope.pager.option.count=a;
+                        scope.pager.option.page=Math.ceil(a/scope.pager.option.pageSize);
                         scope.pager._refreshPager();
+                    });
+                    scope.ngModel=scope.ngModel||1;
+                    scope.$watch('ngModel',function(a){
+                        if(!a || a<=0){
+                            a=1;
+                        }
+                        scope.pager.option.page=Math.ceil(scope.pager.option.count/scope.pager.option.pageSize);
+                        scope.pager.setCurrent(a);
                     });
                 }
             }
