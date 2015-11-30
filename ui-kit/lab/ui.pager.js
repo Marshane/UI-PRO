@@ -168,7 +168,7 @@
         _getListPage:function(){
             var start= 0,
                 end= 0,
-                op=this.option
+                op=this.option;
             if(op.page<=op.showNum){
                 start=1;
                 end=op.page;
