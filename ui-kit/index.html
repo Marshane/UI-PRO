@@ -122,6 +122,7 @@
                 <li ui-scroll-to="#j-slider"><a href="#">ui-slider</a></li>
                 <li ui-scroll-to="#j-collapse"><a href="#">Collapse</a></li>
                 <li ui-scroll-to="#j-dropdown"><a href="#">dropdown</a></li>
+                <li ui-scroll-to="#j-pager"><a href="#">ui-pager</a></li>
                 <li ui-scroll-to="#j-input-select"><a href="#">ui-input-select</a></li>
 
                 <li ui-scroll-to="#j-suggest"><a href="#">ui-suggest</a></li>
@@ -673,16 +674,27 @@
                         <div class="ui-pager"
                              ui-pager
                              ng-model="currentPage"
+                             page-size="pageSize"
                              on-pager="onPager(currentPage,self)"
-                             total="24">
+                             total-items="totalItems">
+                        </div>
+                        <div class="ui-pager"
+                             ui-pager
+                             ng-model="currentPage"
+                             page-size="pageSize"
+                             type="1"
+                             on-pager="onPager(currentPage,self)"
+                             total-items="totalItems">
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-5">
                     <h4>设置</h4>
-                    <p>{Number} ng-model：当前页码 默认0</p>
-                    <p>{Number} total：总页数</p>
-                    <p>{Function} on-pager [可选]：分页回调 @return currentPage (当前页码) | self (实例上下文)</p>
+                    <p>{Number} ng-model：当前页码 默认1</p>
+                    <p>{Number} page-size：一页显示条数</p>
+                    <p>{Number} type：1为 精简显示 默认2</p>
+                    <p>{Number} total-items：总页数</p>
+                    <p>{Function} on-pager [可选]：分页回调 @return ngModel (当前页码) | self (实例上下文)</p>
                 </div>
             </div>
             <div class="col-xs-12">
@@ -690,12 +702,40 @@
                     <div ui-tab heading="Markup">
                         <pre class="language-markup">
 <code>
-    &lt;div class=&quot;ui-input-select&quot; ui-input-select ng-model=&quot;functionType&quot; data=&quot;ngModelList&quot;  key=&quot;text&quot; as-value=&quot;value&quot; space=&quot;6&quot;&gt;&lt;/div&gt;</code>
+    &lt;p&gt;model：{{currentPage}}&lt;/p&gt;
+    &lt;div class=&quot;ui-pager&quot;
+        ui-pager
+        ng-model=&quot;currentPage&quot;
+        page-size=&quot;pageSize&quot;
+        on-pager=&quot;onPager(currentPage,self)&quot;
+        total-items=&quot;totalItems&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;ui-pager&quot;
+        ui-pager
+        ng-model=&quot;currentPage&quot;
+        page-size=&quot;pageSize&quot;
+        type=&quot;1&quot;
+        on-pager=&quot;onPager(currentPage,self)&quot;
+        total-items=&quot;totalItems&quot;&gt;
+    &lt;/div&gt;</code>
                         </pre>
                     </div>
                     <div ui-tab heading="JavaScript">
                         <pre class="language-javascript">
-<code></code>
+<code>
+    scope.currentPage=1;
+    scope.pageSize=10;
+    scope.totalItems=24;
+    scope.onPager=function(currentPage,self){
+        console.log(currentPage,self);
+    };
+    $timeout(function(){
+        scope.currentPage=3;
+    },6000)
+    $timeout(function(){
+        scope.totalItems=84;
+    },3000)
+</code>
                         </pre>
                     </div>
                 </div>

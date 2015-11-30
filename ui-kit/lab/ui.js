@@ -72,8 +72,8 @@ String.prototype.cut = function (k) {
  * @returns {*}
  */
 String.prototype.format=function(){
-    if(1==arguments.length) return this;
-    var arr=Array.prototype.slice.call(arguments,1);
+    if(!arguments.length) return this;
+    var arr=Array.prototype.slice.call(arguments,0);
     return this.replace(/\{(\d+)\}/g,function(a,b){
         return arr[b]
     })
@@ -147,7 +147,8 @@ ui= _.extend(ui,{
      * @param str
      */
     format:function(str){
-        return String(str).format(String,Array.prototype.slice.call(arguments,1));
+        if(1===arguments.length)return str;
+        return str.format.apply(str,Array.prototype.slice.call(arguments,1))
     },
     /**
      * 输入框选中字符

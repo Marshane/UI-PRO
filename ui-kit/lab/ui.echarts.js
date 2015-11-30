@@ -500,7 +500,7 @@ angular.module('ui.echarts.theme',[])
             },
             // 提示框
             tooltip: {
-                backgroundColor: 'rgba(250,250,250,0.4)',     // 提示背景颜色，默认为透明度为0.7的黑色
+                backgroundColor: 'rgba(0,0,0,0.4)',     // 提示背景颜色，默认为透明度为0.7的黑色
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'line',         // 默认为直线，可选为：'line' | 'shadow'
                     lineStyle: {          // 直线指示器样式设置

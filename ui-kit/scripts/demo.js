@@ -429,9 +429,17 @@ angular.module('demo',['ui'])
         }
     }])
     .controller('uiPagerCtrl',['$scope','$timeout',function(scope,$timeout){
+        scope.pageSize=10;
+        scope.totalItems=24;
+        scope.onPager=function(currentPage,self){
+            console.log(currentPage,self);
+        };
         $timeout(function(){
-           scope.total=20;
-        },1e3);
+            scope.currentPage=3;
+        },6000)
+        $timeout(function(){
+            scope.totalItems=84;
+        },3000)
     }])
     .controller('inputSelectCtrl',['$scope','$timeout',function(scope,$timeout){
         scope.ngModelList=[{text:'aa',value:11},{text:'bb',value:22},{text:'csd',value:3432},{text:'asd',value:124634},
