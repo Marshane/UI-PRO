@@ -48,7 +48,8 @@
                         }
                     }
                 }, angular.isObject(config.yAxis) ? config.yAxis : {});
-
+                console.log(data);
+                console.log(config);
                 // basic config
                 var options = {
                     title: util.getTitle(data, config, type),
@@ -59,7 +60,6 @@
                     yAxis: [ yAxis ],
                     series: util.getSeries(data, config, type)
                 };
-//                console.log(options);
 
                 if (!config.showXAxis) {
                     angular.forEach(options.xAxis, function (axis) {
@@ -155,7 +155,6 @@
                     // if data is avaliable, render immediately
                 } else {
                     options = getOptions(scope.data, scope.config, type);
-
                     if (scope.config.forceClear) {
                         chart.clear();
                     }
@@ -163,9 +162,10 @@
 
 
                     if (options.series.length) {
+                        console.log(options);
                         chart.setOption(options);
                         chart.resize();
-//                        chart.hideLoading();
+                        //chart.hideLoading();
                     } else {
                         //chart.showLoading({ text: scope.config.errorMsg || 'NO DATA', textStyle: textStyle });
                     }
@@ -181,7 +181,7 @@
         };
     }
     var uiEcharts=angular.module('ui.echarts', ['ui.echarts.util','ui.echarts.theme']);
-    var types = ['line','bar','gauge'];
+    var types = ['line','bar','heatmap','pie'];
     for (var i = 0, n = types.length; i < n; i++) {
         (function (type) {
             uiEcharts.directive('ui'+type.charAt(0).toUpperCase()+type.slice(1) + 'Chart', ['$http','theme','util', function ($http,theme,util) {

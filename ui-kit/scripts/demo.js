@@ -449,7 +449,7 @@ angular.module('demo',['ui'])
     .controller('editableCtrl',['$scope','$timeout',function(scope,$timeout){
 
     }])
-    .controller('echartsCtrl',['$scope','$interval','$timeout',function(scope,$interval,$timeout){
+    .controller('echartsCtrl',['$scope','$interval','$timeout','$sce','theme',function(scope,$interval,$timeout,$sce,theme){
         var pageload = {
             name: 'page.load',
             datapoints: [
@@ -535,10 +535,84 @@ angular.module('demo',['ui'])
         },4000);
 
         // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
-        updateData($interval);
+        //updateData($interval);
+
+        scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        window.onload=function(){
+            window.frames[0].postMessage('en','http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        };
+//        var placeHolderStyle = ;
+        scope.configPie={
+            radius : [50, 60],
+            debug: true,
+            stack: true,
+            itemStyle:{
+                normal: {
+                    label: {show:false},
+                    labelLine: {show:false}
+                }
+            }
+        };
+        scope.pieData=[{
+            y:3,
+            x:'3%的人表示“我姓曾”'
+            },
+            {
+                y:97,
+                x:'invisible',
+                itemStyle : {
+                    normal : {
+                        color: 'rgba(0,0,0,0)',
+                        label: {show:false},
+                        labelLine: {show:false}
+                    },
+                    emphasis : {
+                        color: 'rgba(0,0,0,0)'
+                    }
+                }
+            }];
 
 
-
+        var option = {
+            tooltip : {
+                show: true,
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            series : [
+                {
+                    type:'pie',
+                    radius : [50, 60],
+                    itemStyle : {
+                        normal: {
+                            label: {show:false},
+                            labelLine: {show:false}
+                        }
+                    },
+                    data:[
+                        {
+                            value:50,
+                            name:'3%的人表示“我姓曾”'
+                        },
+                        {
+                            value:50,
+                            name:'invisible',
+                            itemStyle : {
+                                normal : {
+                                    color: 'rgba(0,0,0,0)',
+                                    label: {show:false},
+                                    labelLine: {show:false}
+                                },
+                                emphasis : {
+                                    color: 'rgba(0,0,0,0)'
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
+        var ec=echarts.init(document.getElementById('pie'),theme.get('macarons'));
+        ec.setOption(option, true);
 
     }])
 //    .run(function($httpBackend) {
