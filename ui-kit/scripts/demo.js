@@ -537,40 +537,39 @@ angular.module('demo',['ui'])
         // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
         //updateData($interval);
 
-        scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
-        window.onload=function(){
-            window.frames[0].postMessage('en','http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
-        };
+        //scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        //window.onload=function(){
+        //    window.frames[0].postMessage('en','http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        //};
 //        var placeHolderStyle = ;
         scope.configPie={
+            showLegend: false,
+            center:[60,60],
             radius : [50, 60],
-            debug: true,
-            stack: true,
             itemStyle:{
-                normal: {
-                    label: {show:false},
-                    labelLine: {show:false}
+                normal : {
+                    label : {
+                        position : 'inner',
+                        formatter : function (a,b,c,d) { return (d - 0).toFixed(0) + '%'; }
+                    },
+                    labelLine : {
+                        show : false
+                    }
+                },
+                emphasis : {
+                    label : {
+                        show : true,
+                        formatter : '{b}\n{d}%'
+                    }
                 }
             }
         };
         scope.pieData=[{
-            y:3,
-            x:'3%的人表示“我姓曾”'
-            },
-            {
-                y:97,
-                x:'invisible',
-                itemStyle : {
-                    normal : {
-                        color: 'rgba(0,0,0,0)',
-                        label: {show:false},
-                        labelLine: {show:false}
-                    },
-                    emphasis : {
-                        color: 'rgba(0,0,0,0)'
-                    }
-                }
-            }];
+                datapoints: [
+                { x: 2005, y: 50 },
+                { x: 2006, y: 50 }
+            ]}
+        ];
 
 
         var option = {

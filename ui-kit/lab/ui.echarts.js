@@ -49,7 +49,7 @@
                     }
                 }, angular.isObject(config.yAxis) ? config.yAxis : {});
                 console.log(data);
-                console.log(config);
+                console.log(util.getSeries(data, config, type));
                 // basic config
                 var options = {
                     title: util.getTitle(data, config, type),
