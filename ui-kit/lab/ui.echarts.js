@@ -20,7 +20,6 @@
             function getSizes(config) {
                 width = config.width || parseInt(attrs.width) || parentWidth || 320;
                 height = config.height || parseInt(attrs.height) || parentHeight || 240;
-
                 ndWrapper.style.width = width + 'px';
                 ndWrapper.style.height = height + 'px';
             }
@@ -314,9 +313,10 @@ angular.module('ui.echarts.util',[])
                 if (isPieChart(type)) {
                     // donut charts are actually pie charts
                     conf.type = 'pie';
+                    console.log(conf);
                     // pie chart need special radius, center config
-                    conf.center = config.center || ['40%', '50%'];
-                    conf.radius = config.radius || '60%';
+                    conf.center = config.center;
+                    conf.radius = config.radius;
                     // donut chart require special itemStyle
                     if (type === 'donut') {
                         conf.radius = config.radius || ['50%', '70%'];
@@ -347,18 +347,19 @@ angular.module('ui.echarts.util',[])
                             itemStyle: {
                                 normal : {
                                     label : {
+                                        show : false,
                                         position : 'inner',
-                                        formatter : function (a,b,c,d) { return (d - 0).toFixed(0) + '%'; }
+                                        formatter : function (a,b,c,d) {console.log(a,b,c,d); return (a - 0).toFixed(0) + '%'; }
                                     },
                                     labelLine : {
                                         show : false
                                     }
                                 },
                                 emphasis : {
-                                    label : {
+                                    /*label : {
                                         show : true,
                                         formatter : '{b}\n{d}%'
-                                    }
+                                    }*/
                                 }
                             }
                         }, config.pie || {});

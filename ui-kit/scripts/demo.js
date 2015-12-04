@@ -546,36 +546,43 @@ angular.module('demo',['ui'])
             showLegend: false,
             center:[60,60],
             radius : [50, 60],
-            itemStyle:{
-                normal : {
-                    label : {
-                        position : 'inner',
-                        formatter : function (a,b,c,d) { return (d - 0).toFixed(0) + '%'; }
-                    },
-                    labelLine : {
-                        show : false
-                    }
-                },
-                emphasis : {
-                    label : {
-                        show : true,
-                        formatter : '{b}\n{d}%'
-                    }
+            title: {
+                text: 'xxx',
+                x: 'center',
+                y: 'center',
+                itemGap: 20,
+                textStyle : {
+                    color : 'rgba(30,144,255,0.8)',
+                    fontFamily : '微软雅黑',
+                    fontSize : 16
                 }
+            },
+            tooltip : {
+                show: false
             }
         };
         scope.pieData=[{
                 datapoints: [
-                { x: 2005, y: 50 },
-                { x: 2006, y: 50 }
+                {y: 50 },
+                {y: 50 }
             ]}
         ];
 
 
         var option = {
+            title: {
+                text: 'xxx',
+                x: 'center',
+                y: 'center',
+                itemGap: 20,
+                textStyle : {
+                    color : 'rgba(30,144,255,0.8)',
+                    fontFamily : '微软雅黑',
+                    fontSize : 16
+                }
+            },
             tooltip : {
-                show: true,
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                show: false
             },
             series : [
                 {
@@ -589,15 +596,15 @@ angular.module('demo',['ui'])
                     },
                     data:[
                         {
-                            value:50,
+                            value:70,
                             name:'3%的人表示“我姓曾”'
                         },
                         {
-                            value:50,
+                            value:30,
                             name:'invisible',
                             itemStyle : {
                                 normal : {
-                                    color: 'rgba(0,0,0,0)',
+                                    color: 'rgba(0,0,0,.1)',
                                     label: {show:false},
                                     labelLine: {show:false}
                                 },
