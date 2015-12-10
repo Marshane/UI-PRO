@@ -16,7 +16,7 @@ angular.module('ui.postMessage',[])
                     response = null;
                     $rootScope.sender = event.source;
                     try {
-                        response = angular.fromJson(event.data);
+                        response = _.isObject(event.data)? angular.fromJson(event.data):event.data;
                     } catch (_error) {
                         error = _error;
                         $log.error('ahem', error);

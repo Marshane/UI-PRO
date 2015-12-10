@@ -24,6 +24,7 @@ angular.module('ui',[
     'ui.tooltip',
     'ui.scrollbar',
     'ui.tree',
+    'ui.postMessage',
     'ui.echarts',
     'ui.collapse']);
 
@@ -449,7 +450,8 @@ angular.module('demo',['ui'])
     .controller('editableCtrl',['$scope','$timeout',function(scope,$timeout){
 
     }])
-    .controller('echartsCtrl',['$scope','$interval','$timeout','$sce','theme',function(scope,$interval,$timeout,$sce,theme){
+    .controller('echartsCtrl',['$scope','$interval','$timeout','$sce','theme','$postMessage',
+        function(scope,$interval,$timeout,$sce,theme,$postMessage){
         var pageload = {
             name: 'page.load',
             datapoints: [
@@ -537,11 +539,16 @@ angular.module('demo',['ui'])
         // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
         //updateData($interval);
 
-        //scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
-        //window.onload=function(){
-        //    window.frames[0].postMessage('en','http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
-        //};
-//        var placeHolderStyle = ;
+        scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+
+        window.onload=function(){
+            window.frames[0].postMessage({lang:'en'},'http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        };
+
+        $postMessage.messages=function(msg){
+            $('#iframeDemo').css('height',msg+'px');
+        };
+
         scope.configPie={
             showLegend: false,
             center:[60,60],
