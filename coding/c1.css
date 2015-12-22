@@ -1,0 +1,597 @@
+.smart-app-banner {
+    position: fixed;
+    width: 100%;
+    height: 150px;
+    bottom: 0;
+    left: 0;
+    background: #FAFAFA;
+    z-index: 999;
+    color: #FFF;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 25px 40px;
+    border-top: 1px solid #DDD
+}
+
+.smart-app-banner a {
+    text-decoration: none
+}
+
+.smart-app-banner a.close {
+    color: #888;
+    position: absolute;
+    right: 14px;
+    top: 50px;
+    font-size: 50px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    text-indent: 13px;
+    line-height: 43px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAVFBMVEUAAACAgIBxcXGAgIB0dHSAgIB9fX19fX1+fn6AgIB/f39/f3+AgIB/f3+AgICAgIB/f3+AgIB/f3+AgIB/f3+AgIB/f3+AgIB/f3+AgIB/f3+AgICFKum+AAAAG3RSTlMACAkKCwwvMUFGp6ussbS4ubq7vL2+v8DBwsMpJ2KSAAAAgklEQVR4AdXQzQ7CIBDEcVzqt6ilRdF9//cU4xz6T4j3zo35JWQzYe3ZXeLyuUlH8NkfcaGj38CxyKXPAdy8VVT6rNJGfcTYzy1D4XWg0iev2QuVDu1wHf5oyf6C47Q5WvNtT+NXQ6BDTbO84Rp1Mo1Kp3b9KpXfPYEPSSo/7cPK8wFb9Qj9P2fy3wAAAABJRU5ErkJggg==) 10px 10px/36px no-repeat
+}
+
+.smart-app-banner img {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 16px;
+    border: 1px solid #666;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.smart-app-banner a.download {
+    font-size: 40px;
+    display: inline-block;
+    height: 80px;
+    padding: 0 15px;
+    line-height: 80px;
+    border-radius: 8px;
+    margin: 10px 0;
+    position: absolute;
+    right: 96px;
+    z-index: 1000;
+    border: 2px solid #3BBD79;
+    color: #3BBD79;
+    font-weight: 700
+}
+
+.smart-app-banner a.download:active {
+    background: #3BBD79;
+    color: #FFF
+}
+
+.smart-app-banner .words {
+    font-size: 35px;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2px 330px 0 140px;
+    line-height: 48px
+}
+
+.smart-app-banner .words .title {
+    color: #444;
+    font-weight: 700
+}
+
+.smart-app-banner .words .description {
+    color: #999
+}
+
+#app-open-source {
+    font-family: Heiti SC,'Microsoft Yahei',SimHei,'Helvetica Neue',sans-serif!important;
+    -webkit-font-smoothing: antialiased
+}
+
+#app-open-source h1,#app-open-source h2,#app-open-source h3,#app-open-source h4,#app-open-source h5,#app-open-source h6,#app-open-source p,#app-open-source ul {
+    padding: 0;
+    margin: 0;
+    line-height: 150%
+}
+
+#app-open-source ul li {
+    list-style: none;
+    padding: 0;
+    margin: 0
+}
+
+#app-open-source img {
+    display: block
+}
+
+#app-open-source {
+    background: #FFF;
+    width: 100%
+}
+
+#app-open-source .banner {
+    position: relative;
+    background: url(https://dn-coding-net-production-static.qbox.me/b0fa0a3d-71bb-4d47-bd1e-e3d149087b77.png) 0 0/100% 100% no-repeat #FCFCFB;
+    min-height: 580px;
+    overflow: hidden
+}
+
+#app-open-source .banner .intro {
+    padding-top: 100px
+}
+
+#app-open-source .front-view {
+    display: table;
+    width: 100%
+}
+
+#app-open-source .banner .buttons {
+    position: absolute;
+    bottom: 0;
+    height: 180px;
+    line-height: 180px;
+    display: table;
+    text-align: center
+}
+
+#app-open-source .apk-button i.icon,#app-open-source .banner .buttons i.icon {
+    color: #FFF;
+    opacity: 1
+}
+
+#app-open-source .banner .buttons .button {
+    height: 60px;
+    line-height: 60px;
+    font-size: 20px;
+    background: #20B366;
+    color: #FFF;
+    display: inline-block;
+    margin-right: 16px;
+    border-radius: 5px;
+    padding: 0 24px;
+    cursor: pointer
+}
+
+#app-open-source .apk-button {
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    background: #2c2c2c;
+    color: #FFF;
+    border: 1px solid #F1F1F1;
+    display: inline-block;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 228px
+}
+
+#app-open-source .banner .buttons .button:hover {
+    background: #20A660
+}
+
+#app-open-source .banner .buttons .button.download {
+    background: #E95656
+}
+
+#app-open-source .banner .buttons .button.download:hover {
+    background: #e9432f
+}
+
+#app-open-source .front-view .open-source,#app-open-source .front-view .phones {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top
+}
+
+#app-open-source .front-view .open-source>div {
+    padding-top: 24px
+}
+
+#app-open-source .front-view .open-source img {
+    width: 400px
+}
+
+#app-open-source .front-view .phones img {
+    width: 400px;
+    margin: 0 0 0 auto
+}
+
+#app-open-source section .content {
+    width: 960px;
+    margin: 0 auto
+}
+
+.content .container {
+    height: 584px;
+    position: relative;
+    overflow: hidden
+}
+
+.section-title {
+    padding-top: 60px
+}
+
+.section-title h1 {
+    font-weight: 300;
+    text-align: center;
+    font-size: 48px;
+    color: #20B366
+}
+
+.section-title p {
+    font-weight: 300;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    line-height: 2!important
+}
+
+.first,.third {
+    background: linear-gradient(to bottom,#FAFAFA,#EFEFEF)
+}
+
+.first .content {
+    width: 100%!important
+}
+
+.first .pics-box {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    bottom: 0;
+    height: 300px;
+    left: 0;
+    text-align: center
+}
+
+.first ul.pics {
+    position: relative;
+    display: inline-block;
+    width: 900px
+}
+
+.first ul.pics li {
+    top: 0;
+    position: absolute
+}
+
+.first ul.pics li div {
+    position: relative;
+    display: inline-block
+}
+
+.first ul.pics li .app img {
+    width: 440px;
+    z-index: 1
+}
+
+.first ul.pics li .icon {
+    position: absolute;
+    top: -20px;
+    left: 20%;
+    z-index: 100
+}
+
+.first ul.pics li .icon img {
+    width: 120px;
+    display: none!important
+}
+
+.first ul.pics li.pic-1 {
+    left: 0
+}
+
+.first ul.pics li.pic-2 {
+    left: 20%
+}
+
+.first ul.pics li.pic-3 {
+    left: 40%
+}
+
+.first ul.pics li.pic-4 {
+    left: 60%
+}
+
+.second .message {
+    display: table;
+    width: 100%;
+    padding-top: 80px
+}
+
+.second .message .app,.second .message .talk {
+    display: table-cell;
+    width: 50%
+}
+
+.second .message .app {
+    text-align: right;
+    position: relative
+}
+
+.second .message .app .app-img {
+    width: 360px;
+    float: right
+}
+
+.second .message .app .icon {
+    position: absolute;
+    right: -25px;
+    top: -60px;
+    width: 120px;
+    display: none!important
+}
+
+.second .message .talk {
+    vertical-align: top;
+    padding: 50px 80px 0 40px
+}
+
+.second .message .talk .from,.second .message .talk .to {
+    position: relative
+}
+
+.second .message .talk .to .avatar {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.second .message .talk .from .avatar {
+    position: absolute;
+    right: 0;
+    top: 0
+}
+
+.second .message .talk .avatar img {
+    width: 60px
+}
+
+.second .message .talk .talk-pop {
+    height: 60px;
+    line-height: 60px;
+    background: 100px 0 no-repeat;
+    text-indent: 40px
+}
+
+.second .message .talk .talk-pop.to {
+    padding-left: 50px;
+    margin-bottom: 30px
+}
+
+.second .message .talk .talk-pop.from {
+    padding-right: 50px
+}
+
+.second .message .talk .talk-pop div {
+    height: 60px;
+    width: 280px;
+    padding-left: 20px;
+    background: center no-repeat;
+    font-size: 18px
+}
+
+.second .message .talk .talk-pop.to div {
+    float: left;
+    background-image: url(https://dn-coding-net-production-static.qbox.me/1bc1f11d-fa37-4bae-8039-ad2f977fdfae.png);
+    background-size: contain
+}
+
+.second .message .talk .talk-pop.from div {
+    float: right;
+    color: #FFF;
+    background-image: url(https://dn-coding-net-production-static.qbox.me/12b34b8d-64d0-4e58-a5d1-d2140f237113.png);
+    background-size: contain
+}
+
+.third .bubble {
+    position: absolute;
+    width: 100%;
+    bottom: 0
+}
+
+.third .bubble .mid-image {
+    margin: 0 auto;
+    width: 800px;
+    position: relative
+}
+
+.third .bubble .icon img {
+    position: absolute;
+    left: 74%;
+    top: 40px;
+    z-index: 1000;
+    width: 120px;
+    display: none!important
+}
+
+.four .qr-code {
+    display: table;
+    width: 100%;
+    padding-bottom: 130px;
+    padding-top: 60px;
+    text-align: center
+}
+
+.four .qr-code img {
+    width: 240px;
+    display: inline-block!important
+}
+
+#pull-request {
+    width: 120px;
+    padding: 12px;
+    background: #FFF;
+    position: fixed;
+    top: 110px;
+    right: 50px;
+    display: inline-block;
+    -webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.04);
+    -moz-box-shadow: 1px 1px 2px rgba(0,0,0,.04);
+    box-shadow: 1px 1px 2px rgba(0,0,0,.04);
+    border: 1px solid #F1F2F3;
+    z-index: 1000
+}
+
+@keyframes stuck {
+    0% {
+        margin-top: 0
+    }
+
+    50% {
+        margin-top: -5px
+    }
+
+    100% {
+        margin-top: -10px
+    }
+}
+
+@-moz-keyframes stuck {
+    0% {
+        margin-top: 0
+    }
+
+    50% {
+        margin-top: -5px
+    }
+
+    100% {
+        margin-top: -10px
+    }
+}
+
+@-webkit-keyframes stuck {
+    0% {
+        margin-top: 0
+    }
+
+    50% {
+        margin-top: -5px
+    }
+
+    100% {
+        margin-top: -10px
+    }
+}
+
+@-o-keyframes stuck {
+    0% {
+        margin-top: 0
+    }
+
+    50% {
+        margin-top: -5px
+    }
+
+    100% {
+        margin-top: -10px
+    }
+}
+
+@-ms-keyframes stuck {
+    0% {
+        margin-top: 0
+    }
+
+    50% {
+        margin-top: -5px
+    }
+
+    100% {
+        margin-top: -10px
+    }
+}
+
+#pull-request .gift,#pull-request .gift .box,#pull-request .gift .monkey {
+    width: 120px;
+    height: 120px
+}
+
+#pull-request .gift {
+    background: center no-repeat #E5EFF5;
+    text-align: center;
+    position: relative
+}
+
+#pull-request .gift .monkey {
+    animation-name: duck;
+    -webkit-animation-name: stuck;
+    -moz-animation-name: stuck;
+    -o-animation-name: stuck;
+    animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    animation-duration: 2s;
+    -moz-animation-duration: 2s;
+    -o-animation-duration: 2s;
+    -webkit-animation-duration: 2s;
+    animation-direction: alternate;
+    -moz-animation-direction: alternate;
+    -o-animation-direction: alternate;
+    -webkit-animation-direction: alternate
+}
+
+#pull-request .gift .box,#pull-request .gift .monkey {
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+#pull-request .gift .box {
+    background: url(https://dn-coding-net-production-static.qbox.me/d28d802b-31ed-4b73-b547-65f99960c5d1.png) center bottom/80% no-repeat
+}
+
+#pull-request .gift img.box {
+    vertical-align: bottom
+}
+
+#pull-request .gift img {
+    display: inline-block;
+    position: relative;
+    width: 80%
+}
+
+#pull-request .text {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    padding: 15px 0;
+    border-bottom: dashed 1px #999;
+    margin-bottom: 15px
+}
+
+#pull-request .btn {
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;
+    font-size: 20px;
+    background: #F5584E;
+    border-radius: 2px;
+    color: #FFF;
+    text-decoration: none;
+    font-weight: 300;
+    width: 100%;
+    text-align: center;
+    border-bottom: 2px solid red
+}
+
+#pull-request .btn:hover {
+    background: #F50000
+}
+
+#pull-request .close {
+    position: absolute;
+    right: 0;
+    top: -30px
+}
+
+#pull-request .close i.icon.remove {
+    font-size: 24px;
+    margin-right: 0;
+    padding-left: 12px;
+    font-weight: 100;
+    color: #FFF;
+    cursor: pointer
+}

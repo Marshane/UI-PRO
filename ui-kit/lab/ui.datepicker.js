@@ -91,7 +91,7 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                 } else {
                     $log.error('Datepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
                 }
-                ngModelCtrl.$setValidity('date', isValid);
+                //ngModelCtrl.$setValidity('date', isValid);
             }
             this.refreshView();
         };
@@ -468,8 +468,8 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
         appendToBody: false,
         showButtonBar: true
     })
-    .directive('datepickerPopup', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig', '$translate',
-        function ($compile, $parse, $document, $position, dateFilter, dateParser, datepickerPopupConfig, $translate) {
+    .directive('datepickerPopup', ['$compile', '$parse', '$document', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig',
+        function ($compile, $parse, $document, $position, dateFilter, dateParser, datepickerPopupConfig) {
             return {
                 restrict: 'EA',
                 require: 'ngModel',
@@ -499,21 +499,6 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         scope.ss = format.indexOf('SS') >= 0;
                         // scope.ismeridian=true;
                     }
-                    //                    var _dataFormat=function(v){
-                    //                        var y = $translate.use();
-                    //                        switch (y) {
-                    //                            case 'en':
-                    //                            {
-                    //                                return ('dd/MM/yyyy ' + (v.split(' ')[1] || '')).trim();
-                    //                                break;
-                    //                            }
-                    //                            default:
-                    //                            {
-                    //                                return v
-                    //                                break;
-                    //                            }
-                    //                        }
-                    //                    }
                     dateFormat=attrs.datepickerPopup;
                     attrs.$observe('datepickerPopup', function (value) {
                         dateFormat=value || datepickerPopupConfig.datepickerPopup;
@@ -584,8 +569,11 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                         if (angular.isDefined(dt)) {
                             scope.date = dt;
                         }
-                        ngModel.$setViewValue(scope.date);
-                        ngModel.$render();
+                        //ngModel.$setViewValue(scope.date);
+                        //ngModel.$render();
+                        var date = scope.date ? dateFilter(scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
+                        element.val(date);
+                        ngModel.$setViewValue(date);
 
                         if (closeOnDateSelection) {
                             scope.isOpen = false;
@@ -599,13 +587,10 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
                     });
                     // Outter change
                     ngModel.$render = function (){
-//                        console.log(ngModel.$viewValue);
                         if(!+ngModel.$viewValue){
                             ngModel.$viewValue=new Date(ngModel.$viewValue).getTime();
                         }
-//                        console.log(dateFormat);
                         var date = ngModel.$viewValue ? dateFilter(ngModel.$viewValue, dateFormat) : '';
-//                        console.log(date);
                         element.val(date);
                         scope.date = parseDate(ngModel.$modelValue);
                     };
@@ -727,6 +712,46 @@ angular.module('ui.datepicker', ['ui.dateparser', 'ui.position'])
             }
         };
     }])
+    .directive('datepickerFormat', ['$parse','$timeout', function ($parse,$timeout) {
+        return {
+            restrict: 'A',
+            require: ['ngModel'],
+            link: function(scope, element, attr, ctrls) {
+                var ngModelController = ctrls[0];
+                var reValid=function(){
+                    $timeout(function(){
+                        ngModelController.$validate&&ngModelController.$validate();
+                    })
+                };
+                var valid=function (viewValue) {
+                    if(!viewValue){
+                        reValid();
+                        return ''
+                    }
+                    reValid();
+                    console.log(new Date(viewValue).dateFormat(attr.datepickerPopup));
+                    return new Date(viewValue).dateFormat(attr.datepickerPopup)
+                };
+                ngModelController.$parsers.push(valid);
+            }
+        };
+    }])
+    .directive('validDate', function () {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attrs, control) {
+                control.$parsers.push(function (viewValue) {
+                    var newDate = control.$viewValue;
+                    control.$setValidity("invalidDate", true);
+                    if (typeof newDate === "object" || newDate == "") return newDate;  // pass through if we clicked date from popup
+                    if (!newDate.match(/^\d{1,2}\/\d{1,2}\/((\d{2})|(\d{4}))$/))
+                        control.$setValidity("invalidDate", false);
+                    return viewValue;
+                });
+            }
+        };
+    })
     .run(["$templateCache", function ($templateCache) {
         $templateCache.put("template/datepicker/datepicker.html",
                 "<div ng-switch=\"datepickerMode\" role=\"application\" ng-keydown=\"keydown($event)\">\n" +

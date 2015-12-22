@@ -170,6 +170,11 @@
                     <button type="button" class="btn ui-btn ui-btn-primary" ng-model="singleModel" btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
                         按钮Toggle
                     </button>
+                    <div class="btn-group ui-checkbox">
+                        <label class="btn col-xs-2" ng-class="{active:p.debitcard.hasbind}" ng-model="p.debitcard.hasbind"  btn-checkbox-true="1" btn-checkbox-false="0" btn-checkbox>
+                            <i ng-class="{checked:p.debitcard.hasbind}"></i> 是否绑卡
+                        </label>
+                    </div>
                     <p class="clearfix"><br/></p>
                     <h5 class="clearfix">按钮组   {{radioModel}}</h5>
                     <div class="col-xs-12">
@@ -228,6 +233,13 @@
                 <div class="col-xs-5">
                     <h4>设置</h4>
                     <p>无</p>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="col-xs-7">
+                    <div class="col-xs-3">
+                        <input type="text" value="" placeholder="添加任务内容" class="ui-input-">
+                    </div>
                 </div>
             </div>
             <div class="col-xs-12">
@@ -1066,68 +1078,72 @@
             <div class="col-xs-12">
                 <div class="col-xs-7" ng-controller="datepickerCtrl">
                     <h4>例子</h4>
-                    <div class="col-xs-12">
-                        <div class="col-xs-4">
-                            <lable class="pull-left" style="margin-top:5px; width: 100px;text-align:right;">年月日：{{dateSelection}}</lable>
-                            <p class=" input-group ui-datapicker pull-left" style="width:150px; margin-bottom:10px;">
-                                <input type="text"  class="form-control ui-input" datepicker-popup="dd/MM/yyyy"  datepicker-milliseconds
-                                       ng-model="dateSelection" is-open="opened0" ng-click="opened0=1" show-weeks="true"/>
+                    <form name="testform">
+                        <div class="col-xs-12">
+                            <div class="col-xs-4">
+                                <lable class="pull-left" style="margin-top:5px; width: 100px;text-align:right;">年月日：{{dateSelection}}</lable>
+                                <p class=" input-group ui-datapicker pull-left" style="width:150px; margin-bottom:10px;">
+                                    <input type="text"  class="form-control ui-input" datepicker-popup="dd/MM/yyyy" 
+                                           ng-model="dateSelection" is-open="opened0" ng-click="opened0=1" ng-required="true" name="dateSelection"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened0=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <lable class="pull-left" style="margin-top:5px; width: 100px;text-align:right;">年月：{{dateSelection22}}</lable>
+                                <p class=" input-group ui-datapicker pull-left" style="width:140px;margin-bottom:10px;">
+                                    <input type="text"  class="form-control ui-input" datepicker-popup="MM/yyyy" datepicker-milliseconds
+                                           datepicker-mode="'month'"
+                                           ng-model="dateSelection22" is-open="opened00" ng-click="opened00=1" show-weeks="true"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened00=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <lable class="pull-left" style="margin-top:5px; width: 100px;text-align:right;">年：{{dateSelection222}}</lable>
+                                <p class=" input-group ui-datapicker pull-left" style="width:100px;margin-bottom:10px;">
+                                    <input type="text"  class="form-control ui-input" datepicker-popup="yyyy" datepicker-milliseconds
+                                           datepicker-mode="'year'"
+                                           ng-model="dateSelection222" is-open="opened000" ng-click="opened000=1" show-weeks="true"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened000=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <lable class="pull-left" style="margin-top:5px;width: 100px;text-align:right;">年月日时分秒：{{timeSelection}}</lable>
+                            <p class="input-group ui-datapicker pull-left" style="width:200px; margin-bottom:10px">
+                                <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd hh:mm:ss" close-on-date-selection="false" datepicker-milliseconds
+                                       ng-model="timeSelection" is-open="opened1" ng-click="opened1=1" show-weeks="true"/>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened0=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened1=1;"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
                             </p>
                         </div>
-                        <div class="col-xs-4">
-                            <lable class="pull-left" style="margin-top:5px; width: 100px;text-align:right;">年月：{{dateSelection22}}</lable>
-                            <p class=" input-group ui-datapicker pull-left" style="width:140px;margin-bottom:10px;">
-                                <input type="text"  class="form-control ui-input" datepicker-popup="MM/yyyy" datepicker-milliseconds
-                                       datepicker-mode="'month'"
-                                       ng-model="dateSelection22" is-open="opened00" ng-click="opened00=1" show-weeks="true"/>
+                        <div class="col-xs-12">
+                            <lable class="pull-left" style="margin-top:5px;width: 100px;text-align:right;">区间：</lable>
+                            <p class=" input-group ui-datapicker pull-left" style="width:150px;margin-right:10px;margin-bottom:10px;">
+                                <input type="text"  class="form-control ui-input" max-date="endDate" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                                       ng-model="startDate" is-open="opened2" ng-click="opened2=1" show-weeks="true"/>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened00=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened2=1;"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                            <label class="pull-left">--</label>
+                            <p class="input-group ui-datapicker pull-left" style="width:150px;margin-left:10px;">
+                                    <input type="text"  class="form-control ui-input" min-date="startDate" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
+                                           ng-model="endDate" is-open="opened3" ng-click="opened3=1" show-weeks="true"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened3=1;"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
                             </p>
                         </div>
-                        <div class="col-xs-4">
-                            <lable class="pull-left" style="margin-top:5px; width: 100px;text-align:right;">年：{{dateSelection222}}</lable>
-                            <p class=" input-group ui-datapicker pull-left" style="width:100px;margin-bottom:10px;">
-                                <input type="text"  class="form-control ui-input" datepicker-popup="yyyy" datepicker-milliseconds
-                                       datepicker-mode="'year'"
-                                       ng-model="dateSelection222" is-open="opened000" ng-click="opened000=1" show-weeks="true"/>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened000=1;"><i class="glyphicon glyphicon-calendar"></i></button>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-xs-12">
-                        <lable class="pull-left" style="margin-top:5px;width: 100px;text-align:right;">年月日时分秒：{{timeSelection}}</lable>
-                        <p class="input-group ui-datapicker pull-left" style="width:200px; margin-bottom:10px">
-                            <input type="text"  class="form-control ui-input" datepicker-popup="yyyy-MM-dd hh:mm:ss" close-on-date-selection="false" datepicker-milliseconds
-                                   ng-model="timeSelection" is-open="opened1" ng-click="opened1=1" show-weeks="true"/>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened1=1;"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-xs-12">
-                        <lable class="pull-left" style="margin-top:5px;width: 100px;text-align:right;">区间：</lable>
-                        <p class=" input-group ui-datapicker pull-left" style="width:150px;margin-right:10px;margin-bottom:10px;">
-                            <input type="text"  class="form-control ui-input" max-date="endDate" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
-                                   ng-model="startDate" is-open="opened2" ng-click="opened2=1" show-weeks="true"/>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened2=1;"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                        <label class="pull-left">--</label>
-                        <p class="input-group ui-datapicker pull-left" style="width:150px;margin-left:10px;">
-                                <input type="text"  class="form-control ui-input" min-date="startDate" datepicker-popup="yyyy-MM-dd" datepicker-milliseconds
-                                       ng-model="endDate" is-open="opened3" ng-click="opened3=1" show-weeks="true"/>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn  btn-default" ng-click="$event.stopPropagation();opened3=1;"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                    </div>
+
+                    </form>
                 </div>
                 <div class="col-xs-5">
                     <h4>设置</h4>
