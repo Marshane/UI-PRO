@@ -1,4 +1,7 @@
 .idea/
+.DS_Store
+.bash_profile.swp
+.project
 .settings/
 .svn/
-/coding
+coding/
