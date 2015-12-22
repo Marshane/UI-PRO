@@ -1,10 +1,4 @@
 .idea/
 .settings/
 .svn/
-ui-kit__/
-*.rar
-.metadata/
-ui-kit/node_modules/
-ui-kit.md
-angular-modal-service-master
-coding/
+/coding
