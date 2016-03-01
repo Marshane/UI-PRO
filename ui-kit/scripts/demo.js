@@ -532,100 +532,100 @@ angular.module('demo',['ui'])
         scope.multiple = [pageload, firstPaint ];
 
         scope.data2=[ pageload ];
-        $timeout(function(){
-            scope.data2=[];
-        },4000);
+        //$timeout(function(){
+        //    scope.data2=[];
+        //},4000);
 
         // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
-        //updateData($interval);
+        updateData($interval);
 
-        scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        //scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        //
+        //window.onload=function(){
+        //    window.frames[0].postMessage({lang:'en'},'http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
+        //};
+        //
+        //$postMessage.messages=function(msg){
+        //    $('#iframeDemo').css('height',msg+'px');
+        //};
 
-        window.onload=function(){
-            window.frames[0].postMessage({lang:'en'},'http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
-        };
-
-        $postMessage.messages=function(msg){
-            $('#iframeDemo').css('height',msg+'px');
-        };
-
-        scope.configPie={
-            showLegend: false,
-            center:[60,60],
-            radius : [50, 60],
-            title: {
-                text: 'xxx',
-                x: 'center',
-                y: 'center',
-                itemGap: 20,
-                textStyle : {
-                    color : 'rgba(30,144,255,0.8)',
-                    fontFamily : '微软雅黑',
-                    fontSize : 16
-                }
-            },
-            tooltip : {
-                show: false
-            }
-        };
-        scope.pieData=[{
-                datapoints: [
-                {y: 50 },
-                {y: 50 }
-            ]}
-        ];
-
-
-        var option = {
-            title: {
-                text: 'xxx',
-                x: 'center',
-                y: 'center',
-                itemGap: 20,
-                textStyle : {
-                    color : 'rgba(30,144,255,0.8)',
-                    fontFamily : '微软雅黑',
-                    fontSize : 16
-                }
-            },
-            tooltip : {
-                show: false
-            },
-            series : [
-                {
-                    type:'pie',
-                    radius : [50, 60],
-                    itemStyle : {
-                        normal: {
-                            label: {show:false},
-                            labelLine: {show:false}
-                        }
-                    },
-                    data:[
-                        {
-                            value:70,
-                            name:'3%的人表示“我姓曾”'
-                        },
-                        {
-                            value:30,
-                            name:'invisible',
-                            itemStyle : {
-                                normal : {
-                                    color: 'rgba(0,0,0,.1)',
-                                    label: {show:false},
-                                    labelLine: {show:false}
-                                },
-                                emphasis : {
-                                    color: 'rgba(0,0,0,0)'
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
-        };
-        var ec=echarts.init(document.getElementById('pie'),theme.get('macarons'));
-        ec.setOption(option, true);
+        //scope.configPie={
+        //    showLegend: false,
+        //    center:[60,60],
+        //    radius : [50, 60],
+        //    title: {
+        //        text: 'xxx',
+        //        x: 'center',
+        //        y: 'center',
+        //        itemGap: 20,
+        //        textStyle : {
+        //            color : 'rgba(30,144,255,0.8)',
+        //            fontFamily : '微软雅黑',
+        //            fontSize : 16
+        //        }
+        //    },
+        //    tooltip : {
+        //        show: false
+        //    }
+        //};
+        //scope.pieData=[{
+        //        datapoints: [
+        //        {y: 50 },
+        //        {y: 50 }
+        //    ]}
+        //];
+        //
+        //
+        //var option = {
+        //    title: {
+        //        text: 'xxx',
+        //        x: 'center',
+        //        y: 'center',
+        //        itemGap: 20,
+        //        textStyle : {
+        //            color : 'rgba(30,144,255,0.8)',
+        //            fontFamily : '微软雅黑',
+        //            fontSize : 16
+        //        }
+        //    },
+        //    tooltip : {
+        //        show: false
+        //    },
+        //    series : [
+        //        {
+        //            type:'pie',
+        //            radius : [50, 60],
+        //            itemStyle : {
+        //                normal: {
+        //                    label: {show:false},
+        //                    labelLine: {show:false}
+        //                }
+        //            },
+        //            data:[
+        //                {
+        //                    value:70,
+        //                    name:'3%的人表示“我姓曾”'
+        //                },
+        //                {
+        //                    value:30,
+        //                    name:'invisible',
+        //                    itemStyle : {
+        //                        normal : {
+        //                            color: 'rgba(0,0,0,.1)',
+        //                            label: {show:false},
+        //                            labelLine: {show:false}
+        //                        },
+        //                        emphasis : {
+        //                            color: 'rgba(0,0,0,0)'
+        //                        }
+        //                    }
+        //                }
+        //            ]
+        //        }
+        //    ]
+        //};
+        //var ec=echarts.init(document.getElementById('pie'),theme.get('macarons'));
+        //ec.setOption(option, true);
 
     }])
 //    .run(function($httpBackend) {
