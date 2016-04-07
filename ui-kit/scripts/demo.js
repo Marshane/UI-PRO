@@ -24,9 +24,13 @@ angular.module('ui',[
     'ui.tooltip',
     'ui.scrollbar',
     'ui.tree',
+    'ui.loading',
     'ui.postMessage',
     'ui.echarts',
-    'ui.collapse']);
+    'ui.collapse'])
+    .config(['$httpProvider',function ($httpProvider) {
+        $httpProvider.interceptors.push('httpInterceptor');
+    }]);
 
 angular.module('demo',['ui'])
     .directive('uiPrism',['$compile', function($compile) {
@@ -53,8 +57,15 @@ angular.module('demo',['ui'])
             template: "<code></code>"
         };
     }])
-    .controller('buttonCtrl',['$scope',function ($scope) {
+    .controller('buttonCtrl',['$scope','$http',function ($scope,$http) {
 
+    }])
+    .controller('inputCtrl',['$scope','$http',function ($scope,$http) {
+        $scope.getData = function(value) {
+            $http.get('http://maps.googleapis.com/maps/api/geocode/json?address='+value).then(function(res) {
+                console.log(res);
+            })
+        }
     }])
     .controller('uploadCtrl',['$scope',function ($scope) {
         $scope.uploadFinished=function(e,data){
@@ -93,8 +104,8 @@ angular.module('demo',['ui'])
         };
         $timeout(function(){
             $scope.id=831002;
-//            $scope.selectNode={"leaf":true,"expanded":false,"codeId":831002,"codeName":"KØBABN","taxInclude":0,"approvalFlag":0,"baseItemFlag":1,"adjustFlag":-1,"parentId":- 1,
-//                "remark":"Abonnement"};
+            //            $scope.selectNode={"leaf":true,"expanded":false,"codeId":831002,"codeName":"KØBABN","taxInclude":0,"approvalFlag":0,"baseItemFlag":1,"adjustFlag":-1,"parentId":- 1,
+            //                "remark":"Abonnement"};
         },1000);
     }])
     .controller('dropdownCtrl',['$scope','$log',function ($scope, $log) {
@@ -452,92 +463,92 @@ angular.module('demo',['ui'])
     }])
     .controller('echartsCtrl',['$scope','$interval','$timeout','$sce','theme','$postMessage',
         function(scope,$interval,$timeout,$sce,theme,$postMessage){
-        var pageload = {
-            name: 'page.load',
-            datapoints: [
-                { x: 2005, y: 1032 },
-                { x: 2006, y: 1040 },
-                { x: 2007, y: 1023 },
-                { x: 2008, y: 1090 },
-                { x: 2009, y: 1012 },
-                { x: 2010, y: 1012 }
-            ]
-        };
-
-        var firstPaint = {
-            name: 'page.firstPaint',
-            datapoints: [
-                { x: 2005, y: 32 },
-                { x: 2006, y: 40 },
-                { x: 2007, y: 63 },
-                { x: 2008, y: 80 },
-                { x: 2009, y: 20 },
-                { x: 2010, y: 25 }
-            ]
-        };
-        scope.config_line = {
-            debug: true,
-            showXAxis: true,
-            showYAxis: true,
-            showLegend: false,
-            forceClear:true,
-            stack: false
-        };
-        scope.config_line2 = {
-            debug: true,
-            showXAxis: true,
-            showYAxis: true,
-            showLegend: true,
-            stack: false,
-            dataZoom: {
-                show: true,
-                start : 0,
-                end:70
-            }
-        };
-        scope.config_bar = {
-            debug: true,
-            stack: true,
-            itemStyle: {
-                normal: {
-                    label : {
-                        show: true,
-                        position: 'top'
-                    },
-                    color: function (params) {
-                        var colorList = [
-                            '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
-                            '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
-                            '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
-                        ];
-                        return colorList[params.dataIndex]
-                    }
-                }
-            }
-        };
-        scope.config_bar2 = {
-            debug: true,
-            stack: true
-        };
-
-        function updateData($interval) {
-            $interval(function () {
-                pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
-                firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 100) });
-                pageload.datapoints.shift();
-                firstPaint.datapoints.shift();
-            }, 3000);
-        }
-        scope.data = [ pageload ];
-        scope.multiple = [pageload, firstPaint ];
-
-        scope.data2=[ pageload ];
+        // var pageload = {
+        //     name: 'page.load',
+        //     datapoints: [
+        //         { x: 2005, y: 1032 },
+        //         { x: 2006, y: 1040 },
+        //         { x: 2007, y: 1023 },
+        //         { x: 2008, y: 1090 },
+        //         { x: 2009, y: 1012 },
+        //         { x: 2010, y: 1012 }
+        //     ]
+        // };
+        //
+        // var firstPaint = {
+        //     name: 'page.firstPaint',
+        //     datapoints: [
+        //         { x: 2005, y: 32 },
+        //         { x: 2006, y: 40 },
+        //         { x: 2007, y: 63 },
+        //         { x: 2008, y: 80 },
+        //         { x: 2009, y: 20 },
+        //         { x: 2010, y: 25 }
+        //     ]
+        // };
+        // scope.config_line = {
+        //     debug: true,
+        //     showXAxis: true,
+        //     showYAxis: true,
+        //     showLegend: false,
+        //     forceClear:true,
+        //     stack: false
+        // };
+        // scope.config_line2 = {
+        //     debug: true,
+        //     showXAxis: true,
+        //     showYAxis: true,
+        //     showLegend: true,
+        //     stack: false,
+        //     dataZoom: {
+        //         show: true,
+        //         start : 0,
+        //         end:70
+        //     }
+        // };
+        // scope.config_bar = {
+        //     debug: true,
+        //     stack: true,
+        //     itemStyle: {
+        //         normal: {
+        //             label : {
+        //                 show: true,
+        //                 position: 'top'
+        //             },
+        //             color: function (params) {
+        //                 var colorList = [
+        //                     '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#27727B',
+        //                     '#FE8463', '#9BCA63', '#FAD860', '#F3A43B', '#60C0DD',
+        //                     '#D7504B', '#C6E579', '#F4E001', '#F0805A', '#26C0C0'
+        //                 ];
+        //                 return colorList[params.dataIndex]
+        //             }
+        //         }
+        //     }
+        // };
+        // scope.config_bar2 = {
+        //     debug: true,
+        //     stack: true
+        // };
+        //
+        // function updateData($interval) {
+        //     $interval(function () {
+        //         pageload.datapoints.push({ x: pageload.datapoints[pageload.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 2000) });
+        //         firstPaint.datapoints.push({ x: firstPaint.datapoints[firstPaint.datapoints.length - 1].x + 1, y: Math.round(Math.random() * 100) });
+        //         pageload.datapoints.shift();
+        //         firstPaint.datapoints.shift();
+        //     }, 3000);
+        // }
+        // scope.data = [ pageload ];
+        // scope.multiple = [pageload, firstPaint ];
+        //
+        // scope.data2=[ pageload ];
         //$timeout(function(){
         //    scope.data2=[];
         //},4000);
 
         // CAUTION: 这行必须放在这里，不然 angular 感知不到数据变化
-        updateData($interval);
+        // updateData($interval);
 
         //scope._src=$sce.trustAsResourceUrl('http://localhost/dbm2-web/app-vomc/monit/app.jsp#/monit');
         //
@@ -649,9 +660,3 @@ angular.module('demo',['ui'])
         };
         $scope.tabsData=[{value:0,title:'基本信息配置'},{value:1,title:'任务源'},{value:2,title:'服务调用'},{value:3,title:'个性化配置'}];
      }]);
-
-
-
-
-
-

@@ -97,6 +97,7 @@
     <script type="text/javascript" src="lab/ui.inputSelect.js"></script>
     <script type="text/javascript" src="lab/ui.inputTree.js"></script>
     <script type="text/javascript" src="lab/ui.pager.js"></script>
+    <script type="text/javascript" src="lab/ui.loading.js"></script>
     <script type="text/javascript" src="lab/ui.slider.js"></script>
 
     <script type="text/javascript" src="lab/ui.echarts.js"></script>
@@ -109,8 +110,9 @@
     <link href="new-index.css" rel="stylesheet">
 </head>
 <body>
+
     <div class="head">
-        <h1 class="logo">UI</h1>
+        <h1 class="logo">UI</h1><div ui-loading>加载中。。。</div>
         <div class="btn-group ui-dropdown l-hd-nav pull-left" dropdown>
             <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
                 Directives<span class="caret"></span>
@@ -217,13 +219,13 @@
             </div>
         </div>
         <!--input-->
-        <div id="j-input" class="row">
+        <div id="j-input" class="row" ng-controller="inputCtrl">
             <h2>Input <em></em></h2>
             <div class="col-xs-12">
                 <div class="col-xs-7">
                     <h4>例子</h4>
                     <div class="col-xs-3">
-                        <input type="text" value="" placeholder="Inactive" class="form-control ui-input">
+                        <input type="text" value="" ng-keyup="getData(address)" ng-model="address" placeholder="Inactive" class="form-control ui-input">
                     </div>
                     <div class="col-xs-1"></div>
                     <div class="col-xs-3">
